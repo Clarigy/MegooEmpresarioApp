@@ -1,0 +1,1 @@
+//Texto, numero, correo, contraseña, descripción larga, fecha calendario

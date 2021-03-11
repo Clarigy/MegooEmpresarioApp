@@ -1,0 +1,32 @@
+#Categoria tbody>#TR-Fondo {
+    background-color: #00D4D8;
+    opacity: .6;
+    // border-radius: 10px 0 0 10px;
+}
+
+.TablaEstilo thead>tr>th {
+    border-bottom: none;
+    border-top: none;
+}
+
+.TablaEstilo tbody>tr>td {
+    border-bottom: none;
+    border-top: none;
+}
+
+.react-bootstrap-table th.sortable {
+    cursor: pointer;
+}
+
+.react-bootstrap-table th>.react-bootstrap-table-sort-order>.caret {
+    margin: 10px 6.5px;
+    color: cyan;
+}
+
+.caret {
+    color: cyan;
+}
+
+// .TablaEstilo {
+//     background-color: aqua;
+// }

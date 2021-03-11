@@ -1,0 +1,11 @@
+$SMedium: "SpartanMedium"; //500
+$SRegular: "SpartanSemiBold"; //600
+@font-face {
+    font-family: $SMedium;
+    src: local("spaMedium"), url('/src/assets/fonts/Spartan-Medium.ttf');
+}
+
+@font-face {
+    font-family: $SRegular;
+    src: local("spaRegular"), url('/src/assets/fonts/Spartan-SemiBold.ttf');
+}

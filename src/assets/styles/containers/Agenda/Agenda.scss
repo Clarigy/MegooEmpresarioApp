@@ -1,0 +1,275 @@
+.tabButtons {
+  height: 54px;
+  width: 95%;
+  background: #6c3eff;
+  border-radius: 15px;
+  position: relative;
+  align-items: center;
+}
+
+.tabButtonSelect {
+  width: 49%;
+  height: 48px;
+  background: #ffffff;
+  border-radius: 15px;
+  color: #6c3eff;
+  margin: auto;
+  padding-top: 15px;
+  font-family: "SpartanSemiBold";
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tabButtonUnSelect {
+  width: 49%;
+  height: 48px;
+  color: #ffffff;
+  margin: auto;
+  padding-top: 15px;
+  font-family: "SpartanSemiBold";
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.columnLeft {
+  float: left;
+  width: auto;
+  height: 40rem;
+  margin-right: 3rem;
+}
+
+.columnRight {
+  float: left;
+  width: 90%;
+}
+
+.tabCalendar {
+  height: 54px;
+  width: 50%;
+  background: #6c3eff;
+  border-radius: 15px;
+  position: relative;
+  align-items: center;
+}
+
+.tabCalendarSelect {
+  width: 31%;
+  height: 48px;
+  background: #ffffff;
+  border-radius: 15px;
+  color: #6c3eff;
+  margin: auto;
+  padding-top: 15px;
+  font-family: "SpartanSemiBold";
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tabCalendarUnSelect {
+  width: 31%;
+  height: 48px;
+  color: #ffffff;
+  margin: auto;
+  padding-top: 15px;
+  font-family: "SpartanSemiBold";
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/*
+.makeStyles-appointment-157{
+  font-size: 0px !important;
+}
+
+
+.makeStyles-cell-47 {
+  border-right: 0px solid rgba(224, 224, 224, 1) !important;
+  border-bottom: 0px solid rgba(224, 224, 224, 1) !important;
+}
+
+
+.Cell-cell-30 {
+  border-right: 0px solid rgba(224, 224, 224, 1) !important;
+  height: 0px !important;
+}
+
+.Cell-dayOfWeek-23{
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 14px !important;
+line-height: 16px !important;
+color: #1A1446 !important;
+}
+
+.Cell-dayOfMonth-24{
+font-style: normal !important;
+font-weight: 600 !important;
+font-size: 28px !important;
+line-height: 31px !important;
+color: #1A1446 !important;
+}
+
+.Cell-highlightedText-25{
+  color: #6C3EFF !important;
+}
+
+.TitleCell-content-17 {
+  display: none !important;
+}
+
+.Label-text-40 {
+  font-style: normal !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
+  color: #1a1446 !important;
+}
+*/
+
+.MuiPaper-elevation1 {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14),
+    0px 0px 0px 0px rgba(0, 0, 0, 0.12) !important;
+}
+
+.makeStyles-ordinaryLeftPanelBorder-6 {
+  border-right: 0px solid rgba(224, 224, 224, 1) !important;
+}
+
+.makeStyles-ordinaryHeaderBorder-8 {
+  border-bottom: 0px solid rgba(224, 224, 224, 1) !important;
+}
+.estadoOrdenes{
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: left;
+  color: #1A1446;
+}
+
+.Terminada {
+  padding-top: 2px;
+  background-color: #1A1446 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+
+.Próximas {
+  padding-top: 2px;
+  background-color: #6c3eff ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+.Canceladas {
+  padding-top: 2px;
+  background-color: #FF3B7B ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.Pendientes {
+  padding-top: 2px;
+  background-color: #00D4D8 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado1 {
+  padding-top: 2px;
+  background-color: #6C3EFF ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado2 {
+  padding-top: 2px;
+  background-color: #FF3B7B ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado3 {
+  padding-top: 2px;
+  background-color: #00D4D8 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado4 {
+  padding-top: 2px;
+  background-color: #1A1446 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado5 {
+  padding-top: 2px;
+  background-color: #7CB3B2 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado6 {
+  padding-top: 2px;
+  background-color: #C726B2 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado7 {
+  padding-top: 2px;
+  background-color: #FF2663 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado8 {
+  padding-top: 2px;
+  background-color: #FFC663 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado9 {
+  padding-top: 2px;
+  background-color: #1FC6E9 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.empleado0 {
+  padding-top: 2px;
+  background-color: #1F49F8 ;
+  margin-right: 5%;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+

@@ -1,0 +1,130 @@
+.columnFotoTienda {
+  float: left;
+  width: auto;
+  height: 40rem;
+  margin-right: 3rem;
+  border-radius: 50%;
+}
+
+.h2Nombre {
+  margin-left: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+
+.divFotoTienda {
+  float: left;
+  width: 142px;
+  height: 142px;
+  margin-left: 3rem;
+  margin-right: 5rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.divFotoTiendaNew {
+  float: left;
+  width: 142px;
+  height: 142px;
+  margin-right: 5rem;
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+#fotoTienda {
+  display: inline;
+  width: 142px;
+  cursor: pointer;
+}
+
+.btnGuardarPerfil {
+  float: right;
+}
+
+.columnBtnGuardarPerfil {
+  width: 100%;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.btnPress {
+  width: 106px;
+  height: 106px;
+  background: #6c3eff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btnNoPress {
+  width: 106px;
+  height: 106px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#iconoBtn {
+  margin-top: 25%;
+  margin-bottom: 10%;
+}
+
+.txtBtnPress {
+  font-family: "SpartanSemiBold";
+  font-size: 14px;
+  color: #fff;
+}
+
+.txtBtnNoPress {
+  font-family: "SpartanSemiBold";
+  font-size: 14px;
+  color: #6c3eff;
+}
+
+.servicioPendiente {
+  color: #6c3eff;
+}
+
+.servicioNoAprobado {
+  color: #ff3b7b;
+}
+
+.ganancias {
+  color: #6c3eff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.textGanancias {
+  font-size: 14px;
+  color: #1a1446;
+  line-height: 16px;
+  font-weight: normal;
+}
+
+
+#fotoProducto {
+  display: inline;
+  width: 142px;
+  cursor: pointer;
+}
+
+.divFotoProducto{
+  
+  margin-left: 35%;
+  width: 142px;
+  height: 142px;  
+  margin-right: 5rem; 
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.imagenProducto{
+  width: 57px;
+  height: 57px;
+  border-radius: 50%;
+}

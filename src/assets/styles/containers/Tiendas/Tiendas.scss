@@ -1,0 +1,59 @@
+.columnFotoTiendas {
+  float: left;
+  width: 110px;
+  height: 110px;  
+  margin-right: 5rem;
+  border-radius: 50%;
+  margin-bottom: 8rem;
+}
+
+.divFotoTiendas{
+  float: left;
+  width: 110px;
+  height: 110px;  
+  margin-right: 5rem;  
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.divFotoTiendasNew{
+  float: left;
+  width: 110px;
+  height: 110px;  
+  margin-right: 5rem;  
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+
+
+#fotoTiendas {
+  display: inline;
+  width: 110px;
+  cursor: pointer;
+}
+
+
+.btnGuardarTiendas {
+  float: right;
+}
+
+.columnBtnGuardarTiendas {
+  width: 100%;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.Titulo-Tienda{
+  float: left;
+}
+
+.DivHeader{
+  display: inline-block; 
+  width: 100%;
+}
+
+.columnTiendaDatos{
+  width: 100%;
+}

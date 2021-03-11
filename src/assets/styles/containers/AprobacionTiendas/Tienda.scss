@@ -1,0 +1,184 @@
+.Tienda-FontSpartan {
+    font-family: 'SpartanSemiBold';
+}
+
+.Tienda-Titulo {
+    font-family: 'SpartanSemiBold';
+    color: #1A1446;
+    font-size: 1.875rem; //30px
+}
+
+.Tienda-SubTitulo {
+    font-family: 'SpartanSemiBold';
+    color: #1A1446;
+    font-size: 1.25rem; // 20 px
+}
+
+.Tienda-FontSizeh5 {
+    font-size: .83em
+}
+
+.Tienda-btnMorado {
+    background-color: #6C3EFF;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.Tienda-btnRosa {
+    background-color: #FF3B7B;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.Tienda-inputShadow {
+    -webkit-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.Tienda-Inputprepend {
+    background-color: #FFFFFF;
+    border-right: none;
+}
+
+.Tienda-Inputprepend-Input {
+    border-left: none;
+    height: 45px;
+}
+
+#Tienda thead>tr>th {
+    border-bottom: none;
+    border-top: none;
+}
+
+#Tienda table th,
+#Tienda table td {
+    vertical-align: middle !important;
+}
+
+#Tienda tbody>tr>td {
+    border-bottom: none;
+    border-top: none;
+}
+
+.TiendaTabla-Thead {
+    color: #9C9B9B;
+    font-size: 1.25rem; // 20 px
+    font-family: 'SpartanSemiBold';
+}
+
+.TiendaTabla-Body {
+    color: #1A1446;
+    font-size: 1.25rem; // 20 px
+    font-family: 'SpartanSemiBold';
+}
+
+.Tienda-DivSeccionModificada {
+    width: 400px;
+    z-index: 10;
+}
+
+.Tienda-DivSeccionModificada-Titulo {
+    font-family: 'SpartanSemiBold';
+    color: #1A1446;
+}
+
+.Tienda-DivSeccionModificada-parrafo {
+    border: 1px solid gray;
+}
+
+
+/*Aprobacion de tiendas*/
+
+.TiendaAprobacion_Card {
+    // height: 100px;
+    // background-color: #6C3EFF;
+    // background-color: #FFFFFF;
+    // color: #6C3EFF;
+    border-radius: 10%;
+    -webkit-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+}
+
+.TiendaAprobacion_icon {
+    color: #6C3EFF;
+}
+
+.TiendaAprobacion_iconText {
+    color: #6C3EFF;
+}
+
+.TiendaAprobacion_Card:hover {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}
+
+#informacionDIV.active {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}
+
+#pagoDIV.active {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}
+
+#serviciosDIV.active {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}
+
+#productosDIV.active {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}
+
+#planDIV.active {
+    background-color: #6C3EFF;
+    color: #FFFFFF;
+    .TiendaAprobacion_icon {
+        color: #FFFFFF;
+    }
+    .TiendaAprobacion_iconText {
+        color: #FFFFFF;
+    }
+}

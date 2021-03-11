@@ -1,0 +1,36 @@
+// >>>352px && <<< 768
+@media (min-width: 22em) {
+     :root {
+        font-size: 10px !important;
+    }
+}
+
+// /* //------mobile >>768 px && <<< 992 */
+@media (min-width: 48em) {
+     :root {
+        font-size: 12px !important;
+    }
+}
+
+// /* // Large devices  >> 992px && <<<1200px */
+@media (min-width: 62em) {
+     :root {
+        font-size: 13px !important;
+    }
+}
+
+
+/* // Extra large devices >>> 1200px  */
+
+@media (min-width: 75em) {
+     :root {
+        font-size: 14px !important;
+    }
+}
+
+@media (min-width: 87em) {
+    // >>>> 1400 px
+     :root {
+        font-size: 16px !important;
+    }
+}
