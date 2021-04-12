@@ -4,6 +4,8 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Login from '../containers/Login/Login';
 import LoginOld from '../containers/Login/LoginOld';
+import LoginNew from '../containers/Login/LoginNew';
+import LoginTest from '../containers/Login/LoginTest';
 import Descuentos from '../containers/Descuentos/Descuentos';
 import Perfil from '../containers/Perfil/Perfil';
 import Tiendas from '../containers/Tiendas/Tiendas';
@@ -29,7 +31,7 @@ const App = () => (
       <Layout>
         <Root>
           <Switch>
-            <ProtectRoute type='public'  exact path='/' component={LoginOld} />
+            <ProtectRoute type='public'  exact path='/' component={LoginTest} />
             <ProtectRoute type='private' exact path='/perfil' component={Perfil} />
             <ProtectRoute type='private' exact path='/tiendas' component={Tiendas} />
             <ProtectRoute type='private' exact path='/tienda' component={Tienda} />

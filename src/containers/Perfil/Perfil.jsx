@@ -130,7 +130,7 @@ export class Perfil extends Component {
             const db = firebaseConfig.firestore();
             var batch = db.batch();
 
-            let newUserRef = db.collection("Usuarios").doc(user["id"]);
+            let newUserRef = db.collection("Perfil/").doc(user["id"]);
             batch.update(newUserRef, {
                 "nombre": this.state.name,
                 "email": this.state.email,
@@ -336,7 +336,7 @@ export class Perfil extends Component {
         } else {
             var dob = this.state.bornDate;
             // var year = Number(dob.substr(0, 4));
-            var year = 2020;
+            var year = 1999;
             // var month = Number(dob.substr(5, 2) - 1);
             var month = 5;
             // var day = Number(dob.substr(8, 2));
