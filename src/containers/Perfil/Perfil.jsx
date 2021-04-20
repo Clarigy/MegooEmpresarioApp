@@ -14,12 +14,15 @@ export class Perfil extends Component {
             bornDate: "",
             document: "",
             cellPhone: "",
-            role: "",
+            rol: "",
             foto: "",
             status: "",
-            time: 1
+            time: 1,
+            erro: ""
+            
         };
     }
+
 
     useEffect =(() => {
         let isMounted = true; // note this flag denote mount status
@@ -38,47 +41,52 @@ export class Perfil extends Component {
            })
           }, 1000);
 
+
         
        
 
         const { user } = this.context;
           console.log("USER",user);
+          console.log("ID",user.id);
         
 
         const db = firebaseConfig.firestore();
-        let docRef = db.collection("Usuarios").doc(user["id"]);
+        let docRef = db.collection("Perfil").doc(user.id);
         //let docRef = db.collection("Perfil").doc(user["id"]);
+        console.log("esto",docRef);
 
-        docRef.get().then(doc => {
+        docRef.get().then((doc) => {
             if (doc.exists) {
+                console.log("aquello",doc);
+                console.log("correoo",doc.data()["foto"])
                 if (doc.data()["foto"] == "" || doc.data()["foto"] == undefined) {
                     this.setState({
                         name: doc.data()["nombre"],
                         email: doc.data()["email"],
                         bornDate: doc.data()["fechaNacimiento"],
-                        document: doc.data()["docIdentidad"],
+                        document: doc.data()["documento"],
                         cellPhone: doc.data()["telefono"],
-                        role: doc.data()["rol"],
-                        foto: "https://firebasestorage.googleapis.com/v0/b/meegoapp.appspot.com/o/foto%2Fuser.png?alt=media&token=3765c611-9c4c-4c01-bce7-6767290fc2d1",
+                        rol: doc.data()["rol"],
                         status: doc.data()["status"],
+                        foto: "https://firebasestorage.googleapis.com/v0/b/meegoapp.appspot.com/o/foto%2Fuser.png?alt=media&token=3765c611-9c4c-4c01-bce7-6767290fc2d1",
+                        
                     });
-                    
-
-
-       
+                    console.log("correoo",this.state.status)
+                    console.log("correoo",this.state.foto)
                 } else {
-                    this.setState({
+                   this.setState({
                         name: doc.data()["nombre"],
                         email: doc.data()["email"],
                         bornDate: doc.data()["fechaNacimiento"],
-                        document: doc.data()["docIdentidad"],
+                        document: doc.data()["documento"],
                         cellPhone: doc.data()["telefono"],
-                        role: doc.data()["rol"],
+                        rol: doc.data()["rol"],
                         foto: doc.data()["foto"],
                         status: doc.data()["status"],
                     });
-                    
-
+                    console.log("correoo",this.state.status)
+                    console.log("documento",this.state.document)
+                    console.log("correoo",this.state.foto)
                 }
             } else {
                 // doc.data() will be undefined in this case
@@ -87,30 +95,20 @@ export class Perfil extends Component {
         }).catch(function (error) {
             console.log("Error getting document:", error);
         });
-
-        
-    
-
-
-
     }
 
     addCommas = s => s.split('').reverse().join('')
     .replace(/(\d{3})/g, '$1,').replace(/\,$/, '')
     .split('').reverse().join('')
 
-
-
-
     onSubmit = e => {
        
 
             var expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
             var esValido = expReg.test(this.state.email);
-         
+
             var dob = this.state.bornDate;
-            // var year = Number(dob.substr(0, 4));
-            var year = 2020;
+            var year = Number(dob.substr(0, 4));
             var month = Number(dob.substr(5, 2) - 1);
             var day = Number(dob.substr(8, 2));
             var today = new Date();
@@ -118,37 +116,42 @@ export class Perfil extends Component {
             if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
                 age--;
             }
-        
-
+            if(age < 18){
+                bornDateEmpty = "Debes ser mayor de edad"
+            }
+     
 
 
         if (this.state.name != "" && this.state.email != "" && this.state.bornDate != "" && this.state.document != "" &&
             this.state.cellPhone != "" && age >= 18 && esValido) {
+
+
 
             const { user } = this.context;
 
             const db = firebaseConfig.firestore();
             var batch = db.batch();
 
-            let newUserRef = db.collection("Perfil/").doc(user["id"]);
+            let newUserRef = db.collection("Perfil/").doc(user.id);
             batch.update(newUserRef, {
                 "nombre": this.state.name,
                 "email": this.state.email,
                 "fechaNacimiento": this.state.bornDate,
-                "docIdentidad": this.state.document,
+                "documento": this.state.document,
                 "telefono": this.state.cellPhone,
                 "foto": this.state.foto,
+                "rol": this.state.rol,
                 "status": true
             });
             batch.commit();
 
-        } 
+        } else {
+          
+        }
         e.preventDefault();
     }
 
     delete = e => {
-
-
         this.setState({
             name: this.state.name,
             email: this.state.email,
@@ -156,17 +159,19 @@ export class Perfil extends Component {
             document: this.state.document,
             cellPhone: this.state.cellPhone,
             foto: this.state.foto,
-            role: this.state.role,
+            role: this.state.rol,
             status: false,
         });
 
         const { user } = this.context;
+        console.log("deleteee")
 
         const db = firebaseConfig.firestore();
         var batch = db.batch();
 
-        let newUserRef = db.collection("Usuarios").doc(user["id"]);
+        let newUserRef = db.collection("Perfil").doc(user.id);
         batch.update(newUserRef, {
+            
             "nombre": this.state.name,
             "email": this.state.email,
             "fechaNacimiento": this.state.bornDate,
@@ -175,6 +180,7 @@ export class Perfil extends Component {
             "foto": this.state.foto,
             "status": false,
         });
+        console.log("estadooo",this.status);
         batch.commit();
         document.getElementById('accordionSidebar').style.display = "none";
 
@@ -210,7 +216,7 @@ export class Perfil extends Component {
             document: this.state.document,
             cellPhone: this.state.cellPhone,
             foto: this.state.foto,
-            role: this.state.role,
+            role: this.state.rol,
             status: true,
         });
 
@@ -220,7 +226,7 @@ export class Perfil extends Component {
         const db = firebaseConfig.firestore();
         var batch = db.batch();
 
-        let newUserRef = db.collection("Usuarios").doc(user["id"]);
+        let newUserRef = db.collection("Perfil").doc(user.id);
         batch.update(newUserRef, {
             "nombre": this.state.name,
             "email": this.state.email,
@@ -253,10 +259,10 @@ export class Perfil extends Component {
         //if (this.state.foto == "https://firebasestorage.googleapis.com/v0/b/meegoapp.appspot.com/o/foto%2Fuser.png?alt=media&token=3765c611-9c4c-4c01-bce7-6767290fc2d1") {
         const file = e.target.files[0];
         const storageRef = firebaseConfig.storage().ref();
-        const fileRef = storageRef.child('/foto/usuarios/' + user["id"] + '/' + user["id"]);
+        const fileRef = storageRef.child('/foto/Perfil/' + user["id"] + '/' + user["id"]);
         fileRef.put(file).then(() => {
             console.log("Upload a file")
-            storageRef.child('/foto/usuarios/' + user["id"] + '/' + user["id"]).getDownloadURL()
+            storageRef.child('/foto/Perfil/' + user["id"] + '/' + user["id"]).getDownloadURL()
                 .then((url) => {
 
                     this.setState({
@@ -266,34 +272,13 @@ export class Perfil extends Component {
                         document: this.state.document,
                         cellPhone: this.state.cellPhone,
                         foto: url,
-                        role: this.state.role,
+                        role: this.state.rol,
                         status: true,
                     });
-
-
-                    const db = firebaseConfig.firestore();
-                    var batch = db.batch();
-
-                    let newUserRef = db.collection("Usuarios").doc(user["id"]);
-                    batch.update(newUserRef, {
-                        "nombre": this.state.name,
-                        "email": this.state.email,
-                        "fechaNacimiento": this.state.bornDate,
-                        "docIdentidad": this.state.document,
-                        "telefono": this.state.cellPhone,
-                        "foto": url,
-                        "status": true,
-                    });
-                    batch.commit()
-
-
+                    console.log(url)
+                    console.log("fotoooo", this.state.foto)
                 });
-
-
         })
-
-
-
     }
 
 
@@ -305,7 +290,6 @@ export class Perfil extends Component {
 
     render() {
 
-          
 
         var textoGuardar;
         var tituloGuardar;
@@ -331,16 +315,14 @@ export class Perfil extends Component {
 
         
         var bornDateEmpty = "";
+        console.log("fechaaa",this.state.bornDate)
         if (this.state.bornDate == "") {
             bornDateEmpty = "El campo Fecha de nacimiento esta vacio"
         } else {
             var dob = this.state.bornDate;
-            // var year = Number(dob.substr(0, 4));
-            var year = 1999;
-            // var month = Number(dob.substr(5, 2) - 1);
-            var month = 5;
-            // var day = Number(dob.substr(8, 2));
-            var day = 21;
+            var year = Number(dob.substr(0, 4));
+            var month = Number(dob.substr(5, 2) - 1);
+            var day = Number(dob.substr(8, 2));
             var today = new Date();
             var age = today.getFullYear() - year;
             if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
@@ -368,7 +350,6 @@ export class Perfil extends Component {
             this.textoGuardar = "La información se guardo exitosamente"
             this.tituloGuardar = "Perfil Guardado"
             
-            
         }else{
             
             this.textoGuardar = "Hay campos vacios o con errores"
@@ -390,7 +371,8 @@ export class Perfil extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
+                        <div className='mx-0 mx-md- mx-lg-5 perfilContainer'>
+                    
 
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>
@@ -402,22 +384,22 @@ export class Perfil extends Component {
                                     onChange={(e) => this.onChangeFile(e)} />
                                 <label htmlFor="file" className="divFotoPerfil" style={{backgroundColor: "#1A1446"}}>
 
-                                    <img src={this.state.foto} id="fotoPerfil" />
+                                    <img className="FotoPerfil" src={this.state.foto} id="fotoPerfil" />
 
                                 </label>
                                 <div className='row mb-2' ></div>
-                                <h2 className='text-center Categoria-Titulo h2Nombre mt-1'>{this.state.name}</h2>
-                                <h2 className='text-center Categoria-SubTitulo mt-1'>{this.state.role}</h2>
+                                <h2 className='text-center Categoria-Titulo  mt-1'>{this.state.name}</h2>
+                                <h2 className='text-center Categoria-SubTitulo mt-1'>{this.state.rol}</h2>
 
                             </div>
 
-                            <div className='row mb-5' ></div>
+                        
 
 
                             <h2 className='Categoria-Titulo'>Perfil</h2>
-                            <div className='row mb-5' ></div>
+                            
                             <form action="">
-                                <div className='row'>
+                                <div className='row formRow'>
 
                                     <div className="columnPerfilDatos">
                                         <div className='row mb-5' ></div>
@@ -478,13 +460,13 @@ export class Perfil extends Component {
                                             aria-label='Document'
                                             onChange={this.onChange}
                                             name='document'
-                                            value={this.state.document.replace(/(\d{,3}(?!,|$))/g, "$1,")}
+                                            value={this.state.document}
                                         />
                                         <h2 className='Categoria-Alerta-Rojo'>{documentEmpty}</h2>
 
                                         <div className='row mb-4' ></div>
 
-                                        <h2 className='Categoria-SubTitulo'>Celular</h2>
+                                        <h2 className='Categoria-SubTitulo'>Telefono</h2>
                                         <input
                                             type='number'
                                             className='form-control text-muted '
@@ -500,15 +482,15 @@ export class Perfil extends Component {
 
                                         <h2 className='Categoria-SubTitulo'>Rol</h2>
                                         <select
-                                            name=''
-                                            id=''
+                                            id='RolSelect'
                                             className='form-control text-muted'
                                             aria-label='Buscar'
                                             name='rol'
+                                            onChange={this.onChange}
+                                            value={this.state.rol}
                                         >
-                                            <option value='Empresario'>Empresario</option>
-                                            <option value='Independiente'>Independiente</option>
-
+                                                <option value='Empresario' rol='Empresario' >Empresario</option>
+                                                <option value='Independiente' rol='Independiente'>Independiente</option>  
                                         </select>
 
                                     </div>
@@ -522,7 +504,7 @@ export class Perfil extends Component {
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>
-                            <div>
+                            <div className='divButtons'>
                                 <button
                                     className='btn text-white px-4 py-2 mt-1 Categoria-btnRosado'
                                     data-toggle='modal'
@@ -531,18 +513,16 @@ export class Perfil extends Component {
                                 >
                                     Eliminar Cuenta Meego
                                 </button>
-                            </div>
-
-                            <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
-                            <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil' onClick={this.onSubmit} 
+                                <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil'
                             data-toggle='modal'
                             data-target='#GuardarModal'
+                            onClick={this.onSubmit}
                             >
                                 Guardar
                                 </button>
-                            <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
+                            </div>
+
+                            
 
                             
                             <div
@@ -553,6 +533,7 @@ export class Perfil extends Component {
                                 <div className='modal-dialog modal-dialog-centered' role='document'>
                                     <div className='modal-content Categoria-inputShadow Categoria-modal'>
                                         <div className='text-center modal-header border-bottom-0'>
+                                            
                                             <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
                                                 {this.tituloGuardar}
                                         </h4>
@@ -705,6 +686,8 @@ export class Perfil extends Component {
             )
 
         };
+
+
     }
 }
 Perfil.contextType = AuthContext;

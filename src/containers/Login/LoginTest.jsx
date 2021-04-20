@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { auth, db, provider} from '../../firebase';
 import firebase from '../../firebase/setup';
 import { withRouter } from 'react-router-dom';
@@ -7,7 +7,11 @@ import Fondo from '../../assets/login/Fondo.png';
 import '../../assets/styles/login/loginNew.scss';
 import meegoLogin from '../../assets/login/meegologin.png';
 
-const Login = (props) => {
+const LoginTest = (props) => {
+
+  
+
+
   document.getElementById('accordionSidebar').style.display = 'none';
 
   //Definir el estado
@@ -52,8 +56,9 @@ const Login = (props) => {
   };
 
   //Función que inicia sesión
-  const login = useCallback(async () => {
+  const Login = useCallback(async () => {
     try {
+
       const res = await auth.signInWithEmailAndPassword(email, pass);
       console.log(res.user.email);
       console.log(res.user);
@@ -62,6 +67,12 @@ const Login = (props) => {
       await db
         .collection('users/')
         .get()
+
+        db.collection('users/').doc(res.user.uid).set({
+          email: res.user.email,
+          uid: res.user.uid
+        });
+        
 
       //Limpiar los txt
       setEmail('');
@@ -86,57 +97,83 @@ const Login = (props) => {
         return;
       }
     }
-  }, [email, pass, props.history]);
+  }, [email, pass]);
 
 
   //Función que inicia sesión
   const LoginGoogle = useCallback(async () => {
+    var ruta = '';
+    var user = '';
+    var email = '';
+    var id = '';
 
     try{
+      
+
         var provider = new firebase.auth.GoogleAuthProvider();
+        console.log("aaaaaaaaaaaaaaaaaaaaaaa", )
+
         const res = await auth
         .signInWithPopup(provider)
         .then((result) => {
-          /** @type {firebase.auth.OAuthCredential} */
-          var credential = result.credential;
-      
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = credential.accessToken;
-          // The signed-in user info.
           user = result.user;
-          // ...
-        }); } catch (error){
-    
+          var credential = result.credential
+          var token = credential.accessToken;
+        }); 
+      } catch (error){
             if (error.code === 'auth/account-exists-with-different-credential') {
                 setError('Esta cuenta ya esta registrada con otro provedor, ingresa de otra manera');
                 return;
             }
         }
+        email= user.email;
+        uid = user.id;
+        db.collection('users').doc(user.uid).set({
+          email: user.email,
+          uid: user.uid
+        });
+        console.log("bbbbbbbbbbbbbbbbbbbbb", user)
+        let docRef = db.collection("Perfil").doc(user.id);
+
+        docRef.get().then((doc) => {
+          if (doc.exists) {
+            ruta = '/perfil';
+            console.log(ruta)
+          } else {
+                 
+            ruta = '/signup'; 
+            console.log(ruta)
+            }
+        })
       //Limpiar los txt
       setEmail('');
       setPass('');
       setError(null);
       //redireccionar a home
-      props.history.push('/perfil');
+      props.history.push(ruta);
     
-  }, [props.history]);
+  }, [email, props.history]);
 
   //Función que inicia sesión
   const LoginFacebook = useCallback(async () => {
+    var user = '';
+    var ruta = '';
   
     try{
+
         var provider = new firebase.auth.FacebookAuthProvider();
         const res = await auth
     .signInWithPopup(provider)
     .then((result) => {
+      // The signed-in user info.
+      user = result.user;
         
       /** @type {firebase.auth.OAuthCredential} */
       var credential = result.credential;
   
       // This gives you a Google Access Token. You can use it to access the Google API.
       var token = credential.accessToken;
-      // The signed-in user info.
-      user = result.user;
+      
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var accessToken = credential.accessToken;
     });
@@ -147,13 +184,29 @@ const Login = (props) => {
             return;
         }
     }
-    
+    db.collection('users').doc(user.uid).set({
+      email: user.email,
+      uid: user.uid
+    });
+    let docRef = db.collection("Perfil").doc(user.id);
+
+    docRef.get().then((doc) => {
+      if (doc.exists) {
+        ruta = '/perfil';
+        console.log(ruta)
+      } else {
+             
+        ruta = '/signup'; 
+        console.log(ruta)
+        }
+    })
+
   //Limpiar los txt
   setEmail('');
   setPass('');
   setError(null);
   //redireccionar a home
-  props.history.push('/perfil');
+  props.history.push(ruta);
 
 }, [props.history]);
 
@@ -166,17 +219,10 @@ const Login = (props) => {
       );
       console.log(res.user);
       //Guardar el registro en la BD
-      await db.collection('users/').doc(res.user.email).set({
+      db.collection('users/').doc(res.user.uid).set({
         email: res.user.email,
         uid: res.user.uid
       });
-      //Limpiar los txt
-      setEmail('');
-      setPass('');
-      setError(null);
-
-      //redireccionar a home
-      props.history.push('/perfil');
     } catch (error) {
       console.log(error);
 
@@ -189,6 +235,13 @@ const Login = (props) => {
         return;
       }
     }
+     //Limpiar los txt
+     setEmail('');
+     setPass('');
+     setError(null);
+
+     //redireccionar a home
+     props.history.push('/signup');
   }, [email, pass, props.history]);
 
   //Función de registro en firebase
@@ -219,8 +272,10 @@ const Login = (props) => {
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    backgroundPositionY: '145px'
+    backgroundPositionY: '100px'
   };
+
+  
   return (
     <div>
       <main>
@@ -346,57 +401,9 @@ const Login = (props) => {
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="col-6 offset-3">
-                    <div>
-                       <button
-                  className="btn btn-dark btn-lg mb-2  btn-primary"
-                  type="submit"
-                >
-                  {'Acceder'}
-                </button>
-                    </div>
-                  </div> */}
                   </div>
                 </form>
               </div>
-
-              {/* <form onSubmit={procesarDatos}>
-                <label htmlFor="">Usuario:</label>
-                <input
-                  name="email"
-                  className="form-control mb-2"
-                  type="email"
-                  placeholder="Ingrese su correo"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  name="pass"
-                  className="form-control mb-2"
-                  type="password"
-                  placeholder="Ingrese su password"
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                />
-
-                <button
-                  className="btn btn-dark btn-lg mb-2  btn-primary"
-                  type="submit"
-                >
-                  {'Acceder'}
-                </button> */}
-              {/*  <button 
-                            className="btn btn-info btn-sm "
-                            type="button"
-                            onClick={ ()=> setEsRegistro(!esRegistro) }
-                        >
-                            {
-                                esRegistro ? '¿Ya estas registrado?' : '¿No tienes cuenta?'
-                            }
-                            
-                        </button>       */}
-              {/* </form> */}
             </div>
           </div>
         </div>
@@ -405,4 +412,4 @@ const Login = (props) => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(LoginTest);

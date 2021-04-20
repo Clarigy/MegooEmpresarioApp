@@ -1,0 +1,217 @@
+$color: #6c3eff;
+body {
+    /* font-family: "Karla", sans-serif; */
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+
+
+.brand-wrapper {
+    padding-top: 7px;
+    padding-bottom: 8px;
+    .logo {
+        height: 70px;
+    }
+}
+
+.logo{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.login {
+    &-section-wrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 68px 100px;
+        background-color: #fff;
+        @media (max-width: 991px) {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        @media (max-width: 575px) {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            min-height: 100vh;
+        }
+    }
+    &-wrapper {
+        width: 300px;
+        max-width: 100%;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        @media (max-width: 575px) {
+            width: 100%;
+        }
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #b0adad;
+        }
+        .form-control {
+            border: none;
+            border-bottom: 1px solid #e7e7e7;
+            border-radius: 0;
+            padding: 9px 5px;
+            min-height: 40px;
+            font-size: 18px;
+            font-weight: normal;
+            &::placeholder {
+                color: #b0adad;
+            }
+        }
+    }
+    &-title {
+        font-size: 30px;
+        color: #000;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+    &-img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        object-position: left;
+    }
+}
+
+.forgot-password-link {
+    color: #6C3EFF;
+    font-size: 10px;
+    text-decoration: underline;
+    text-align: start;
+    margin-bottom: 14px;
+    width: fit-content;
+    @media (max-width: 575px) {
+        margin-bottom: 16px;
+    }
+}
+
+.changeState{
+    color: #fff;
+    font-size: 10px;
+    text-align: end;
+    margin: 0 0 14px 0 0;
+    margin-bottom: 14px;
+    @media (max-width: 575px) {
+        margin-bottom: 16px;
+    }
+}
+
+.linksForm{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.otherSignin{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.fab{
+    color: #fff;
+    font-size: 40px;
+    margin: 10px;
+}
+
+.signUp{
+ margin-left: 5px;
+ color: #6C3EFF;
+ font-size: 10px;
+ text-decoration: underline;
+ text-align: start;
+ margin-bottom: 14px;
+
+}
+
+.login {
+    &-google {
+        width: 3rem;
+    }
+    &-facebook {
+        width: 3rem;
+    }
+}
+
+.row {
+    margin-right: 0rem !important;
+    margin-left: 0rem !important;
+}
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.Login-Card {
+    background-color: #1A1446;
+    border: none;
+    margin-top: 1rem;
+}
+
+.Login-btn {
+    background-color: #6C3EFF;
+    color: #fff;
+    border: none;
+    margin-bottom: 25px;
+}
+
+.Login-btn:active {
+    background-color: #6C3EFF;
+    border: none;
+}
+
+.Login-btn:focus {
+    background-color: #6C3EFF;
+    color: #fff;
+    border: none;
+}
+
+
+.mt-5, .my-5 {
+    margin-top: 2rem !important;
+}
+
+.divFotoPerfil{
+
+}
+
+.text-purple{
+    color: #1A1446;
+    font-size: 1rem;
+}
+
+.divFotoPerfil{
+  
+    float: left;
+    width: 150px;
+    height: 150px;  
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .FotoPerfil{
+  
+    margin-left: 5rem;
+    width: 150px;
+    height: 150px;  
+    margin: 0rem; 
+    border-radius: 50%;
+  }
+  
+  #fotoPerfil {
+    display: inline;
+    width: 150px;
+    cursor: pointer;
+  }
+  

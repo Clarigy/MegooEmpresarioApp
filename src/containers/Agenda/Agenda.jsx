@@ -9,21 +9,15 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/es';
 import Paper from '@material-ui/core/Paper';
 import { ViewState } from '@devexpress/dx-react-scheduler';
-import {
-    Scheduler,
-    DayView,
-    WeekView,
-    MonthView,
-    Toolbar,
-    DateNavigator,
-    Appointments,
-    AllDayPanel,
-    Resources,
-    AppointmentTooltip,
-} from '@devexpress/dx-react-scheduler-material-ui';
+
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin, { DayGridView } from '@fullcalendar/daygrid'
+import interactionPlugin from "@fullcalendar/interaction"; 
 import { Link } from "react-router-dom";
-import { Filter } from '@material-ui/icons';
+import { ContactSupportOutlined, Filter } from '@material-ui/icons';
 import { data } from 'jquery';
+import timeGridPlugin from '@fullcalendar/timegrid';
+
 
 
 
@@ -50,6 +44,34 @@ const resourcesData = [
 
 ]
 
+const appointments = [
+    {
+      title: 'Website Re-Design Plan',
+      startDate: new Date(2021, 4, 15, 9, 35),
+      endDate: new Date(2021, 4, 15, 11, 30),
+      id: 0,
+      location: 'Room 1',
+    }, {
+      title: 'Book Flights to San Fran for Sales Trip',
+      startDate: new Date(2021, 4, 15, 12, 11),
+      endDate: new Date(2021, 4, 25, 13, 0),
+      id: 1,
+      location: 'Room 1',
+    }, {
+      title: 'Install New Router in Dev Room',
+      startDate: new Date(2021, 5, 25, 14, 30),
+      endDate: new Date(2021, 5, 25, 15, 35),
+      id: 2,
+      location: 'Room 2',
+    }, {
+      title: 'Approve Personal Computer Upgrade Plan',
+      startDate: new Date(2021, 5, 26, 10, 0),
+      endDate: new Date(2021, 5, 26, 11, 0),
+      id: 3,
+      location: 'Room 2',
+    }
+]
+
 export class Agenda extends Component {
 
 
@@ -66,8 +88,8 @@ export class Agenda extends Component {
             uid: "",
             selectedDay: new Date(),
             diaActual: "",
-            tabCalendar: "Semana",
-            currentViewName: 'Week',
+            tabCalendar: "Mes",
+            currentViewName: 'dayGridMonth',
             ordenes: [],
             ordenesOriginal: [],
             data: [],
@@ -208,6 +230,10 @@ export class Agenda extends Component {
 
     }
 
+    handleDateClick = (arg) => { // bind with an arrow function
+        alert(arg.dateStr)
+      }
+
 
 
     tabChange = () => {
@@ -300,22 +326,33 @@ export class Agenda extends Component {
 
     tabCalendarChange(e) {
         return () => {
+            console.log("Inicioooo", this.state.tabCalendar)
+            console.log("Inicioooo", e)
 
             if (e == "Semana") {
                 this.setState({
                     tabCalendar: "Semana",
-                    currentViewName: "Week"
+                    currentViewName: "timeGridWeek"
                 });
+                console.log('Semanaaaaaa')
+                console.log(this.state.currentViewName)
+                console.log(this.state.tabCalendar)
             } else if (e == "Mes") {
                 this.setState({
                     tabCalendar: "Mes",
-                    currentViewName: "Month"
+                    currentViewName: "dayGridMonth"
                 });
-            } else {
+                console.log('Meeeeeeees')
+                console.log(this.state.currentViewName)
+                console.log(this.state.tabCalendar)
+            } else if (e=="Dia") {
                 this.setState({
-                    tabCalendar: "Año",
-                    currentViewName: "Day"
+                    tabCalendar: "Dia",
+                    currentViewName: "timeGridDay"
                 });
+                console.log('Diaaaaaaaaa')
+                console.log(this.state.currentViewName)
+                console.log(this.state.tabCalendar)
             }
         }
 
@@ -584,6 +621,15 @@ export class Agenda extends Component {
 
     }
 
+    renderEventContent  = (eventInfo) => {
+        return (
+          <>
+            <b>{'holaaaa'}</b>
+            <i>{eventInfo.event.title}</i>
+          </>
+        )
+      }
+
 
 
     render() {
@@ -593,7 +639,7 @@ export class Agenda extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-8'>
+                        <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
 
                             <div className='row mb-5' ></div>
 
@@ -612,174 +658,126 @@ export class Agenda extends Component {
                             </div>
 
                             <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoPerfil">
+                            <div className='bodyContainerAgenga'>
+                                <div className="text-center columnLeftAgenda">
 
-                                <div className='col-12 col-lg-3 mb-3'>
-
-
-                                    <select
-                                        name=''
-                                        id=''
-                                        className=' text-white px-4 py-2 mt-1 mr-2 Categoria-btnMorado'
-                                        placeholder='Buscar'
-                                        aria-label='Buscar'
-                                        aria-describedby='basic-addon1'
-                                        onChange={this.selectTienda}
-                                    >
-
-                                        {this.state.tiendas.map((tienda) => (
-                                            <option value={tienda.nombre}>{tienda.nombre}</option>
-                                        ))}
-
-
-                                    </select>
-
-
-                                </div>
-
-                                <DayPicker
-                                    onDayClick={this.handleDayClick}
-                                    selectedDays={this.state.selectedDay}
-                                    localeUtils={MomentLocaleUtils}
-                                    locale={"es"}
-                                    firstDayOfWeek={0}
-                                //   className="Ordenes"
-                                //   renderDay={renderDay}
-                                />
-
-
-                                <div className='row mb-5' ></div>
-                                <div className="columnDatos text-center">
-                                    <h2 className="estadoOrdenes">Órdenes</h2>
-                                </div>
-                                <div className='row mb-5' ></div>
-                                <div className="row">
-                                    <div className="Próximas">
-
-                                        <input
-                                            defaultChecked={true}
-                                            name="checkBoxServicios"
-                                            type="checkbox"
-                                            value="Próxima"
-                                            onChange={this.onChange}
-                                        />
+                                    <div className='col-12 col-lg-3 mb-3'>
+                                        <select
+                                            name=''
+                                            id=''
+                                            className=' text-white px-4 py-2 mt-1 mr-2 Categoria-btnMorado'
+                                            placeholder='Buscar'
+                                            aria-label='Buscar'
+                                            aria-describedby='basic-addon1'
+                                            onChange={this.selectTienda}
+                                        >
+                                            {this.state.tiendas.map((tienda) => (
+                                                <option value={tienda.nombre}>{tienda.nombre}</option>
+                                            ))}
+                                        </select>
                                     </div>
-                                    <h2 className="estadoOrdenes">Próximas</h2>
-                                </div>
 
-                                <div className='row mb-1' ></div>
-                                <div className="row">
-                                    <div className="Canceladas">
-                                        <input
-                                            defaultChecked={true}
-                                            name="checkBoxServicios"
-                                            type="checkbox"
-                                            value="Cancelada"
-                                            onChange={this.onChange}
-                                        />
+                                    <DayPicker
+                                        onDayClick={this.handleDayClick}
+                                        selectedDays={this.state.selectedDay}
+                                        localeUtils={MomentLocaleUtils}
+                                        locale={"es"}
+                                        firstDayOfWeek={0}
+                                    //   className="Ordenes"
+                                    //   renderDay={renderDay}
+                                    />
+
+
+                                    <div className='row mb-5' ></div>
+                                    <div className="columnDatos text-center">
+                                        <h2 className="estadoOrdenes">Órdenes</h2>
                                     </div>
-                                    <h2 className="estadoOrdenes">Canceladas</h2>
-                                </div>
+                                    <div className='row mb-5' ></div>
+                                    <div className="row">
+                                        <div className="Próximas">
 
-
-                                <div className='row mb-1' ></div>
-                                <div className="row">
-                                    <div className="Pendientes">
-                                        <input
-                                            defaultChecked={true}
-                                            name="checkBoxServicios"
-                                            type="checkbox"
-                                            value="Pendiente"
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-                                    <h2 className="estadoOrdenes">Pendientes</h2>
-                                </div>
-
-
-                                <div className='row mb-1' ></div>
-                                <div className="row">
-                                    <div className="Terminada">
-                                        <input
-                                            defaultChecked={true}
-                                            name="checkBoxServicios"
-                                            type="checkbox"
-                                            value="Terminada"
-                                            onChange={this.onChange}
-                                        />
-                                    </div>
-                                    <h2 className="estadoOrdenes ">Terminadas</h2>
-                                </div>
-
-
-
-                            </div>
-
-                            <div className='row'>
-
-
-
-                                <div className="columnRight">
-                                    <div className='row'>
-                                        <h2 className='Categoria-Titulo px-4 py-2'>{this.state.diaActual}</h2>
-                                        <div onClick={this.prevWeek}>
-                                            <h2 className='Categoria-SubTitulo px-4 py-3'>{"<"}</h2>
+                                            <input
+                                                defaultChecked={true}
+                                                name="checkBoxServicios"
+                                                type="checkbox"
+                                                value="Próxima"
+                                                onChange={this.onChange}
+                                            />
                                         </div>
-                                        <div onClick={this.nextWeek}>
-                                            <h2 className='Categoria-SubTitulo px-4 py-3'>{">"}</h2>
+                                        <h2 className="estadoOrdenes">Próximas</h2>
+                                    </div>
+
+                                    <div className='row mb-1' ></div>
+                                    <div className="row">
+                                        <div className="Canceladas">
+                                            <input
+                                                defaultChecked={true}
+                                                name="checkBoxServicios"
+                                                type="checkbox"
+                                                value="Cancelada"
+                                                onChange={this.onChange}
+                                            />
                                         </div>
-                                        <div className='px-4 py-3'></div>
+                                        <h2 className="estadoOrdenes">Canceladas</h2>
+                                    </div>
+
+                                    <div className='row mb-1' ></div>
+                                    <div className="row">
+                                        <div className="Pendientes">
+                                            <input
+                                                defaultChecked={true}
+                                                name="checkBoxServicios"
+                                                type="checkbox"
+                                                value="Pendiente"
+                                                onChange={this.onChange}
+                                            />
+                                        </div>
+                                        <h2 className="estadoOrdenes">Pendientes</h2>
+                                    </div>
+
+                                    <div className='row mb-1' ></div>
+                                    <div className="row">
+                                        <div className="Terminada">
+                                            <input
+                                                defaultChecked={true}
+                                                name="checkBoxServicios"
+                                                type="checkbox"
+                                                value="Terminada"
+                                                onChange={this.onChange}
+                                            />
+                                        </div>
+                                        <h2 className="estadoOrdenes ">Terminadas</h2>
+                                    </div>
+                                </div>
+
+                                <div className='row columnRightAgenda'>                                    
+                                    <div className='row'>                                       
                                         <div className='tabCalendar text-center row'>
-                                            <div className={this.state.tabCalendar == "Semana" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Semana")}>
-                                                <h5>Semana</h5>
-                                            </div>
                                             <div className={this.state.tabCalendar == "Mes" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Mes")}>
                                                 <h5>Mes</h5>
                                             </div>
-                                            <div className={this.state.tabCalendar == "Año" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Año")}>
-                                                <h5>Año</h5>
+                                            <div className={this.state.tabCalendar == "Semana" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Semana")}>
+                                                <h5>Semana</h5>
                                             </div>
+                                            <div className={this.state.tabCalendar == "Dia" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Dia")}>
+                                                <h5>Día</h5>
+                                            </div>                                                
                                         </div>
                                     </div>
+                                    <div className='row mb-5' ></div>
 
-                                    <Paper>
-                                        <Scheduler
-                                            data={this.state.data}
-                                            locale={"es-co"}
-                                        >
-                                            <ViewState
-                                                currentDate={this.state.selectedDay}
-                                                currentViewName={this.state.currentViewName}
-                                            />
-                                            <DayView
-                                                startDayHour={7}
-                                                endDayHour={22}
-                                                cellDuration={60}
-                                            />
-                                            <WeekView
-                                                startDayHour={7}
-                                                endDayHour={22}
-                                                cellDuration={60}
-                                            />
-                                            <AllDayPanel />
-
-                                            <MonthView />
-                                            <Appointments />
-                                            <AppointmentTooltip />
-                                            <Resources
-
-                                                data={this.state.resources}
-                                            />
-                                        </Scheduler>
-                                    </Paper>
-
-                                </div>
+                                    <div className="callendarContainer">
+                                        <FullCalendar
+                                            plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
+                                            dateClick={this.handleDateClick}
+                                            initialView= 'timeGridWeek'
+                                            eventContent={this.renderEventContent}
+                                            height= '100%'                                        
+                                        />
+                                    </div>
+                                </div>                           
                             </div>
-
-
-
-
-                        </div>
+                        </div>                            
                     </div>
                 </>
             )
@@ -788,7 +786,7 @@ export class Agenda extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-8'>
+                        <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
 
                             <div className='row mb-5' ></div>
 
@@ -900,43 +898,16 @@ export class Agenda extends Component {
                                             <div className={this.state.tabCalendar == "Mes" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Mes")}>
                                                 <h5>Mes</h5>
                                             </div>
-                                            <div className={this.state.tabCalendar == "Año" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Año")}>
+                                            <div className={this.state.tabCalendar == "Dia" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Dia")}>
                                                 <h5>Año</h5>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <Paper>
-                                        <Scheduler
-                                            data={this.state.data}
-                                            locale={"es-co"}
-                                        >
-                                            <ViewState
-                                                currentDate={this.state.selectedDay}
-                                                currentViewName={this.state.currentViewName}
-                                            />
-                                            <DayView
-                                                startDayHour={7}
-                                                endDayHour={22}
-                                                cellDuration={60}
-                                            />
-                                            <WeekView
-                                                startDayHour={7}
-                                                endDayHour={22}
-                                                cellDuration={60}
-                                            />
-                                            <AllDayPanel />
-
-                                            <MonthView />
-
-                                            <Appointments />
-                                            <AppointmentTooltip />
-                                            <Resources
-
-                                                data={this.state.resources}
-                                            />
-                                        </Scheduler>
-                                    </Paper>
+                                    <FullCalendar
+                                        plugins={[ dayGridPlugin ]}
+                                        initialView="dayGridMonth"
+                                    />
 
                                 </div>
                             </div>

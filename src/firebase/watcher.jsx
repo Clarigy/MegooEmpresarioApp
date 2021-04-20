@@ -15,10 +15,14 @@ export function watchUserChanges(callback) {
         id: uid,
         email,
         displayName,
+        
       });
+      console.log(email, uid)
     } else {
       callback(null);
     }
+
+    
   });
 
   return unsub;

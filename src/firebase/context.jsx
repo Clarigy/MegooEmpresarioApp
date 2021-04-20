@@ -1,5 +1,6 @@
 import React from 'react';
 import { watchUserChanges } from './index';
+import { auth, db, provider} from '../firebase';
 
 //Crear el context
 export const AuthContext = React.createContext({});
@@ -11,6 +12,7 @@ export const AuthContextConsumer = AuthContext.Consumer;
 export class AuthContextProvider extends React.Component {
     state = {
       isLoggedIn: false,
+      isSignup: false,
       authReady: false,
       user: null,
       userid: ""
@@ -22,19 +24,36 @@ export class AuthContextProvider extends React.Component {
 
         if (user) {
           sessionStorage.setItem('email', user.email);
-          this.setState({
-            authReady: true,
-            isLoggedIn: true,
-            user,
-            userid: user["id"]
-          });
+          let docRef = db.collection("Perfil").doc(user.id);
+
+          docRef.get().then((doc) => {
+            if (doc.exists) {
+              console.log("JDJKSFHSDJKFHDJKHJKDHGJKSDFHGJKHDFG")
+              this.setState({
+                authReady: true,
+                isLoggedIn: true,
+                isSignup: false,
+                user,
+                userid: user["id"],
+              });
+            } else {
+              this.setState({
+                authReady: true,
+                isLoggedIn: true,
+                isSignup: true,
+                user,
+                userid: user["id"],
+              });
+          }});
+        
         } else {
 
           this.setState({
             authReady: true,
             isLoggedIn: false,
             user: null,
-            userid: ""
+            userid: "",
+            isSignup: false,
           });
         }
       });

@@ -24,6 +24,7 @@ import Analiticas from '../containers/Analiticas/Analiticas';
 import { AuthContextProvider } from '../firebase';
 import ProtectRoute from '../components/ProtectRoute/ProtectRoute';
 import Root from '../components/Root/Root';
+import SignUp from '../containers/SignUp/SignUp';
 
 const App = () => (
   <BrowserRouter>
@@ -32,7 +33,9 @@ const App = () => (
         <Root>
           <Switch>
             <ProtectRoute type='public'  exact path='/' component={LoginTest} />
-            <ProtectRoute type='private' exact path='/perfil' component={Perfil} />
+            <ProtectRoute type='private' exact path='/signup' component={SignUp} />
+            <ProtectRoute type='private' exact path='/perfil' component={Perfil}  />
+            
             <ProtectRoute type='private' exact path='/tiendas' component={Tiendas} />
             <ProtectRoute type='private' exact path='/tienda' component={Tienda} />
             <ProtectRoute type='private' exact path='/servicios' component={Servicios} />

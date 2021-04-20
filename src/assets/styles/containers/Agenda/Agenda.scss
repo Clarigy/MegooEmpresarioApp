@@ -1,6 +1,6 @@
 .tabButtons {
   height: 54px;
-  width: 95%;
+  width: 100%;
   background: #6c3eff;
   border-radius: 15px;
   position: relative;
@@ -30,22 +30,32 @@
   font-size: 18px;
   cursor: pointer;
 }
+.bodyContainerAgenga{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-.columnLeft {
-  float: left;
-  width: auto;
-  height: 40rem;
-  margin-right: 3rem;
 }
 
-.columnRight {
-  float: left;
-  width: 90%;
+.columnLeftAgenda{
+  display: flex;
+  width: 20%;
+  height: fit-content;
+  flex-direction: column;
 }
+.columnRightAgenda{
+  display: flex;
+  width: 75%;
+  height: fit-content;
+  flex-direction: column;
+}
+
 
 .tabCalendar {
   height: 54px;
-  width: 50%;
+  width: 100%;
   background: #6c3eff;
   border-radius: 15px;
   position: relative;
@@ -74,6 +84,10 @@
   font-family: "SpartanSemiBold";
   font-size: 18px;
   cursor: pointer;
+}
+.callendarContainer{
+  width: 100%;
+  height: 65vh;
 }
 
 /*

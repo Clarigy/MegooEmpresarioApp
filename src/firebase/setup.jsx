@@ -23,7 +23,7 @@ const uiConfig = {
     firebase.auth.FacebookAuthProvider.PROVIDER_ID
 
   ],
-  signInSuccessUrl: '/perfil',
+  //signInSuccessUrl: '/signup',
 };
 
 firebase.initializeApp(firebaseConfig);
