@@ -1,11 +1,11 @@
-.siderbar-color {
+/*.siderbar-color {
     background-color: #6C3EFF;
     /*-webkit-border-top-left-radius: 50px;
     -webkit-border-bottom-left-radius: 50px;
     -moz-border-radius-topleft: 50px;
     -moz-border-radius-bottomleft: 50px;
     border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;*/
+    border-bottom-left-radius: 50px;
 }
 
 .Siderbar-IconoTitulo {
@@ -34,4 +34,67 @@
     .Siderbar-IconoTitulo {
         color: #00D4D8 !important;
     }
-}
+}*/
+
+
+
+.siderbar-color {
+    background-color: #6c3eff;
+    /* -webkit-border-top-left-radius: 50px;
+    -webkit-border-bottom-left-radius: 50px;
+    -moz-border-radius-topleft: 50px;
+    -moz-border-radius-bottomleft: 50px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px; */
+  }
+  
+  .Siderbar-Logo {
+    width: 3.5rem;
+  }
+  
+  .Siderbar-IconoTitulo {
+    font-size: 1rem; //16px
+  }
+  
+  .Siderbar_IconHover_Img {
+    width: 1.55rem;
+  }
+  
+  .Siderbar_IconHover:hover {
+    // background-color: #00D4D8;
+    cursor: pointer;
+    .Siderbar_IconHover_Img {
+      filter: invert(20%) sepia(80%) saturate(10423%) hue-rotate(150deg)
+        brightness(150%) contrast(150%);
+      // filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+      // filter: invert(58%) sepia(86%) saturate(1279%) hue-rotate(134deg) brightness(98%) contrast(103%);
+      // fill: aqua;
+    }
+    .Siderbar-IconoTitulo {
+      color: #00d4d8;
+    }
+  }
+  
+  .Siderbar_IconHover.active {
+    .Siderbar_IconHover_Img {
+      filter: invert(20%) sepia(80%) saturate(10423%) hue-rotate(150deg)
+        brightness(150%) contrast(150%);
+    }
+    .Siderbar-IconoTitulo {
+      color: #00d4d8 !important;
+    }
+  }
+  
+  .topbar #sidebarToggleTop {
+    height: 3rem !important;
+    width: 3rem !important;
+  }
+  
+  @media (min-width: 360px) and (max-width: 767px) {
+    .sidebar .nav-item .nav-link {
+      text-align: center;
+      padding: 0.5rem 0.1rem !important;
+      width: 4.5rem;
+    }
+  }
+  

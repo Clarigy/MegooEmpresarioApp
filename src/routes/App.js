@@ -2,9 +2,6 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import Layout from '../components/Layout';
-import Login from '../containers/Login/Login';
-import LoginOld from '../containers/Login/LoginOld';
-import LoginNew from '../containers/Login/LoginNew';
 import LoginTest from '../containers/Login/LoginTest';
 import Descuentos from '../containers/Descuentos/Descuentos';
 import Perfil from '../containers/Perfil/Perfil';

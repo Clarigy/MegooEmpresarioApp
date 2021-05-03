@@ -2,7 +2,7 @@
   height: 54px;
   width: 100%;
   background: #6c3eff;
-  border-radius: 15px;
+  border-radius: 30px;
   position: relative;
   align-items: center;
 }
@@ -11,7 +11,7 @@
   width: 49%;
   height: 48px;
   background: #ffffff;
-  border-radius: 15px;
+  border-radius: 30px;
   color: #6c3eff;
   margin: auto;
   padding-top: 15px;
@@ -48,7 +48,7 @@
 .columnRightAgenda{
   display: flex;
   width: 75%;
-  height: fit-content;
+  height: 50vh;
   flex-direction: column;
 }
 
@@ -57,7 +57,7 @@
   height: 54px;
   width: 100%;
   background: #6c3eff;
-  border-radius: 15px;
+  border-radius: 30px;
   position: relative;
   align-items: center;
 }
@@ -66,7 +66,7 @@
   width: 31%;
   height: 48px;
   background: #ffffff;
-  border-radius: 15px;
+  border-radius: 30px;
   color: #6c3eff;
   margin: auto;
   padding-top: 15px;
@@ -87,8 +87,308 @@
 }
 .callendarContainer{
   width: 100%;
-  height: 65vh;
+  height: 50vh;
 }
+
+.fc .fc-button-primary{
+  color: #fff !important;
+  color:  #fff !important;
+  background-color: #6c3eff !important;
+  background-color: #6c3eff !important;
+  border-color: #6c3eff;
+  border-color:  #6c3eff !important;
+}    
+
+/* ------------------------------------------------------------------- 
+ * ## modal popup
+ * ------------------------------------------------------------------- */
+ .modal-popup {
+  width: 30vw;
+  height: 50vh;
+  margin: 25vh 35vw;
+  position: 'absolute';
+  width: 400;
+  border: none;
+  border-inline: none;
+  background-color: #fff;
+  padding: 2rem 4rem;
+  outline: 'none'
+  
+}
+
+.modal-popup:focus{
+  outline: none;
+ }
+
+.fc-timeGridWeek-button{
+  border-radius: 0px !important;
+  
+}
+
+.fc-timeGridDay-button{
+  border-bottom-right-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+}
+
+.fc-dayGridMonth-button{
+  border-bottom-left-radius: 20px !important;
+  border-top-left-radius: 20px !important;
+}
+.fc-today-button{
+  border-radius: 20px !important;
+  
+}
+
+.fc-next-button{
+  border-bottom-right-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+}
+
+.fc-prev-button{
+  border-bottom-left-radius: 20px !important;
+  border-top-left-radius: 20px !important;
+}
+
+
+
+
+ /* ------------------------------------------------------------------- 
+ * ## checkbox proximas
+ * ------------------------------------------------------------------- */
+
+ .containerCheck {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 20px;
+  color: #1A1446;
+}
+
+/* Hide the browser's default checkbox */
+.containerCheck input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkBoxProxima {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 15%;
+  background-color: #eee;
+  border: 2px solid #6c3eff;
+}
+
+/* On mouse-over, add a grey background color */
+.containerCheck:hover input ~ .checkBoxProxima {
+  background-color: #ccc;
+ 
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerCheck input:checked ~ .checkBoxProxima {
+  background-color: #6c3eff;
+}
+
+/* Create the checkBoxProxima/indicator (hidden when not checked) */
+.checkBoxProxima:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkBoxProxima when checked */
+.containerCheck input:checked ~ .checkBoxProxima:after {
+  display: block;
+}
+
+/* Style the checkBoxProxima/indicator */
+.containerCheck .checkBoxProxima:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------------------- 
+ * ## checkbox cancelada
+ * ------------------------------------------------------------------- */
+
+/* Create a custom checkbox */
+.checkBoxCancelada {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 15%;
+  background-color: #eee;
+  border: 2px solid #FF3B7B;
+}
+
+/* On mouse-over, add a grey background color */
+.containerCheck:hover input ~ .checkBoxCancelada {
+  background-color: #ccc;
+ 
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerCheck input:checked ~ .checkBoxCancelada {
+  background-color: #FF3B7B;
+}
+
+/* Create the checkBoxProxima/indicator (hidden when not checked) */
+.checkBoxCancelada:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkBoxProxima when checked */
+.containerCheck input:checked ~ .checkBoxCancelada:after {
+  display: block;
+}
+
+/* Style the checkBoxProxima/indicator */
+.containerCheck .checkBoxCancelada:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------------------- 
+ * ## checkbox pendiente
+ * ------------------------------------------------------------------- */
+
+/* Create a custom checkbox */
+.checkBoxPendiente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 15%;
+  background-color: #eee;
+  border: 2px solid #00D4D8;
+}
+
+/* On mouse-over, add a grey background color */
+.containerCheck:hover input ~ .checkBoxPendiente {
+  background-color: #ccc;
+ 
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerCheck input:checked ~ .checkBoxPendiente {
+  background-color: #00D4D8;
+}
+
+/* Create the checkBoxProxima/indicator (hidden when not checked) */
+.checkBoxPendiente:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkBoxProxima when checked */
+.containerCheck input:checked ~ .checkBoxPendiente:after {
+  display: block;
+}
+
+/* Style the checkBoxProxima/indicator */
+.containerCheck .checkBoxPendiente:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------------------- 
+ * ## checkbox terminada
+ * ------------------------------------------------------------------- */
+
+/* Create a custom checkbox */
+.checkBoxTerminada {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border-radius: 15%;
+  background-color: #eee;
+  border: 2px solid #1A1446;
+}
+
+/* On mouse-over, add a grey background color */
+.containerCheck:hover input ~ .checkBoxTerminada {
+  background-color: #ccc;
+ 
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerCheck input:checked ~ .checkBoxTerminada {
+  background-color: #1A1446;
+}
+
+/* Create the checkBoxProxima/indicator (hidden when not checked) */
+.checkBoxTerminada:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkBoxProxima when checked */
+.containerCheck input:checked ~ .checkBoxTerminada:after {
+  display: block;
+}
+
+/* Style the checkBoxProxima/indicator */
+.containerCheck .checkBoxTerminada:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+
+
+
 
 /*
 .makeStyles-appointment-157{

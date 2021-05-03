@@ -106,6 +106,7 @@ export class Tienda extends Component {
 
 
     componentDidMount = () => {
+        document.getElementById('nabvar').style.display = 'none';
 
         console.log(this.state.uid)
         const db = firebaseConfig.firestore();
@@ -429,8 +430,8 @@ export class Tienda extends Component {
             return (
                 <>
 
-                    <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
+                    <div className='container-fluid' >
+                        <div className='mx-0 mx-md- mx-lg-5 perfilContainer'>
 
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>

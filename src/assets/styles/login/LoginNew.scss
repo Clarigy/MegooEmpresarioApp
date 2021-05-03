@@ -21,14 +21,18 @@ body {
         flex-direction: column;
         padding: 68px 100px;
         background-color: #fff;
-        @media (max-width: 991px) {
+        @media (max-width: 768px) {
             padding-left: 50px;
             padding-right: 50px;
         }
-        @media (max-width: 575px) {
+        @media (max-width: 480px) {
             padding-top: 20px;
             padding-bottom: 20px;
             min-height: 100vh;
+        }
+        @media (max-width: 320px) {
+            padding-left: 20px;
+            padding-right: 20px;
         }
     }
     &-wrapper {
@@ -54,6 +58,8 @@ body {
             font-weight: normal;
             &::placeholder {
                 color: #b0adad;
+
+            
             }
         }
     }
@@ -71,6 +77,65 @@ body {
     }
 }
 
+.titulo-login{
+    @media (max-width: 768px) {
+        
+    }
+    @media (max-width: 480px) {
+        font-size: 4vw;
+    }
+    @media (max-width: 320px) {
+  
+    }
+}
+
+.logo-div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+    @media (max-width: 480px) {
+        width: 100%;
+    }
+    @media (max-width: 320px) {
+        height: 18vh;
+        margin-bottom: 0rem  !important;
+    }
+    
+}
+.logo-image{
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+    @media (max-width: 480px) {
+        width: 15vh;
+        height: 18vh;
+    }
+    @media (max-width: 320px) {
+        width: 15vh;
+        height: 18vh;
+        margin-bottom: 0rem  !important;
+    }
+
+
+}
+.form-container{
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+    @media (max-width: 480px) {
+        width: 100%;
+        margin-top: 0rem  !important;
+    }
+    @media (max-width: 320px) {
+        margin-top: 0rem  !important;
+    }
+
+}
 .forgot-password-link {
     color: #6C3EFF;
     font-size: 10px;

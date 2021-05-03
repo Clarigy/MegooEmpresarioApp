@@ -10,6 +10,7 @@ import meegoLogin from '../../assets/login/meegologin.png';
 const LoginTest = (props) => {
 
   
+    document.getElementById('nabvar').style.display = 'none';
 
 
   document.getElementById('accordionSidebar').style.display = 'none';
@@ -288,17 +289,17 @@ const LoginTest = (props) => {
               {error && (
                 <div className="alert alert-danger">{error}</div>
               )}
-              <div className="text-center mb-5 mb-md-0">
+              <div className="text-center mb-5 mb-md-0 logo-div">
                 <img
                   src={imgLogin}
                   alt="El universo que piensa en tí y para tí."
-                  className="mb-5 mt-2"
+                  className="mb-5 mt-2 logo-image"
                   width="200"
                   height="250"
                 />
               </div>
-              <div className="mt-5">
-                <form onSubmit={procesarDatos} className="mt-5">
+              <div className="mt-5 form-container">
+                <form onSubmit={procesarDatos} className="mt-5 form-container">
                   <div className="row">
                     <div className="col-12 col-md-4 offset-0 offset-md-4">
                       <div className="">
@@ -306,7 +307,7 @@ const LoginTest = (props) => {
                           <div className="form-group">
                             <label
                               htmlFor="email"
-                              className="text-white"
+                              className="text-white titulo-login"
                             >
                               Usuario
                             </label>
@@ -324,7 +325,7 @@ const LoginTest = (props) => {
                           <div className="form-group">
                             <label
                               htmlFor="pass"
-                              className="text-white"
+                              className="text-white titulo-login"
                             >
                               Contraseña
                             </label>

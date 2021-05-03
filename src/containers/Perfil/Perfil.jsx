@@ -3,6 +3,10 @@ import '../../assets/styles/containers/Categorias/Categorias.scss';
 import '../../assets/styles/containers/Perfil/Perfil.scss';
 import firebaseConfig from "../../firebase/setup.jsx";
 import { AuthContext } from '../../firebase/context';
+import IconActive from '../../hooks/iconActive';
+import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
+import GifLoader from '../../components/Loader/index';
+import $ from 'jquery';
 
 
 export class Perfil extends Component {
@@ -18,26 +22,33 @@ export class Perfil extends Component {
             foto: "",
             status: "",
             time: 1,
-            erro: ""
-            
+            erro: "",
+            loading: true,
         };
     }
 
 
-    useEffect =(() => {
+    /*useEffect =(() => {
         let isMounted = true; // note this flag denote mount status
         someAsyncOperation().then(data => {
           if (isMounted) setState(data);
         })
         return () => { isMounted = false }; // use effect cleanup to set flag false, if unmounted
-      });
+      });*/
       
 
     componentDidMount = () => {
 
+    $('#nabvar').show();
+    $('#accordionSidebar').show();
+    IconActive.checkPath('Siderbar-Perfil', '/perfil', this.props.match.path);
+    $('.react-bootstrap-table-pagination-list').removeClass('col-md-6 col-xs-6 col-sm-6 col-lg-6');
+    $('.react-bootstrap-table-pagination-list').addClass('col-2 offset-5 mt-4');
+
         setTimeout(() => {
            this.setState({
-               time: 0
+               time: 0,
+               loading: false
            })
           }, 1000);
 
@@ -289,6 +300,8 @@ export class Perfil extends Component {
 
 
     render() {
+        const { loading } = this.state;
+        
 
 
         var textoGuardar;
@@ -303,7 +316,7 @@ export class Perfil extends Component {
 
         var emailEmpty = "";
         if (this.state.email == "") {
-            emailEmpty = "El campo Correo esta vacio"
+            emailEmpty = "El campo Nombre esta vacío"
         } else {
 
             var expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -317,7 +330,7 @@ export class Perfil extends Component {
         var bornDateEmpty = "";
         console.log("fechaaa",this.state.bornDate)
         if (this.state.bornDate == "") {
-            bornDateEmpty = "El campo Fecha de nacimiento esta vacio"
+            bornDateEmpty = "El campo Fecha de nacimiento esta vacío"
         } else {
             var dob = this.state.bornDate;
             var year = Number(dob.substr(0, 4));
@@ -335,7 +348,7 @@ export class Perfil extends Component {
 
         var documentEmpty = "";
         if (this.state.document == "") {
-            documentEmpty = "El campo Documento esta vacio"
+            documentEmpty = "El campo Documento esta vacío"
         }
 
         var cellPhoneEmpty = "";
@@ -352,7 +365,7 @@ export class Perfil extends Component {
             
         }else{
             
-            this.textoGuardar = "Hay campos vacios o con errores"
+            this.textoGuardar = "Hay campos vacíos o con errores"
             this.tituloGuardar = "Por favor revisar los campos"
         }
 
@@ -363,19 +376,23 @@ export class Perfil extends Component {
       
         
 
-        if (isLoggedIn && this.state.time == 0) {
+        if (isLoggedIn /*&& this.state.time == 0*/) {
 
            
             document.getElementById('accordionSidebar').style.display = "initial";
             return (
                 <>
-
+                <GifLoader
+                    loading={loading}
+                    imageSrc={loadingImage}
+                    overlayBackground="rgba(219,219,219, .8)"
+                />
                     <div className='container-fluid'>
                         <div className='mx-0 mx-md- mx-lg-5 perfilContainer'>
                     
 
                             <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
+
 
                             <div className="text-center columnFotoPerfil">
 
@@ -466,7 +483,7 @@ export class Perfil extends Component {
 
                                         <div className='row mb-4' ></div>
 
-                                        <h2 className='Categoria-SubTitulo'>Telefono</h2>
+                                        <h2 className='Categoria-SubTitulo'>Teléfono</h2>
                                         <input
                                             type='number'
                                             className='form-control text-muted '
@@ -572,7 +589,7 @@ export class Perfil extends Component {
                                     <div className='modal-content Categoria-inputShadow Categoria-modal'>
                                         <div className='text-center modal-header border-bottom-0'>
                                             <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
-                                                Eiminar Cuenta Meego
+                                            Eliminar Cuenta Meego
                                         </h4>
                                         </div>
 
@@ -621,7 +638,7 @@ export class Perfil extends Component {
                 </>
             )
         }
-        else  if (isLoggedIn == false && this.state.time == 0) {
+        else  if (isLoggedIn == false /*&& this.state.time == 0*/) {
             
             document.getElementById('accordionSidebar').style.display = "none";
             
@@ -676,7 +693,7 @@ export class Perfil extends Component {
                 </div>
             )
         }
-        else if(this.state.time == 1){
+        /*else if(this.state.time == 1){
             document.getElementById('accordionSidebar').style.display = "none";
             return (
                 
@@ -685,7 +702,7 @@ export class Perfil extends Component {
                 </div>
             )
 
-        };
+        };*/
 
 
     }

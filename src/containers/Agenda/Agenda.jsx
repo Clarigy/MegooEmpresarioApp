@@ -17,6 +17,9 @@ import { Link } from "react-router-dom";
 import { ContactSupportOutlined, Filter } from '@material-ui/icons';
 import { data } from 'jquery';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import esLocale from '@fullcalendar/core/locales/es';
+import Modal from '@material-ui/core/Modal';
+import moment from 'moment';
 
 
 
@@ -72,6 +75,9 @@ const appointments = [
     }
 ]
 
+
+
+
 export class Agenda extends Component {
 
 
@@ -84,15 +90,36 @@ export class Agenda extends Component {
         this.state = {
             tab: "Ordenes",
             tiendas: [],
-            nombreTienda: "",
+            events: [],
             uid: "",
             selectedDay: new Date(),
             diaActual: "",
             tabCalendar: "Mes",
+            isMes: true,
+            isSemana: false,
+            isDia: false,
             currentViewName: 'dayGridMonth',
             ordenes: [],
+            open: false,
             ordenesOriginal: [],
+            fechaEventoFinal:"",
+            fechaEventoInicio:"",
+            fechaEventoInicioEmpty:"",
+            fechaEventoFinalEmpty: "",
+            NombreEvento:"",
+            NombreEventoEmpty:"",
+            NombreTienda:"",
+            cliente : "",
+            estado : "",
+            servicio : "",
+            empleado : "",
             data: [],
+            dateSelect:"",
+            isProxima:"",
+            isTermianda:"",
+            isCancelada:"",
+            isPendiente:"",
+            idEvento:"",
             resources: [
                 {
                     fieldName: 'type',
@@ -162,9 +189,17 @@ export class Agenda extends Component {
 
         this.setState({
             tab: "Ordenes",
-            diaActual: diaActual
+            diaActual: diaActual,
+            isProxima:true,
+            isTermianda:true,
+            isCancelada:true,
+            isPendiente:true,
         });
 
+      
+        
+
+        
 
 
         const tiendas = [];
@@ -178,6 +213,16 @@ export class Agenda extends Component {
             uid: this.uidText,
         });
 
+        var nombreTienda = "";
+       
+        this.fetchEventsOrdenes(nombreTienda,this.state.isProxima, this.state.isCancelada, this.state.isPendiente, this.state.isTermianda)
+    }
+
+    fetchEventsOrdenes(nombreTienda, isProxima, isCancelada, isPendiente, isTermianda){
+        const { user } = this.context;
+        const tiendas = [];
+        const events = [];
+        
 
         const db = firebaseConfig.firestore();
         //let docRef = db.collection("TiendasTest").doc(user["id"]);
@@ -190,45 +235,131 @@ export class Agenda extends Component {
 
                 });
                 this.setState({ tiendas: tiendas });
-                this.setState({ nombreTienda: this.state.tiendas[0]["nombre"] })
-                db.collection("OrdenesTest").where("uidProveedor", "==", this.state.tiendas[0]["uid"] + "-" + this.state.tiendas[0]["nombre"])
+                if (nombreTienda == ""){
+                    this.setState({ nombreTienda:this.state.tiendas[0]["nombre"]})
+                } else {
+                    this.setState({ nombreTienda: nombreTienda})
+                }
+
+                
+
+                
+                
+                db.collection("OrdenesTest").where("uidproveedor", "==", this.state.tiendas[0]["uid"] + "-" +  this.state.nombreTienda)
                     .get()
                     .then((querySnapshot) => {
                         querySnapshot.forEach((doc) => {
-                            ordenesOriginal.push(doc.data())
                             // doc.data() is never undefined for query doc snapshots
 
-                            const startDate = doc.data().fechaInicio.toDate();
-                            const endDate = doc.data().fechaFin.toDate();
-                            const type = doc.data().estado;
-                            const obj = { 'startDate': startDate, 'endDate': endDate, 'type': type };
                             this.setState({
-                                data: [...this.state.data, obj]
+                                fechaEventoInicio :  doc.data()["fechaInicio"],
+                                fechaEventoFinal:  doc.data()["fechaFin"],
+                                cliente :  doc.data()["cliente"],
+                                estado : doc.data()["estado"],
+                                NombreEvento : doc.data()["servicio"],
+                                empleado :  doc.data()["empleado"],
+                                idEvento: doc.data()["uid"]
                             });
 
-                        });
-                        this.setState({
-                            ordenesOriginal: ordenesOriginal
-                        });
+                            var colors = ""
 
-                    })
-                    .catch(function (error) {
-                        console.log("Error getting documents: ", error);
+                            if (this.state.isProxima == true){
+                                if (this.state.estado == "proxima"){
+                                    let event = {
+                                        id: "12345677",
+                                        title: this.state.NombreEvento,
+                                        start: moment(this.state.fechaEventoInicio).format(),
+                                        end: moment(this.state.fechaEventoFinal).format(),
+                                        color: "#6c3eff",
+                                        cliente: this.state.cliente,
+                                        estado: this.state.estado,
+                                        empleado: this.state.empleado,
+                                        id: this.state.idEvento
+                                    }
+                                    events.push(event)
+                                }
+                            }
+
+                            if (this.state.isPendiente == true){
+                                if (this.state.estado == "pendiente"){
+                                    let event = {
+                                        id: "12345677",
+                                        title: this.state.NombreEvento,
+                                        start: moment(this.state.fechaEventoInicio).format(),
+                                        end: moment(this.state.fechaEventoFinal).format(),
+                                        color: "#00D4D8",
+                                        cliente: this.state.cliente,
+                                        estado: this.state.estado,
+                                        empleado: this.state.empleado,
+                                        id: this.state.idEvento
+                                    }
+                                    events.push(event)
+                                }
+                            }
+
+                            if (this.state.isTermianda == true){
+                                if (this.state.estado == "terminada"){
+                                    let event = {
+                                        id: "12345677",
+                                        title: this.state.NombreEvento,
+                                        start: moment(this.state.fechaEventoInicio).format(),
+                                        end: moment(this.state.fechaEventoFinal).format(),
+                                        color: "#1A1446",
+                                        cliente: this.state.cliente,
+                                        estado: this.state.estado,
+                                        empleado: this.state.empleado,
+                                        id: this.state.idEvento
+                                    }
+                                    events.push(event)
+                                }
+                            }
+
+                            if (this.state.isCancelada == true){
+                                if (this.state.estado == "cancelada"){
+                                    let event = {
+                                        id: "12345677",
+                                        title: this.state.NombreEvento,
+                                        start:moment(this.state.fechaEventoInicio).format(),
+                                        end:moment(this.state.fechaEventoFinal).format(),
+                                        color: "#FF3B7B",
+                                        cliente: this.state.cliente,
+                                        estado: this.state.estado,
+                                        empleado: this.state.empleado,
+                                        id: this.state.idEvento
+                                    }
+                                    events.push(event)
+                                }
+                            }                                    
+                            
+                        })
+
+
+                        this.setState({ events: events });
+
+                        console.log(this.state.events)
+
                     });
 
 
             })
-            .catch(function (error) {
-                console.log("Error getting documents: ", error);
-            });
+                .catch(function (error) {
+                    console.log("Error getting documents: ", error);
+                });
+                
 
-
-
-
-
-
+       
 
     }
+
+    
+
+    
+
+    handleClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
 
     handleDateClick = (arg) => { // bind with an arrow function
         alert(arg.dateStr)
@@ -332,6 +463,9 @@ export class Agenda extends Component {
             if (e == "Semana") {
                 this.setState({
                     tabCalendar: "Semana",
+                    isSemana: true,
+                    isMes: false,
+                    isDia: false,
                     currentViewName: "timeGridWeek"
                 });
                 console.log('Semanaaaaaa')
@@ -340,6 +474,9 @@ export class Agenda extends Component {
             } else if (e == "Mes") {
                 this.setState({
                     tabCalendar: "Mes",
+                    isMes: true,
+                    isSemana: false,
+                    isDia: false,
                     currentViewName: "dayGridMonth"
                 });
                 console.log('Meeeeeeees')
@@ -348,6 +485,9 @@ export class Agenda extends Component {
             } else if (e=="Dia") {
                 this.setState({
                     tabCalendar: "Dia",
+                    isDia: true,
+                    isMes: false,
+                    isSemana: false,
                     currentViewName: "timeGridDay"
                 });
                 console.log('Diaaaaaaaaa')
@@ -366,32 +506,7 @@ export class Agenda extends Component {
         })
 
         if (this.state.tab == "Ordenes") {
-
-            const db = firebaseConfig.firestore();
-            db.collection("OrdenesTest").where("uidProveedor", "==", this.state.tiendas[0]["uid"] + "-" + e.target.value)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        // doc.data() is never undefined for query doc snapshots
-                        const startDate = doc.data().fechaInicio.toDate();
-                        const endDate = doc.data().fechaFin.toDate();
-                        const type = doc.data().estado;
-                        const obj = { 'startDate': startDate, 'endDate': endDate, 'type': type };
-                        this.setState({
-                            data: [...this.state.data, obj]
-                        });
-
-                    });
-                    console.log(this.state.data)
-
-                })
-                .catch(function (error) {
-                    console.log("Error getting documents: ", error);
-                });
-
-            this.setState({
-                nombreTienda: e.target.value
-            });
+            this.fetchEventsOrdenes(e.target.value, this.state.isProxima, this.state.isCancelada, this.state.isPendiente, this.state.isTermianda)
 
         }
 
@@ -436,6 +551,7 @@ export class Agenda extends Component {
         this.setState({
             nombreTienda: e.target.value
         });
+        console.log(e.target.value)
 
     }
 
@@ -621,14 +737,236 @@ export class Agenda extends Component {
 
     }
 
-    renderEventContent  = (eventInfo) => {
+    
+
+    renderEventContent = (eventInfo) => {
+        console.log(eventInfo)
         return (
           <>
-            <b>{'holaaaa'}</b>
-            <i>{eventInfo.event.title}</i>
+        
+            <b>{eventInfo.timeText}</b>
+            <i>{eventInfo.event._def.title}</i>
+            
           </>
         )
-      }
+    }
+    
+    handleEventClick = (clickInfo) => {
+
+        this.setState({
+            open: true,
+            dateSelect: clickInfo,
+            NombreEvento: clickInfo.event._def.title,
+            fechaEventoInicio: moment(clickInfo.event.start).format('YYYY-MM-DDTHH:mm'),
+            fechaEventoFinal: moment(clickInfo.event.end).format('YYYY-MM-DDTHH:mm'),
+            cliente: clickInfo.event._def.extendedProps.cliente,
+            empleado: clickInfo.event._def.extendedProps.empleado,
+
+        });
+
+      
+
+        console.log(this.state.NombreEvento)
+        console.log(this.state.fechaEventoInicio)
+        console.log(this.state.fechaEventoFinal)
+        console.log(this.state.cliente)
+        console.log(this.state.empleado)
+
+        let calendarApi = this.state.dateSelect.view.calendar
+        
+    
+        calendarApi.unselect() // clear date selection
+    
+        
+
+        /*if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+          clickInfo.event.remove()
+        }*/
+    }
+    
+    handleEvents = (events) => {
+        this.setState({
+          currentEvents: events
+        })
+        
+
+
+    }
+
+    onChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+        console.log(this.state.fechaEventoInicio)
+        console.log(this.state.fechaEventoFinal)
+        console.log(this.state.NombreEvento)
+
+
+    }
+
+    handleOpen = (selectInfo) => {
+        this.setState({
+            open: true,
+            dateSelect: selectInfo
+        });
+        let calendarApi = this.state.dateSelect.view.calendar
+        
+
+        if (this.state.NombreEvento == ""){
+            this.setState({
+                NombreEventoEmpty: "El campo esta vacío"
+            });
+        }else{
+            this.setState({
+                NombreEventoEmpty: ""
+            });
+        }
+        if (this.state.fechaEventoInicio == ""){
+            this.setState({
+                fechaEventoInicioEmpty: "El campo esta vacío"
+            });
+        } else{
+            this.setState({
+                fechaEventoInicioEmpty: ""
+            });
+        }
+        if (this.state.fechaEventoFinal == ""){
+            this.setState({
+                fechaEventoFinalEmpty: "El campo esta vacío"
+            });
+        }else{
+            this.setState({
+                fechaEventoFinalEmpty: "El campo esta vacío"
+            });
+        }
+    
+    
+        calendarApi.unselect() // clear date selection
+    
+        }
+
+
+    onSubmit = e => {
+
+        console.log(this.state.fechaEventoInicio)
+        console.log(this.state.fechaEventoFinal)
+        console.log(this.state.NombreEvento)
+        let calendarApi = this.state.dateSelect.view.calendar
+       
+    if (this.state.NombreEvento != "" && this.state.fechaEventoInicio != "" && this.state.fechaEventoFinal != "") {
+        const { user } = this.context;
+        var idEvento = this.state.NombreEvento + "-" + this.state.fechaEventoInicio + "-" + this.state.fechaEventoFinal;
+        const db = firebaseConfig.firestore();
+        var batch = db.batch();
+     
+
+        db.collection("users/").doc(user.id).collection("citasOrdenes").doc(idEvento).set({
+                "nombre": this.state.NombreEvento,
+                "FechaInicio": this.state.fechaEventoInicio,
+                "fechaFinal": this.state.fechaEventoFinal,
+                "id": idEvento,
+            });
+
+
+        
+        
+        /*calendarApi.addEvent({
+                id: idEvento,
+                title: this.state.NombreEvento,
+                start: this.state.fechaEventoInicio,
+                end: this.state.fechaEventoFinal,
+                color: '#FF3B7B'
+        })*/
+            
+           
+         
+
+    } else {
+      
+    }
+    e.preventDefault();
+    };
+
+    onChangeFilter = e => {
+
+
+        if (e.target.value == "Próxima"){
+            if (e.target.checked == true){
+                this.setState({
+                    isProxima:true
+                });
+            } else {
+                this.setState({
+                    isProxima:false
+                });
+            }
+        } else if (e.target.value == "Cancelada"){
+            if (e.target.checked == true){
+                this.setState({
+                    isCancelada:true,
+                })
+            } else {
+                this.setState({
+                    isCancelada:false,
+                })
+            }
+        } else if (e.target.value == "Pendiente"){
+            if (e.target.checked == true){
+                this.setState({
+                    isPendiente:true,
+                })
+            } else {
+                this.setState({
+                    isPendiente:false,
+                })
+            }
+        } else if (e.target.value == "Terminada"){
+            if (e.target.checked == true){
+                this.setState({
+                    isTermianda:true,
+                })
+            } else {
+                this.setState({
+                    isTermianda:false,
+                })
+            }
+        }
+
+
+              
+       this.fetchEventsOrdenes(this.state.nombreTienda, this.state.isProxima, this.state.isCancelada, this.state.isPendiente, this.state.isTermianda)
+
+
+    }
+    
+
+
+    onEventChanged  = e =>{
+        console.log(e.event.start)
+      
+        const { user } = this.context;
+        const db = firebaseConfig.firestore();
+    
+        var batch = db.batch();
+        let newUserRef = db.collection("OrdenesTest/").doc(e.event._def.publicId);
+        batch.update(newUserRef, {
+            "fechaInicio": moment(e.event.start).format(),
+            "fechaFin": moment(e.event.end).format(),
+            "cliente": e.event._def.extendedProps.cliente,
+            "estado": e.event._def.extendedProps.estado,
+            "servicio": e.event._def.title,
+            "empleado": e.event._def.extendedProps.empleado,
+            "uid": e.event._def.publicId,
+        });
+        batch.commit();
+
+    }
+
+    onVerCliente = e =>{
+        this.props.history.push('/clientes');
+    }
+    
+    
 
 
 
@@ -640,8 +978,6 @@ export class Agenda extends Component {
 
                     <div className='container-fluid'>
                         <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
-
-                            <div className='row mb-5' ></div>
 
                             <div className='row'>
 
@@ -694,90 +1030,159 @@ export class Agenda extends Component {
                                     </div>
                                     <div className='row mb-5' ></div>
                                     <div className="row">
-                                        <div className="Próximas">
-
-                                            <input
-                                                defaultChecked={true}
-                                                name="checkBoxServicios"
-                                                type="checkbox"
-                                                value="Próxima"
-                                                onChange={this.onChange}
-                                            />
-                                        </div>
-                                        <h2 className="estadoOrdenes">Próximas</h2>
+                                    <label className="containerCheck">Próximas
+                                        <input 
+                                            defaultChecked={true}
+                                            name="checkBoxServicios"
+                                            type="checkbox"
+                                            value="Próxima"
+                                            onChange={this.onChangeFilter}/>
+                                        <span className="checkBoxProxima"></span>
+                                    </label>
                                     </div>
 
                                     <div className='row mb-1' ></div>
-                                    <div className="row">
-                                        <div className="Canceladas">
-                                            <input
+                                    <div className="row">      
+                                        <label className="containerCheck">Canceladas
+                                            <input 
                                                 defaultChecked={true}
                                                 name="checkBoxServicios"
                                                 type="checkbox"
                                                 value="Cancelada"
-                                                onChange={this.onChange}
-                                            />
-                                        </div>
-                                        <h2 className="estadoOrdenes">Canceladas</h2>
+                                                onChange={this.onChangeFilter}/>
+                                            <span className="checkBoxCancelada"></span>
+                                        </label>
                                     </div>
 
                                     <div className='row mb-1' ></div>
                                     <div className="row">
-                                        <div className="Pendientes">
-                                            <input
-                                                defaultChecked={true}
-                                                name="checkBoxServicios"
-                                                type="checkbox"
-                                                value="Pendiente"
-                                                onChange={this.onChange}
-                                            />
-                                        </div>
-                                        <h2 className="estadoOrdenes">Pendientes</h2>
+                                        <label className="containerCheck">Pendientes
+                                                <input 
+                                                    defaultChecked={true}
+                                                    name="checkBoxServicios"
+                                                    type="checkbox"
+                                                    value="Pendiente"
+                                                    onChange={this.onChangeFilter}/>
+                                                <span className="checkBoxPendiente"></span>
+                                        </label>
                                     </div>
 
                                     <div className='row mb-1' ></div>
                                     <div className="row">
-                                        <div className="Terminada">
-                                            <input
-                                                defaultChecked={true}
-                                                name="checkBoxServicios"
-                                                type="checkbox"
-                                                value="Terminada"
-                                                onChange={this.onChange}
-                                            />
-                                        </div>
-                                        <h2 className="estadoOrdenes ">Terminadas</h2>
+                                        <label className="containerCheck">Terminadas
+                                                <input 
+                                                    defaultChecked={true}
+                                                    name="checkBoxServicios"
+                                                    type="checkbox"
+                                                    value="Terminada"
+                                                    onChange={this.onChangeFilter}/>
+                                                <span className="checkBoxTerminada"></span>
+                                        </label>
                                     </div>
                                 </div>
 
                                 <div className='row columnRightAgenda'>                                    
-                                    <div className='row'>                                       
-                                        <div className='tabCalendar text-center row'>
-                                            <div className={this.state.tabCalendar == "Mes" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Mes")}>
-                                                <h5>Mes</h5>
-                                            </div>
-                                            <div className={this.state.tabCalendar == "Semana" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Semana")}>
-                                                <h5>Semana</h5>
-                                            </div>
-                                            <div className={this.state.tabCalendar == "Dia" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Dia")}>
-                                                <h5>Día</h5>
-                                            </div>                                                
-                                        </div>
-                                    </div>
-                                    <div className='row mb-5' ></div>
-
+                                    
                                     <div className="callendarContainer">
                                         <FullCalendar
-                                            plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
-                                            dateClick={this.handleDateClick}
-                                            initialView= 'timeGridWeek'
-                                            eventContent={this.renderEventContent}
-                                            height= '100%'                                        
+                                            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                            headerToolbar={{
+                                            left:'dayGridMonth,timeGridWeek,timeGridDay',
+                                            center: 'title',
+                                            right: 'today prev,next'
+                                            }}
+                                            initialView='dayGridMonth'
+                                            //eventColor= 'green'
+                                            eventDidMount= {this.popUpInfo}
+                                            editable={true}
+                                            //selectable={true}
+                                            //selectMirror={true}
+                                            dayMaxEvents={true}
+                                            //weekends={true}
+                                            locale= {esLocale}
+                                            height= '80vh'
+                                            events={this.state.events} // alternatively, use the `events` setting to fetch from a feed
+                                            //select={this.handleOpen}
+                                            //dateClick={this.handleDateClick}
+                                            //eventContent={this.renderEventContent} // custom render function
+                                            eventClick={this.handleEventClick}
+                                            eventChange={this.onEventChanged}
+                                            eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+                                            /* you can update a remote database when these fire:
+                                            eventAdd={function(){}}
+                                            
+                                            eventRemove={function(){}}
+                                            */
                                         />
                                     </div>
                                 </div>                           
                             </div>
-                        </div>                            
+                        </div>
+                        <Modal
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                            >
+
+                                <div className="modal-popup">
+                                <h2 className="titulo">Información del evento</h2>
+                                <h2 className='Categoria-SubTitulo'>Nombre del evento:</h2>
+                                <input
+                                            type='text'
+                                            className='form-control text-muted '
+                                            aria-label='Document'
+                                            name='NombreEvento'
+                                           
+                                            defaultValue={this.state.NombreEvento}
+                                        />
+                              
+                                <h2 className='Categoria-SubTitulo'>Desde:</h2>
+                                    <input
+                                            type='datetime-local'
+                                            className='form-control text-muted '
+                                            aria-label='fechaEventoFinal'
+                                            name='fechaEventoInicio'
+                                            defaultValue={this.state.fechaEventoInicio}
+                                        />
+                                
+                                <h2 className='Categoria-SubTitulo'>Hasta:</h2>
+                                <input
+                                            type='datetime-local'
+                                            className='form-control text-muted '
+                                            aria-label='fechaEventoFinal'
+                                            name='fechaEventoInicio'
+                                            defaultValue={this.state.fechaEventoFinal}
+                                        />
+                                    
+                                
+                                <h2 className='Categoria-SubTitulo'>Cliente:</h2>
+                                <input
+                                            type='text'
+                                            className='form-control text-muted '
+                                            aria-label='Document'
+                                            name='cliente'
+                                            defaultValue={this.state.cliente}
+                                        />
+                                <h2 className='Categoria-SubTitulo'>Empleado:</h2>
+                                <input
+                                            type='text'
+                                            className='form-control text-muted '
+                                            aria-label='Document'
+                                            name='empleado'
+                                            defaultValue={this.state.empleado}
+                                        />
+                               
+                                <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil'
+                                    data-toggle='modal'
+                                    data-target='#GuardarModal'
+                                    onClick={this.onVerCliente}
+                                    >
+                                        Ver cliente
+                                </button>
+
+                                </div>
+                            </Modal>                            
                     </div>
                 </>
             )
@@ -805,7 +1210,8 @@ export class Agenda extends Component {
                             </div>
 
                             <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoPerfil">
+                            <div className='bodyContainerAgenga'>
+                            <div className="text-center columnLeftAgenda">
 
                                 <div className='col-12 col-lg-3 mb-3'>
 
@@ -842,6 +1248,7 @@ export class Agenda extends Component {
 
 
                                 <div className='row mb-5' ></div>
+                                
                                 <div className="columnDatos text-center">
                                     <h2 className="estadoOrdenes">Equipo de trabajo</h2>
                                 </div>
@@ -877,45 +1284,102 @@ export class Agenda extends Component {
 
                             </div>
 
-                            <div className='row'>
-
-
-
-                                <div className="columnRight">
-                                    <div className='row'>
-                                        <h2 className='Categoria-Titulo px-4 py-2'>{this.state.diaActual}</h2>
-                                        <div onClick={this.prevWeek}>
-                                            <h2 className='Categoria-SubTitulo px-4 py-3'>{"<"}</h2>
-                                        </div>
-                                        <div onClick={this.nextWeek}>
-                                            <h2 className='Categoria-SubTitulo px-4 py-3'>{">"}</h2>
-                                        </div>
-                                        <div className='px-4 py-3'></div>
-                                        <div className='tabCalendar text-center row'>
-                                            <div className={this.state.tabCalendar == "Semana" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Semana")}>
-                                                <h5>Semana</h5>
-                                            </div>
-                                            <div className={this.state.tabCalendar == "Mes" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Mes")}>
-                                                <h5>Mes</h5>
-                                            </div>
-                                            <div className={this.state.tabCalendar == "Dia" ? "tabCalendarSelect" : "tabCalendarUnSelect"} onClick={this.tabCalendarChange("Dia")}>
-                                                <h5>Año</h5>
-                                            </div>
-                                        </div>
+                          
+                                <div className="row columnRightAgenda">
+                                <div className="callendarContainer">
+                                        <FullCalendar
+                                            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                            headerToolbar={{
+                                            left:'dayGridMonth,timeGridWeek,timeGridDay',
+                                            center: 'title',
+                                            right: 'today prev,next'
+                                            }}
+                                            initialView='dayGridMonth'
+                                            eventColor= 'blue'
+                                            editable={true}
+                                            selectable={true}
+                                            selectMirror={true}
+                                            //dayMaxEvents={true}
+                                            //weekends={true}
+                                            locale= {esLocale}
+                                            height= '80vh'
+                                            //events={} // alternatively, use the `events` setting to fetch from a feed
+                                            select={this.handleOpen}
+                                            dateClick={this.handleDateClick}
+                                            eventContent={this.renderEventContent} // custom render function
+                                            eventClick={this.handleEventClick}
+                                            eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+                                            /* you can update a remote database when these fire:
+                                            eventAdd={function(){}}
+                                            eventChange={function(){}}
+                                            eventRemove={function(){}}
+                                            */
+                                        />
                                     </div>
-
-                                    <FullCalendar
-                                        plugins={[ dayGridPlugin ]}
-                                        initialView="dayGridMonth"
-                                    />
 
                                 </div>
                             </div>
+                            <Modal
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                            >
+                                <div className="modal-popup">
+                                <h2 className="titulo">Crear evento</h2>
+                                <h2 className='Categoria-SubTitulo'>Nombre del evento:</h2>
+                                        <input
+                                            type='text'
+                                            className='form-control text-muted '
+                                            placeholder=''
+                                            aria-label='Document'
+                                            onChange={this.onChange}
+                                            name='NombreEvento'
+                                            value={this.state.NombreEvento}
+                                        />
+                                <h2 className='Categoria-Alerta-Rojo'></h2>
+                                <h2 className='Categoria-SubTitulo'>Desde:</h2>
+                                        <input
+                                            type='datetime-local'
+                                            className='form-control text-muted '
+                                            placeholder=''
+                                            aria-label='fechaEventoFinal'
+                                            onChange={this.onChange}
+                                            name='fechaEventoInicio'
+                                            value={this.state.fechaEventoInicio}
+                                        />
+                                <h2 className='Categoria-Alerta-Rojo'></h2>
+                                <h2 className='Categoria-SubTitulo'>Hasta:</h2>
+                                        <input
+                                            type='datetime-local'
+                                            className='form-control text-muted '
+                                            placeholder=''
+                                            aria-label='fechaEventoFinal'
+                                            onChange={this.onChange}
+                                            name='fechaEventoFinal'
+                                            value={this.state.fechaEventoFinal}
+                                        />
+                                <h2 className='Categoria-Alerta-Rojo'></h2>
+                                <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil'
+                                    data-toggle='modal'
+                                    data-target='#GuardarModal'
+                                    onClick={this.onSubmit}
+                                    >
+                                        cancelar
+                                </button>
+                                <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil'
+                                    data-toggle='modal'
+                                    data-target='#GuardarModal'
+                                    onClick={this.onSubmit}
+                                    >
+                                        Guardar Evento
+                                </button>
 
-
-
-
-                        </div>
+                            
+                                
+                                </div>
+                            </Modal>
+                    </div>
                     </div>
                 </>
             )
