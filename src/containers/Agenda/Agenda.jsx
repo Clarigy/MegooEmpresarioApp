@@ -20,60 +20,11 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
 import Modal from '@material-ui/core/Modal';
 import moment from 'moment';
+import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
+import GifLoader from '../../components/Loader/index';
+import $ from 'jquery';
+import IconActive from '../../hooks/iconActive';
 
-
-
-
-
-
-const currentDate = '2018-11-01';
-
-const resourcesData = [
-
-    { id: 'Próxima', text: 'Próxima', color: '#6C3EFF' },
-    { id: 'Cancelada', text: 'Cancelada', color: '#FF3B7B' },
-    { id: 'Pendiente', text: 'Pendiente', color: '#00D4D8' },
-    { id: 'Terminada', text: 'Terminada', color: '#1A1446' },
-    { id: 1, text: 'Terminada', color: '#6C3EFF' },
-    { id: 2, text: 'Terminada', color: '#FF3B7B' },
-    { id: 3, text: 'Terminada', color: '#00D4D8' },
-    { id: 4, text: 'Terminada', color: '#1A1446' },
-    { id: 5, text: 'Terminada', color: '#7CB3B2' },
-    { id: 6, text: 'Terminada', color: '#C726B2' },
-    { id: 7, text: 'Terminada', color: '#FF2663' },
-    { id: 8, text: 'Terminada', color: '#FFC663' },
-    { id: 9, text: 'Terminada', color: '#1FC6E9' },
-    { id: 0, text: 'Terminada', color: '#1F49F8' },
-
-]
-
-const appointments = [
-    {
-      title: 'Website Re-Design Plan',
-      startDate: new Date(2021, 4, 15, 9, 35),
-      endDate: new Date(2021, 4, 15, 11, 30),
-      id: 0,
-      location: 'Room 1',
-    }, {
-      title: 'Book Flights to San Fran for Sales Trip',
-      startDate: new Date(2021, 4, 15, 12, 11),
-      endDate: new Date(2021, 4, 25, 13, 0),
-      id: 1,
-      location: 'Room 1',
-    }, {
-      title: 'Install New Router in Dev Room',
-      startDate: new Date(2021, 5, 25, 14, 30),
-      endDate: new Date(2021, 5, 25, 15, 35),
-      id: 2,
-      location: 'Room 2',
-    }, {
-      title: 'Approve Personal Computer Upgrade Plan',
-      startDate: new Date(2021, 5, 26, 10, 0),
-      endDate: new Date(2021, 5, 26, 11, 0),
-      id: 3,
-      location: 'Room 2',
-    }
-]
 
 
 
@@ -120,14 +71,8 @@ export class Agenda extends Component {
             isCancelada:"",
             isPendiente:"",
             idEvento:"",
-            resources: [
-                {
-                    fieldName: 'type',
-                    title: 'Type',
-                    instances: resourcesData,
-                },
-
-            ],
+            loading: true,
+           
             filtro: ["Próxima", "Cancelada", "Pendiente", "Terminada"],
 
             equipo: []
@@ -137,6 +82,20 @@ export class Agenda extends Component {
     }
 
     componentDidMount = () => {
+        $('#nabvar').show();
+        $('#accordionSidebar').show();
+        IconActive.checkPath('Siderbar-Perfil', '/perfil', this.props.match.path);
+        $('.react-bootstrap-table-pagination-list').removeClass('col-md-6 col-xs-6 col-sm-6 col-lg-6');
+        $('.react-bootstrap-table-pagination-list').addClass('col-2 offset-5 mt-4');
+    
+            setTimeout(() => {
+               this.setState({
+                   time: 0,
+                   loading: false
+               })
+              }, 1000);
+
+        const items = [];
 
         const MESES = [
             "Enero",
@@ -971,10 +930,16 @@ export class Agenda extends Component {
 
 
     render() {
+        const { loading } = this.state;
 
         if (this.state.tab == "Ordenes") {
             return (
                 <>
+                 <GifLoader
+                    loading={loading}
+                    imageSrc={loadingImage}
+                    overlayBackground="rgba(219,219,219, .8)"
+                />
 
                     <div className='container-fluid'>
                         <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
@@ -1189,11 +1154,15 @@ export class Agenda extends Component {
         } else if (this.state.tab == "Equipo") {
             return (
                 <>
+                 <GifLoader
+                    loading={loading}
+                    imageSrc={loadingImage}
+                    overlayBackground="rgba(219,219,219, .8)"
+                />
 
                     <div className='container-fluid'>
                         <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
 
-                            <div className='row mb-5' ></div>
 
                             <div className='row'>
 

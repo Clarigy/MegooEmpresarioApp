@@ -10,6 +10,7 @@ import Equipo from '../containers/Equipo/Equipo';
 import Agenda from '../containers/Agenda/Agenda';
 import Clientes from '../containers/Clientes/Clientes';
 import Tienda from '../containers/Tienda/Tienda';
+import NewTienda from '../containers/Tienda/NewTienda';
 import Servicios from '../containers/Servicios/Servicios';
 import Productos from '../containers/Productos/Productos';
 import Empleado from '../containers/Empleado/Empleado';
@@ -35,6 +36,7 @@ const App = () => (
             
             <ProtectRoute type='private' exact path='/tiendas' component={Tiendas} />
             <ProtectRoute type='private' exact path='/tienda' component={Tienda} />
+            <ProtectRoute type='private' exact path='/NewTienda' component={NewTienda} />
             <ProtectRoute type='private' exact path='/servicios' component={Servicios} />
             <ProtectRoute type='private' exact path='/productos' component={Productos} />
             <ProtectRoute type='private' exact path='/empleado' component={Empleado} />

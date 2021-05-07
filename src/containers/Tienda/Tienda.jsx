@@ -14,6 +14,11 @@ import Geocode from "react-geocode";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
+import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
+import GifLoader from '../../components/Loader/index';
+import $ from 'jquery';
+import IconActive from '../../hooks/iconActive';
+
 
 const mapStyles = {
     width: '100%',
@@ -24,8 +29,6 @@ const mapStyles = {
 export class Tienda extends Component {
 
     constructor(props) {
-
-
 
         super(props);
         this.state = {
@@ -41,7 +44,7 @@ export class Tienda extends Component {
             description: "",
             descripcionOld: "",
             descripcionStatus: "",
-            uid: this.props.location.customObject,
+            uid: this.props.uid,
             foto: "",
             status: false,
             lat: 3.43722,
@@ -50,6 +53,7 @@ export class Tienda extends Component {
             lon: -76.5225,
             lonOld: null,
             lonStatus: "",
+            loading:true,
             markers: [
                 {
                     name: "Current position",
@@ -106,7 +110,14 @@ export class Tienda extends Component {
 
 
     componentDidMount = () => {
-        document.getElementById('nabvar').style.display = 'none';
+
+
+              console.log(this.state.loading)
+
+
+             
+
+                
 
         console.log(this.state.uid)
         const db = firebaseConfig.firestore();
@@ -341,6 +352,23 @@ export class Tienda extends Component {
                 fotosTienda: this.state.fotosTienda,
                 fotosStatus: this.state.fotosStatus,
             })
+            
+        }
+
+
+
+    }
+
+    deleteDropFoto(i) {
+        return () => {
+            
+            console.log("elimisdfdfgdfgdfgnar", this.state.fotosDrop[i].name)
+            
+            this.state.fotosDrop.splice(i, 1);
+            this.setState({
+                fotosDrop: this.state.fotosDrop,
+            })
+            console.log("eliminar", this.state.fotosDrop)
 
 
         }
@@ -358,9 +386,12 @@ export class Tienda extends Component {
     }
 
     drop = e => {
+        console.log("recibir",e)
         this.setState({
             fotosDrop: e,
         })
+        console.log("resultado",this.state.fotosDrop)
+        console.log("fggertgertert", this.state.fotosDrop)
 
 
 
@@ -371,6 +402,8 @@ export class Tienda extends Component {
 
 
     render() {
+        const { loading } = this.state;
+        console.log(this.state.fotosStatus[0])
 
         var nameEmpty = "";
         if (this.state.name == "") {
@@ -417,77 +450,15 @@ export class Tienda extends Component {
 
 
 
-        if (this.state.uid == undefined) {
             return (
                 <>
-                    <Redirect to={{
-                        pathname: "/Tiendas",
-                        customObject: this.state.uid,
-                    }} />
-                </>
-            )
-        } else {
-            return (
-                <>
-
                     <div className='container-fluid' >
-                        <div className='mx-0 mx-md- mx-lg-5 perfilContainer'>
-
+                        <div className='mx-0 mx-md- mx-lg-5 containerDivInfoTienda'>
                             <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoTienda">
-                                <div className={this.state.foto == this.fotoDefault ? "divFotoTiendaNew" : "divFotoTienda"} style={this.state.foto == this.fotoDefault ? { backgroundColor: "#fff" } : { backgroundColor: "#1A1446" }}>
+                            <h2 className={this.state.status == true ? "Categoria-Titulo" : " Categoria-Titulo columnInfoTiendas"}>Información de la tienda</h2>
+                            <h2 className='Categoria-Titulo columnAprobadoTiendas' style={{ color: "#FF3B7B" }}>{this.state.status ? "" : "Pendiente de aprobación"}</h2>
 
-                                    <img src={this.state.foto} id="fotoTienda" className='text-center' />
-                                </div>
-                                <div className='row mb-2' ></div>
-                                <h2 className='text-center Categoria-Titulo mt-1 h2Nombre'>{this.state.name}</h2>
-                                <div className='row mb-5' ></div>
-
-                                <div className='row'>
-                                    <div className="btnPress ml-4 mb-3">
-                                        <img src={InfoTienda} id="iconoBtn" />
-                                        <h6 className='txtBtnPress'>Información de la tienda</h6>
-                                    </div>
-
-                                    <div className="btnNoPress ml-4">
-                                        <img src={MedioPago} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Medio de pago</h6>
-                                    </div>
-                                </div>
-                                <div className='row mb-3' ></div>
-                                <div className='row'>
-                                    <Link to={{
-                                        pathname: "/Servicios",
-                                        customObject: this.state.uid + "-" + this.state.name,
-                                        hash: "#" + this.state.name,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4 mb-3">
-                                            <img src={Servicios} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Servicios</h6>
-                                        </div>
-                                    </Link>
-                                    <Link to={{
-                                        pathname: "/Productos",
-                                        customObject: this.state.uid + "-" + this.state.name,
-                                        hash: "#" + this.state.name,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4">
-                                            <img src={Productos} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Productos</h6>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className='row mb-5' ></div>
-
-                            <h2 className={this.state.status == true ? "Categoria-Titulo" : " Categoria-Titulo columnPerfilDatos"}>Información de la tienda</h2>
-                            <h2 className='Categoria-Titulo' style={{ color: "#FF3B7B" }}>{this.state.status ? "" : "Pendiente de aprobación"}</h2>
-
-                            <div className='row'>
+                            <div className='row rowInfoTienda'>
 
 
 
@@ -654,13 +625,13 @@ export class Tienda extends Component {
 
                                     </div>
 
-                                    <div className='row mb-4' ></div>
+                                    <div className='row mb-4 columnDescripcion' ></div>
 
                                     <h2 className='Categoria-SubTitulo'>Fotos tienda</h2>
 
-                                    <div>
+                                    <div className='columnDescripcion'>
 
-                                        <DropZone funcDrop={this.drop} />
+                                        <DropZone id = "myDropzoneElementID" funcDrop={this.drop} funcRemove={this.deleteDropFoto} />
 
 
 
@@ -682,6 +653,19 @@ export class Tienda extends Component {
                                         {this.state.fotosDrop && this.state.fotosDrop.length > 0 && this.state.fotosDrop.map((itemfotosDrop, i) => (
                                             <div className=" columnFotos mr-4">
 
+                                                <img src={URL.createObjectURL(itemfotosDrop)} id="fotosTiendaPendientes" className='text-center' />
+                                                <h5 className="textoPendiente"
+                                                >Pendiente <br /> aprobación</h5>
+                                                <button className="top-right" onClick={this.deleteDropFoto(i)}>x</button>
+                                            </div>
+                                        ))}
+
+                                    </div>
+
+                                    {/*<div className="row  mb-4 " >
+                                        {this.state.fotosDrop && this.state.fotosDrop.length > 0 && this.state.fotosDrop.map((itemfotosDrop, i) => (
+                                            <div className=" columnFotos mr-4">
+
                                                 <img src={URL.createObjectURL(itemfotosDrop)} id={this.state.fotosStatus[i] != "Pendiente aprobación" ? "fotosTienda" : "fotosTiendaPendientes"} className='text-center' />
                                                 <h5 className="textoPendiente"
                                                 >Pendiente <br /> aprobación</h5>
@@ -689,10 +673,7 @@ export class Tienda extends Component {
                                             </div>
                                         ))}
 
-
-                                    </div>
-
-
+                                        </div>*/}
 
 
                                     <button
@@ -810,7 +791,7 @@ export class Tienda extends Component {
         }
         ;
     }
-}
+
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyAHCNxG_nmpInxXRUR96vggQNlY3QlW8lQ'

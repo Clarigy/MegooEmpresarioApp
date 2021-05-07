@@ -13,6 +13,11 @@ import Geocode from "react-geocode";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Redirect } from 'react-router-dom';
+import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
+import GifLoader from '../../components/Loader/index';
+import $ from 'jquery';
+import IconActive from '../../hooks/iconActive';
+import { Link } from "react-router-dom";
 
 const mapStyles = {
     width: '100%',
@@ -38,6 +43,8 @@ export class CrearTienda extends Component {
             lat: 3.43722,
             lon: -76.5225,
             create: false,
+            loading: true,
+            isActive:false,
             markers: [
                 {
                     name: "Current position",
@@ -52,6 +59,23 @@ export class CrearTienda extends Component {
             arrTienda: [],
             fotosStatus: []
         };
+
+    }
+    componentDidMount = () => {
+
+        $('#nabvar').show();
+        $('#accordionSidebar').show();
+        IconActive.checkPath('Siderbar-Perfil', '/perfil', this.props.match.path);
+        $('.react-bootstrap-table-pagination-list').removeClass('col-md-6 col-xs-6 col-sm-6 col-lg-6');
+        $('.react-bootstrap-table-pagination-list').addClass('col-2 offset-5 mt-4');
+    
+            setTimeout(() => {
+               this.setState({
+                   time: 0,
+                   loading: false,
+                   isActive:false
+               })
+              }, 1000);
 
     }
 
@@ -82,6 +106,7 @@ export class CrearTienda extends Component {
     onSubmit = async (e) => {
         let urlFotosArray = [];
         let fotosStatusArray = [];
+        
 
         var expReg = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
         var esValido = expReg.test(this.state.email);
@@ -142,16 +167,19 @@ export class CrearTienda extends Component {
                 }
 
                 this.setState({ arrTienda: urlFotosArray,  fotosStatus: fotosStatusArray});
+                this.setState({
+                    isActive: true
+                });
             }
         }
-        e.preventDefault();
+        /*e.preventDefault();*/
     };
     
 
     exit = e => {
-        this.setState({
+        /*this.setState({
             create: true
-        })
+        })*/
     }
 
     drop = e => {
@@ -165,6 +193,7 @@ export class CrearTienda extends Component {
         return () => {
             this.state.fotosTienda.splice(i, 1);
             this.state.fotosStatus.splice(i, 1);
+            console.log(this.state.fotosStatus.splice(i, 1))
             this.setState({
                 fotosTienda: this.state.fotosTienda,
                 fotosStatus: this.state.fotosStatus,
@@ -181,6 +210,7 @@ export class CrearTienda extends Component {
 
 
     render() {
+        const { loading } = this.state;
 
 
         var nameEmpty = "";
@@ -243,10 +273,10 @@ export class CrearTienda extends Component {
         } else if (this.state.create == true) {
             return (
                 <>
-                    <Redirect to={{
+                    {/*<Redirect to={{
                         pathname: "/Tiendas",
                         customObject: this.state.uid,
-                    }} />
+                    }} />*/}
                 </>
             )
 
@@ -254,11 +284,15 @@ export class CrearTienda extends Component {
         else {
             return (
                 <>
+                <GifLoader
+                    loading={loading}
+                    imageSrc={loadingImage}
+                    overlayBackground="rgba(219,219,219, .8)"
+                />
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
+                        <div className='mx-0 mx-md- mx-lg-5 perfilContainer' >
+                        <div className='row mb-5' ></div>
 
-                            <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
                             <div className="text-center columnFotoTienda">
 
                                 <div className={this.state.foto == this.fotoDefault ? "divFotoTiendaNew" : "divFotoTienda"} style={this.state.foto == this.fotoDefault ? { backgroundColor: "#fff" } : { backgroundColor: "#1A1446" }}>
@@ -270,31 +304,61 @@ export class CrearTienda extends Component {
                                 <h2 className='text-center Categoria-Titulo mt-1 h2Nombre'>{this.state.name}</h2>
                                 <div className='row mb-5' ></div>
 
+
                                 <div className='row'>
-                                    <div className="btnPress ml-4 mb-3">
+                                <Link to={this.state.isActive ? ({
+                                        pathname: "/Tienda",
+                                        customObject: this.state.uid + "-" + this.state.name,
+                                        hash: "#" + this.state.name,
+
+                                    }) : '#'}
+                                
+                                >
+                                     <div className= "btnPress ml-4 mb-3">
                                         <img src={InfoTienda} id="iconoBtn" />
                                         <h6 className='txtBtnPress'>Información de la tienda</h6>
                                     </div>
+                                    </Link>
+                                    <Link to={this.state.isActive ? ({
+                                        pathname: "/Tienda",
+                                        customObject: this.state.uid + "-" + this.state.name,
+                                        hash: "#" + this.state.name,
 
-                                    <div className="btnNoPress ml-4">
+                                    }) : '#'} >
+                                     <div className= {this.state.isActive ? "btnNoPress ml-4 mb-3": "btnDisable ml-4 mb-3"}>
                                         <img src={MedioPago} id="iconoBtn" />
                                         <h6 className='txtBtnNoPress'>Medio de pago</h6>
                                     </div>
+                                    </Link>
                                 </div>
                                 <div className='row mb-3' ></div>
                                 <div className='row'>
-                                    <div className="btnNoPress ml-4 mb-3">
-                                        <img src={Servicios} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Servicios</h6>
-                                    </div>
-                                    <div className="btnNoPress ml-4">
+                                    <Link to={this.state.isActive ? ({
+                                        pathname: "/Servicios",
+                                        customObject: this.state.uid + "-" + this.state.name,
+                                        hash: "#" + this.state.name,
+
+                                    }) : '#'}>
+                                        <div className= {this.state.isActive ? "btnNoPress ml-4 mb-3": "btnDisable ml-4 mb-3"}>
+                                            <img src={Servicios} id="iconoBtn" />
+                                            <h6 className='txtBtnNoPress'>Servicios</h6>
+                                        </div>
+                                    </Link>
+                                    <Link to={this.state.isActive ? ({
+                                        pathname: "/Servicios",
+                                        customObject: this.state.uid + "-" + this.state.name,
+                                        hash: "#" + this.state.name,
+
+                                    }) : '#'}>
+                                    <div className= {this.state.isActive ? "btnNoPress ml-4 mb-3": "btnDisable ml-4 mb-3"}>
                                         <img src={Productos} id="iconoBtn" />
                                         <h6 className='txtBtnNoPress'>Productos</h6>
                                     </div>
+                                    </Link>
                                 </div>
                             </div>
 
-                            <div className='row mb-5' ></div>
+
 
 
                             <h2 className='Categoria-Titulo'>Crear una tienda</h2>
@@ -472,12 +536,12 @@ export class CrearTienda extends Component {
                                     </div>
 
                                     <div className='row mb-5' ></div>
-                                    <div>
-                                        <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil' onClick={this.onSubmit}
+                                    <div className='buttonContainer'>
+                                        <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarTienda' onClick={this.onSubmit}
                                             data-toggle='modal'
                                             data-target='#GuardarModal'
                                         >
-                                            Guardar
+                                            Crear tienda
                                 </button>
                                     </div>
                                 </div>

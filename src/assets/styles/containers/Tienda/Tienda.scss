@@ -2,8 +2,11 @@
   float: left;
   width: auto;
   height: 40rem;
-  margin-right: 3rem;
+  margin: 0rem 3rem !important;
   border-radius: 50%;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
 }
 
 .h2Nombre{
@@ -18,7 +21,7 @@
   width: 142px;
   height: 142px;  
   margin-left: 3rem;  
-  margin-right: 5rem; 
+  margin-right: 3rem; 
   margin-bottom: 1rem;
   overflow: hidden;
   border-radius: 50%;
@@ -35,11 +38,25 @@
   overflow: hidden;
 }
 
+.rowInfoTienda{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 #fotoTienda {
   display: inline;
   width: 142px;
-  cursor: pointer;
+ 
+}
+
+.tiendaInfoContainer{
+  margin: 0rem 10rem 0rem 0rem !important;
+  height: fit-content;
+}
+
+.containerDivInfoTienda{
+  margin: 0rem !important;
 }
 
 
@@ -49,14 +66,32 @@
 
 .columnPerfilDatos {
   float: left;
-  width: 40%;
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+}
+.columnInfoTiendas{
+  float: left;
+  width: fit-content;
+}
+.columnAprobadoTiendas{
+  float: right;
 
 }
 
 .columnDescripcion {
   float: left;
   width: 100%;
-  margin-right: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sectionDiv{
+  padding: 0rem !important;
 }
 
 .btnGuardarPerfil {
@@ -90,6 +125,14 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.btnDisable{
+  width: 106px;
+  height: 106px;
+  background: #e8e8e8;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.103);
+
+}
 .btnNoPress {
   width: 106px;
   height: 106px;
@@ -98,6 +141,15 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.btnGuardarTienda{
+  margin-bottom: 2rem;
+  align-self: flex-end;
+}
+
+.buttonContainer{
+  display: flex;
+  justify-content: flex-end;
+}
 #iconoBtn {
   margin-top: 25%;
   margin-bottom: 10%;
@@ -177,18 +229,23 @@
 }
 
 .columnFotos{
-  width: 174px;
+  width: 200px;
   padding-top: 25px;
-  position: relative;
-  text-align: center;
   overflow: hidden;
-  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
-
+.divInfo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .top-right {
   position: absolute;
-  top: 28px;
-  right: 2px;
+  top: 10px;
+  right: 0px;
   color: #fff;
   background-color: #FF3B7B;
   border-radius: 50%;
@@ -196,5 +253,98 @@
   height: 36px;
   width: 36px;
   border: #FF3B7B;
+}
+
+/*Aprobacion de tiendas*/
+
+.TiendaAprobacion_Card {
+  // height: 100px;
+  // background-color: #6C3EFF;
+  // background-color: #FFFFFF;
+  // color: #6C3EFF;
+  border-radius: 10%;
+  -webkit-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+}
+
+.TiendaAprobacion_icon {
+  color: #6c3eff;
+}
+
+.TiendaAprobacion_iconText {
+  color: #6c3eff;
+  font-size: 0.85rem;
+}
+
+.TiendaAprobacion_Card:hover {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+#informacionDIV.active {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+#pagoDIV.active {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+#serviciosDIV.active {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+#productosDIV.active {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+#planDIV.active {
+  background-color: #6c3eff;
+  color: #ffffff;
+  .TiendaAprobacion_icon {
+    color: #ffffff;
+  }
+  .TiendaAprobacion_iconText {
+    color: #ffffff;
+  }
+}
+
+.btn-sq-lg {
+  width: 100px;
+  height: 100px;
 }
 

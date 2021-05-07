@@ -18,12 +18,22 @@
   width: 142px;
   height: 142px;
   margin-left: 3rem;
-  margin-right: 5rem;
+  margin-right: 3rem;
   margin-bottom: 1rem;
   overflow: hidden;
   border-radius: 50%;
 }
-
+.filtrosContainer{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.colFiltrosContainer{
+  margin: 0rem !important;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem !important;
+}
 .divFotoTiendaNew {
   float: left;
   width: 142px;
@@ -37,7 +47,7 @@
 #fotoTienda {
   display: inline;
   width: 142px;
-  cursor: pointer;
+
 }
 
 .btnGuardarPerfil {
