@@ -10,11 +10,13 @@ import IconActive from '../../hooks/iconActive';
 //import MedioPago from '../Tienda/MedioPago';
 import Tienda from '../Tienda/Tienda';
 import Servicios from '../Servicios/Servicios';
+import MedioPago from '../MedioPago/MedioPago';
 import Productos from '../Productos/Productos';
 import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
 import GifLoader from '../../components/Loader/index';
 import $ from 'jquery';
 import { Redirect } from 'react-router-dom';
+
 
 
 export class NewTienda extends Component {
@@ -343,15 +345,15 @@ export class NewTienda extends Component {
                                              <Tienda uid={this.state.uid} />
                                             </div>
                                             <div id='MedioPago' className='tab-pane fade'>
-                                                {/*<Servicios uid={this.state.uid} />*/}
+                                                <MedioPago uid={this.state.uid} />
                                             </div>
                                             <div id='Servicios' className='tab-pane fade'>
                                                 
                                                 <Servicios uid={this.state.uid} />
                                             </div>
                                             <div id='Productos' className='tab-pane fade'>
-                                                {/*<Productos uid={this.state.uid} />*/}
-                                                BYEEEEEEEE
+                                                <Productos uid={this.state.uid} />
+                
                                             </div>
                                         </div>
                                     </div>

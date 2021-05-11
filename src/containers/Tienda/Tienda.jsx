@@ -465,33 +465,33 @@ export class Tienda extends Component {
                                 <div className="columnPerfilDatos">
                                     <div className='row mb-5' ></div>
 
-
-                                    <h2 className='Categoria-SubTitulo'>Nombre Tienda</h2>
-                                    <input
-                                        type='text'
-                                        className='form-control text-muted '
-                                        placeholder=''
-                                        aria-label='Username'
-                                        onChange={this.onChange}
-                                        name='name'
-                                        value={this.state.name}
-                                    />
-                                    <h2 className='Categoria-Alerta-Rojo'>{nameEmpty}</h2>
-
+                                   
+                                        <h2 className='Categoria-SubTitulo'>Nombre Tienda</h2>
+                                        <input
+                                            type='text'
+                                            className='form-control text-muted '
+                                            placeholder=''
+                                            aria-label='Username'
+                                            onChange={this.onChange}
+                                            name='name'
+                                            value={this.state.name}
+                                        />
+                                        <h2 className='Categoria-Alerta-Rojo'>{nameEmpty}</h2>
+                                   
                                     <div className='row mb-4' ></div>
-
-                                    <h2 className='Categoria-SubTitulo'>Celular                                     </h2>
-                                    <input
-                                        type='number'
-                                        className='form-control text-muted '
-                                        placeholder=''
-                                        aria-label='Cellphone'
-                                        onChange={this.onChange}
-                                        name='cellPhone'
-                                        value={this.state.cellPhone}
-                                    />
-                                    <h2 className='Categoria-Alerta-Rojo'>{cellPhoneEmpty}</h2>
-
+                                  
+                                        <h2 className='Categoria-SubTitulo'>Celular                                     </h2>
+                                        <input
+                                            type='number'
+                                            className='form-control text-muted '
+                                            placeholder=''
+                                            aria-label='Cellphone'
+                                            onChange={this.onChange}
+                                            name='cellPhone'
+                                            value={this.state.cellPhone}
+                                        />
+                                        <h2 className='Categoria-Alerta-Rojo'>{cellPhoneEmpty}</h2>
+                                   
 
                                 </div>
 
