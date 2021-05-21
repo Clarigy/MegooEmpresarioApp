@@ -21,11 +21,12 @@ export class EmpleadoProductos extends Component {
         this.state = {
             name: "",
 
-            uid: this.props.location.customObject,
+            uid: this.props.uid,
             foto: "",
             tienda: "",
             productos: [],
             checkbox: [],
+            newGanancia: []
         };
 
     }
@@ -94,22 +95,105 @@ export class EmpleadoProductos extends Component {
 
     }
 
+    onChangeGanancia  = e => {
+        const checkbox = this.state.checkbox
+        const ganancias = this.state.newGanancia
+
+        var checkboxLenght = ""
+
+        if (checkbox.length == 0){
+            var temp = ganancias.some(v => (v.producto === e.target.name))
+            console.log("CAMBIO GANANCIA", temp)
+            console.log("GANANCIA", ganancias[i])
+            if(temp){
+                for (var j = 0; j < ganancias.length; j++){
+                    if(ganancias[j].producto == e.target.name){
+                        ganancias.splice(j, 1);
+                        var obj ={
+                            producto: e.target.name,
+                            ganancia: e.target.value
+                        }
+                        ganancias.push(obj)
+                    }
+                }
+                
+                }else{
+                        var obj ={
+                            producto: e.target.name,
+                            ganancia: e.target.value
+                        }
+                        ganancias.push(obj)
+                }
+
+        }else{
+           checkboxLenght = checkbox.length
+           for (var i = 0; i < checkboxLenght; i++) {
+
+            console.log("GANANCIA", checkbox)
+            if (e.target.name == checkbox[i].producto) {
+                checkbox[i].ganancia = e.target.value
+            }
+            else{
+                var temp = ganancias.some(v => (v.producto === e.target.name))
+                console.log("CAMBIO GANANCIA", temp)
+                console.log("GANANCIA", ganancias[i])
+                if(temp){
+                    for (var j = 0; j < ganancias.length; j++){
+                        if(ganancias[j].producto == e.target.name){
+                            ganancias.splice(j, 1);
+                            var obj ={
+                                producto: e.target.name,
+                                ganancia: e.target.value
+                            }
+                            ganancias.push(obj)
+                        }
+                    }
+                    
+                    }else{
+                            var obj ={
+                                producto: e.target.name,
+                                ganancia: e.target.value
+                            }
+                            ganancias.push(obj)
+                    }
+                }   
+                
+                console.log("CAMBIO GANANCIA", ganancias)
+            }
+        }
+        console.log("lenght", checkboxLenght)
+   
+
+
+        this.setState({
+            checkbox: checkbox,
+            newGanancia: ganancias
+        })
+
+        this.onSubmit();
+
+    }
+
 
     onChange = e => {
         const checkbox = this.state.checkbox
 
-        var old = false
+
+     
+
 
         for (var i = 0; i < checkbox.length; i++) {
-            if (e.target.value == checkbox[i]) {
+            if (e.target.value == checkbox[i].producto) {
                 this.old = true
                 checkbox.splice(i, 1);
+                break;
             } else {
                 this.old = false
             }
         }
         if (!this.old) {
-            checkbox.push(e.target.value)
+            var obj = this.state.newGanancia.find(v => (v.producto === e.target.value))
+            checkbox.push(obj)
         }
 
 
@@ -146,7 +230,18 @@ export class EmpleadoProductos extends Component {
 
     }
 
+getGanancia(v){
+    var ganancia = "";
+    for(var i=0; i<this.state.checkbox.length; i++){
+        var item = this.state.checkbox[i]
+        if(v=== item.producto){
+            ganancia = item.ganancia;
+            break;
+        }
+    }
 
+    return ganancia;
+}
 
 
 
@@ -176,74 +271,59 @@ export class EmpleadoProductos extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
-
-                            <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoTienda">
-                                <div className={this.state.foto == this.fotoDefault ? "divFotoTiendaNew" : "divFotoTienda"} style={this.state.foto == this.fotoDefault ? { backgroundColor: "#fff" } : { backgroundColor: "#1A1446" }}>
-
-                                    <img src={this.state.foto} id="fotoTienda" className='text-center' />
-                                </div>
-                                <div className='row mb-2' ></div>
-                                <h2 className='text-center Categoria-Titulo mt-1 h2Nombre'>{this.state.name}</h2>
-                                <div className='row mb-5' ></div>
-
-                                <div className='row'>
-                                    <Link to={{
-                                        pathname: "/empleado",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4 mb-3">
-                                            <img src={InfoTienda} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Información de la tienda</h6>
-                                        </div>
-                                    </Link>
-                                    <Link to={{
-                                        pathname: "/empleadoServicios",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4 mb-3">
-                                            <img src={Servicios} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Servicios</h6>
-                                        </div>
-                                    </Link>
-
-                                </div>
-                                <div className='row mb-3' ></div>
-                                <div className='row'>
-                                    <Link to={{
-                                        pathname: "/empleadoProductos",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnPress ml-4">
-                                            <img src={Productos} id="iconoBtn" />
-                                            <h6 className='txtBtnPress'>Productos</h6>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
+                        <div className='mx-0 mx-md- mx-lg-5 containerDivInfoTienda'>
 
                             <div className='row mb-5' ></div>
 
-                            <h2 className="Categoria-Titulo">Productos</h2>
+                            <h2 className="Categoria-Titulo columnInfoTiendas">Productos</h2>
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>
 
                             <div className='row'>
-                                <div className='col-12 table-responsive'>
+                            <div className='col-12 table-responsive'>
+                                <table className='table' >
+                                    <thead className='text-left '>
+                                        <tr>
+                                            <th className= "tableContent">Producto</th>
+                                            <th>Precio</th>
+                                            <th>Ganancia</th>
+                                            <th>Acción</th>                                                  
+                                        </tr>
+                                    </thead>
 
 
-                                    {this.state.productos && this.state.productos.length > 0 && this.state.productos.map((producto) => (
-
-
-                                        <div>
+                                    {this.state.productos && this.state.productos.length > 0 && this.state.productos.map((producto, i) => (
+                                            
+                                        <tbody className='text-left CategoriaTabla-Body' >
+                                            <tr>
+                                                <td>{producto.producto}</td>
+                                                <td>{producto.ganancia}</td>
+                                                <td>
+                                                    <input
+                                                    type='text'
+                                                    className='form-control text-muted '
+                                                    placeholder=''
+                                                    aria-label='Username'
+                                                    onChange={this.onChangeGanancia}
+                                                    name={producto.producto}
+                                                    defaultValue= {this.getGanancia(producto.producto)}
+                                                   
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label className="containerCheck">
+                                                        <input
+                                                            defaultChecked={this.state.checkbox.some(v => (v.producto === producto.producto))}
+                                                            name="checkbox"
+                                                            type="checkbox"
+                                                            value={producto.producto}
+                                                            className=""
+                                                            onChange={this.onChange} />
+                                                        <span className="checkBoxProxima"></span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        {/*<div className='col-12 table-responsive'>
                                             <div className="columnDatos text-center">
                                                 <h2 className="productosList">{producto.producto}</h2>
                                             </div>
@@ -251,45 +331,43 @@ export class EmpleadoProductos extends Component {
                                                 <h2 className="productosList">{producto.precio}</h2>
                                             </div>
                                             <div className="columnDatos text-center">
-                                                <div className="datos">
-                                                <input
-                                                    defaultChecked={this.state.checkbox.some(v => (v === producto.producto))}
-                                                    name="checkbox"
-                                                    type="checkbox"
-                                                    value={producto.producto}
-                                                    onChange={this.onChange} />
+                                            <h2 className="productosList">{producto.ganancia}</h2>
                                             </div>
+                                            <div className="columnDatos text-center">
+                                            <label className="containerCheck">
+                                                    <input
+                                                        defaultChecked={this.state.checkbox.some(v => (v === producto.producto))}
+                                                        name="checkbox"
+                                                        type="checkbox"
+                                                        value={producto.producto}
+                                                        className=""
+                                                        onChange={this.onChange} />
+                                                    <span className="checkBoxProxima"></span>
+                                                    </label>
                                             </div>
                                             <br />
                                             <div className='row mb-3' ></div>
-                                        </div>
+                                    </div>*/}
+                                        </tbody>
 
                                     ))}
-
-                                </div>
-                                <div className='row mb-5' ></div>
-
-
-
-
-
-
-
-
-
-
+                                    </table>
+                                    </div>
                             </div>
-
-
-
-
                             <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
+
+
+
+
+
+
 
 
 
 
                         </div>
+
+                        
                     </div>
                 </>
             )

@@ -456,7 +456,7 @@ export class Tienda extends Component {
                         <div className='mx-0 mx-md- mx-lg-5 containerDivInfoTienda'>
                             <div className='row mb-5' ></div>
                             <h2 className={this.state.status == true ? "Categoria-Titulo" : " Categoria-Titulo columnInfoTiendas"}>Información de la tienda</h2>
-                            <h2 className='Categoria-Titulo columnAprobadoTiendas' style={{ color: "#FF3B7B" }}>{this.state.status ? "" : "Pendiente de aprobación"}</h2>
+                            <h2 className='Categoria-Titulo columnAprobadoTiendas' style={this.state.status ? { color: "#FF3B7B" } : { color: "#000" }}>{this.state.status ? "Aprobado" : "Pendiente de aprobación"}</h2>
 
                             <div className='row rowInfoTienda'>
 
@@ -525,7 +525,7 @@ export class Tienda extends Component {
 
                                     <div className='row mb-4' ></div>
 
-                                    <h2 className='Categoria-SubTitulo'>Descripción de la tienda<h2 className='Categoria-SubTitulo mx-4' style={this.state.descripcionStatus == "Cambio" ? { display: "initial", color: "#FF3B7B", fontSize: "12px" } : { display: "none" }}> Pendiente de aprobación</h2>
+                                    <h2 className='Categoria-SubTitulo'>Descripción de la tienda<h2 className='Categoria-SubTitulo-Alerta mx-4' style={this.state.descripcionStatus == false ? { display: "initial" } : { display: "none" }}> Pendiente de aprobación</h2>
                                     </h2>
                                     <textarea
                                         type='text'
@@ -630,16 +630,10 @@ export class Tienda extends Component {
                                     <h2 className='Categoria-SubTitulo'>Fotos tienda</h2>
 
                                     <div className='columnDescripcion'>
-
                                         <DropZone id = "myDropzoneElementID" funcDrop={this.drop} funcRemove={this.deleteDropFoto} />
-
-
-
                                     </div>
 
                                     <div className="row  mb-4 " >
-
-
                                         {this.state.fotosTienda && this.state.fotosTienda.length > 0 && this.state.fotosTienda.map((item, i) => (
                                             <div className=" columnFotos mr-4">
 
@@ -661,36 +655,19 @@ export class Tienda extends Component {
                                         ))}
 
                                     </div>
-
-                                    {/*<div className="row  mb-4 " >
-                                        {this.state.fotosDrop && this.state.fotosDrop.length > 0 && this.state.fotosDrop.map((itemfotosDrop, i) => (
-                                            <div className=" columnFotos mr-4">
-
-                                                <img src={URL.createObjectURL(itemfotosDrop)} id={this.state.fotosStatus[i] != "Pendiente aprobación" ? "fotosTienda" : "fotosTiendaPendientes"} className='text-center' />
-                                                <h5 className="textoPendiente"
-                                                >Pendiente <br /> aprobación</h5>
-                                                <button className="top-right" onClick={this.deleteFoto(i)}>x</button>
-                                            </div>
-                                        ))}
-
-                                        </div>*/}
-
-
-                                    <button
+                                    <div className="footerButtons">
+                                        <button
                                         className='btn text-white Categoria-btnRosado'
                                         data-toggle='modal'
-                                        data-target='#ConfirmarModal'
-
-                                    >
-                                        Eliminar Tienda
-                                </button>
-                                    <button className='btn text-white Categoria-btnMorado btnGuardarPerfil' onClick={this.onSubmit}
+                                        data-target='#ConfirmarModal'>
+                                            Eliminar Tienda
+                                        </button>
+                                        <button className='btn text-white Categoria-btnMorado btnGuardarPerfil' onClick={this.onSubmit}
                                         data-toggle='modal'
-                                        data-target='#GuardarModal'
-                                    >
-                                        Guardar
-                                </button>
-
+                                        data-target='#GuardarModal'>
+                                            Guardar
+                                        </button>
+                                    </div> 
                                 </div>
                             </div>
 

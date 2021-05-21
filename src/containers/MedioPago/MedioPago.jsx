@@ -6,6 +6,7 @@ import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif
 import GifLoader from '../../components/Loader/index';
 import DropZone from "../../components/Dropzone/DropZone.js";
 import firebaseConfig from "../../firebase/setup.jsx";
+import { db, storage } from '../../firebase';
 
 
 const imageMaxSize = 2000000; // 2mb
@@ -23,6 +24,11 @@ class MedioPago extends Component {
             medioPagoCertificado: true,
             newEstado: "Pendiente",
             tienda: this.props.uid,
+            fotosDrop: "",
+            fotosDropPreview: [],
+            fotosTienda: [],
+            fotosStatus: [],
+            arrTienda: [],
             fotosDrop: [],
             fotosDropPreview: [],
             fotosTienda: [],
@@ -68,9 +74,13 @@ class MedioPago extends Component {
         const { numNequi, file } = this.state;
         const archivo = file[0];
         const db = firebaseConfig.firestore();
+        let urlFotosArray = this.state.fotosTienda;
+        let fotosStatusArray = this.state.fotosStatus;
+
+        
 
         await db.collection("MedioPagoTest").add({
-            Fotos: this.state.fotosDrop,
+            Fotos: this.state.fotosTienda,
             Estado: this.state.newEstado,
             Nequi: this.state.numNequi,
             tienda: this.state.tienda
@@ -86,6 +96,39 @@ class MedioPago extends Component {
             .catch(function (error) {
                 console.error("Error adding document: ", error);
             });
+
+            if (this.state.fotosDrop[0]) {
+                for (var i = 0; i < this.state.fotosDrop.length; i++) {
+                    const nombreImagen = this.state.fotosDrop[i].name;
+    
+                    const file = this.state.fotosDrop[i];
+                    const storageRef = firebaseConfig.storage().ref();
+                    const fileRef = storageRef.child('/foto/tienda/' + this.state.uid + '/' + this.state.name + '/' + nombreImagen);
+                    fileRef.put(file).then(() => {
+                        console.log('Upload a file');
+                        storageRef
+                            .child('/foto/tienda/' + this.state.uid + '/' + this.state.name + '/' + nombreImagen)
+                            .getDownloadURL()
+                            .then(async (url) => {
+                                urlFotosArray.push(url);
+                                fotosStatusArray.push("Pendiente aprobación")
+                                await db.collection("TiendasTest").doc(this.state.uid + "-" + this.state.nameold).update({
+                                    fotosStatus: fotosStatusArray,
+                                    fotosTienda: urlFotosArray
+                                });
+                            })
+                            .catch((err) => console.error(err));
+                    });
+                }
+    
+    
+    
+                this.setState({
+                    fotosDrop: []
+                })
+                
+    
+                this.setState({ arrTienda: urlFotosArray, fotosStatus: fotosStatusArray });
 
         /*const storageRef = storage
             .ref(`documentos/Medio de pago/${sessionStorage.getItem('idTiendaAprobacion')}/${archivo.name}`)
@@ -120,6 +163,7 @@ class MedioPago extends Component {
             }
         );*/
     }
+}
     async onUpdate(e) {
         e.preventDefault(); //previene que la página se haga F5
         const { numNequi, file, certificado } = this.state;
@@ -271,7 +315,7 @@ class MedioPago extends Component {
                                                 </label>
                                                 <div className='columnDescripcion'>
 
-                                        <DropZone id = "myDropzoneElementID" funcDrop={this.drop} funcRemove={this.deleteDropFoto} />
+                                        <DropZone id = "myDropzoneElementIDPago" funcDrop={this.drop} funcRemove={this.deleteDropFoto} />
 
 
 
@@ -280,15 +324,6 @@ class MedioPago extends Component {
                                     <div className="row  mb-4 " >
 
 
-                                        {this.state.datosMedioPago.Fotos && this.state.datosMedioPago.Fotos.length > 0 && this.state.datosMedioPago.Fotos.map((item, i) => (
-                                            <div className=" columnFotos mr-4">
-
-                                                <img src={item} id={this.state.datosMedioPago.Estado[i] != "Pendiente" ? "fotosTienda" : "fotosTiendaPendientes"} className='text-center' />
-                                                <h5 className="textoPendiente"
-                                                    style={this.state.datosMedioPago.Estado[i] == "Pendiente" ? { display: "initial" } : { display: "none" }}>Pendiente <br /> aprobación</h5>
-                                                <button className="top-right" onClick={this.deleteFoto(i)}>x</button>
-                                            </div>
-                                        ))}
 
                                         {this.state.fotosDrop && this.state.fotosDrop.length > 0 && this.state.fotosDrop.map((itemfotosDrop, i) => (
                                             <div className=" columnFotos mr-4">

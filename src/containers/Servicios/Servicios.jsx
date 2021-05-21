@@ -26,6 +26,7 @@ export class Servicios extends Component {
   constructor(props) {
     super(props);
     this.title= React.createRef(),
+    
     this.state = {
       dataTabla: [],
       dataTable: [],
@@ -40,6 +41,7 @@ export class Servicios extends Component {
       newPrecio: 0,
       newServicio: "",
       otro: "",
+      otroCategoria: "",
       newTipoServicio: "",
       newEstado: "Pendiente",
       tienda: this.props.uid,
@@ -56,8 +58,13 @@ export class Servicios extends Component {
       idUpdate: '',
       buscar: "",
       newFiltroEstado: "",
+      serviceEmpty: "",
+      opcCategorias:[],
+      opcServicios: [],
 
     };
+
+    this.filterClear = this.filterClear.bind(this)
    
   }
   componentDidMount() {
@@ -68,19 +75,61 @@ export class Servicios extends Component {
     $('.react-bootstrap-table-pagination-list').addClass(
       'col-2 offset-5 mt-4'
     );
-      
-
-    this.fetchInfo();
-
-
-
-
-
+    
+  
     setTimeout(() => {
       // this.setState({ loading: false });
       $('#HomeBtnSearchServicios').trigger('click');
     }, 1000);
 
+    this.fetchInfo();
+
+  }
+
+
+  fetchInfo = async () =>{
+    const datos = [];
+    const IDDatos = []; 
+
+    await db.collection("TiendasTest").doc(this.state.tienda).get().then(doc => {
+      if (doc.exists) {
+          this.setState({
+              name: doc.data()["nombre"],
+              foto: doc.data()["foto"],
+          });
+          console.log(doc.data()["foto"])
+      } else {
+          console.log("No such document!");
+      }
+  }).catch(function (error) {
+      console.log("Error getting document:", error);
+  });
+
+
+  await db.collection("ServiciosTest").where("tienda", "==", this.state.tienda)
+      .get()
+      .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              datos.push(doc.data());
+              IDDatos.push(doc.id);
+
+          });
+          this.setState({ Servicios: datos, idDataTabla: IDDatos, dataTable: datos });
+          
+      })
+      .catch(function (error) {
+          console.log("Error getting documents: ", error);
+      });
+
+
+      console.log("holaaa", this.state.Servicios )
+      this.getCategorias(this.state.newCategoria)
+
+    
+
+
+     
   }
 
   sortTable = (column) => (e) =>  {
@@ -128,6 +177,101 @@ export class Servicios extends Component {
    
 
   }
+
+
+  getCategorias = async (selectCategoria) =>{
+    const categoriasTemp  = [];
+    const serviciosTemp  = [];
+    const otroCategotiaTemp  = [];
+    const otroServicioTemp  = [];
+
+    const categorias  = [];
+    const servicios  = [];
+    const otroCategotia  = [];
+    const otroServicio = [];
+    var i = 0;
+    var j = 0;
+    var k = 0;
+
+    this.setState({
+      newServicio: ""
+    });
+
+ 
+    for (i = 0; this.state.dataTable.length > i; i++){
+      var item = this.state.dataTable[i]
+      if(item.categoria != "OtroCategoria"){
+        categoriasTemp[i] = item.categoria;
+      }else{
+        categoriasTemp[i] = item.otrasCategorias;
+      }
+    }
+
+    if(selectCategoria != ""){
+      for (let i = 0; this.state.dataTable.length > i; i++){
+        var item = this.state.dataTable[i]
+
+          if(selectCategoria == item.categoria || selectCategoria == item.otrasCategorias){
+            if(item.servicio != "Otro"){
+              serviciosTemp[i] = item.servicio;
+            }else{
+              serviciosTemp[i] = item.otrosServicios;
+            }
+          }else{
+            
+          }
+      }
+    }else {
+      for (let i = 0; this.state.dataTable.length > i; i++){
+        var item = this.state.dataTable[i]
+
+        if(item.servicio != "Otro"){
+          serviciosTemp[i] = item.servicio;
+        }else{
+          serviciosTemp[i] = item.otrosServicios;
+        }
+      }
+    }
+
+
+    
+    categoriasTemp.sort()
+    serviciosTemp.sort()
+    otroCategotiaTemp.sort()
+    otroServicioTemp.sort()
+
+    for (let i = 0; i < categoriasTemp.length; i++) {
+      if (categoriasTemp[i + 1] != categoriasTemp[i]) {
+        categorias.push(categoriasTemp[i]);      
+    }
+  }
+    
+
+
+    for (let i = 0; i < serviciosTemp.length; i++) {
+      if (serviciosTemp[i + 1] != serviciosTemp[i]) {
+        servicios.push(serviciosTemp[i]);
+    }
+  }
+
+
+    this.setState({
+      opcCategorias: categorias,
+      opcServicios: servicios
+    });
+
+  
+    
+    /*const tempArray = [...numeros].sort();
+    
+    for (let i = 0; i < tempArray.length; i++) {
+      if (tempArray[i + 1] === tempArray[i]) {
+        duplicados.push(tempArray[i]);
+      }
+    }
+    
+    console.log(duplicados);*/
+  }
   delete(uid) {
     return () => {
         const servicios = [];
@@ -157,41 +301,7 @@ export class Servicios extends Component {
     
 }
 
-  fetchInfo(){
-    const datos = [];
-    const IDDatos = []; 
-    console.log("holaaa")
-
-    db.collection("TiendasTest").doc(this.state.tienda).get().then(doc => {
-      if (doc.exists) {
-          this.setState({
-              name: doc.data()["nombre"],
-              foto: doc.data()["foto"],
-          });
-          console.log(doc.data()["foto"])
-      } else {
-          console.log("No such document!");
-      }
-  }).catch(function (error) {
-      console.log("Error getting document:", error);
-  });
-
-
-  db.collection("ServiciosTest").where("tienda", "==", this.state.tienda)
-      .get()
-      .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-              // doc.data() is never undefined for query doc snapshots
-              datos.push(doc.data());
-              IDDatos.push(doc.id);
-
-          });
-          this.setState({ Servicios: datos, idDataTabla: IDDatos, dataTable: datos });
-      })
-      .catch(function (error) {
-          console.log("Error getting documents: ", error);
-      });
-  }
+  
   onSubmit = async () => {
 
     const servicios = [];
@@ -199,7 +309,17 @@ export class Servicios extends Component {
 
     const db = firebaseConfig.firestore();
 
-    await db.collection("ServiciosTest").add({
+    
+    if (this.state.newCategoria != "" && 
+    this.state.newEstado != "" &&
+    this.state.newGanancia != "" &&
+    this.state.newGenero != "" &&
+    this.state.newPrecio != "" &&
+    this.state.newServicio != "" &&
+    this.state.newTipoServicio != ""){
+
+
+      await db.collection("ServiciosTest").add({
         categoria: this.state.newCategoria,
         estado: this.state.newEstado,
         ganancia: this.state.newGanancia,
@@ -208,7 +328,9 @@ export class Servicios extends Component {
         servicio: this.state.newServicio,
         tienda: this.state.tienda,
         tipoServicio: this.state.newTipoServicio,
-        otro: this.state.otro,
+        otrosServicios: this.state.otro,
+        otrasCategorias: this.state.otroCategoria
+
 
     })
         .then(function (docRef) {
@@ -239,18 +361,43 @@ export class Servicios extends Component {
             console.log("Error getting documents: ", error);
         });
 
+        this.setState({
+          newCategoria: "",
+          newGanancia: "",
+          newGenero: "",
+          newPrecio: "",
+          newServicio: "",
+          newTipoServicio: "",
+          otro: "",
+          otroCategoria: "",
+
+        });
+
         this.fetchInfo();
+        
+    } else {
+      
+    }
+
+    
 }
   
   onChange =  e => {
       this.setState({
           [e.target.name]: e.target.value
-      });
+      }); 
+
+      if(e.target.name == "newCategoria"){
+        this.getCategorias(e.target.value)
+      }
 
 
- 
 
-    console.log(e.target.value)
+   
+    
+   
+
+    
      this.setState({
       newGanancia: (this.state.newPrecio - (this.state.newPrecio/100)*15)
   })
@@ -261,8 +408,7 @@ export class Servicios extends Component {
       [e.target.name]: e.target.value
     });
     let searchResult = [];
-    console.log("SI ESTAAAAAAA")
-    console.log(e.target.value)
+
 
     var i = 0;
     var j = 0;
@@ -279,7 +425,7 @@ export class Servicios extends Component {
         item.genero.toUpperCase().includes(searchValue) ||
         item.categoria.toUpperCase().includes(searchValue) ||
         item.tipoServicio.toUpperCase().includes(searchValue) ){
-          console.log("SI ESTAAAAAAA")
+   
           searchResult[j] = item;
           j = j +1;
 
@@ -288,7 +434,7 @@ export class Servicios extends Component {
     this.setState({
       Servicios : searchResult
     });
-    console.log("Finallllllll", searchResult)  
+
   } else {
     this.fetchInfo()
   }
@@ -296,109 +442,127 @@ export class Servicios extends Component {
 
 
 onFilter = async () =>{
-    var filterResult = [];
-    console.log("SI ESTAAAAAAA")
-    console.log("INICIO", this.state.dataTable.length)
+    let filterResult = []
+    
+    filterResult = this.state.dataTable.slice();
+
 
     var i = 0;
     var j = 0;
 
     if ( this.state.newTipoServicio != ""){
-      console.log("SI newTipoServicio")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
-        console.log("INICIO", this.state.datatable[i])
 
-        if(item.tipoServicio == this.state.newTipoServicio){
-          console.log("SI ESTAAAAAAA newTipoServicio")
-          filterResult[j] = item;
-          j = j +1;
+      filterResult = filterResult.filter(friend=>{
+        return friend.tipoServicio == this.state.newTipoServicio;
+      });
+    } 
 
-        }
-      }
-    }
-    console.log("Valor= ", j) 
     if ( this.state.newFiltroEstado != ""){
-      console.log("SI newEstado")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
-        console.log("SI newEstado", item.estado)
-        console.log("SI newEstado", this.state.newFiltroEstado)
 
-        if(item.estado == this.state.newFiltroEstado){
-          console.log("SI ESTAAAAAAA newEstado")
-          filterResult[j] = item;
-          j = j +1;
-        }
-      }
-    } 
-    console.log("Valor= ", j) 
+      filterResult = filterResult.filter(friend=>{
+        return friend.estado == this.state.newFiltroEstado;
+      });
+    }  
+ 
     if ( this.state.newGenero != ""){
-      console.log("SI newGenero ")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
 
-        if(item.genero == this.state.newGenero){
-          console.log("SI ESTAAAAAAA newGenero")
-          filterResult[j] = item;
-          j = j +1;
-
-        }
-      }
+    filterResult = filterResult.filter(friend=>{
+        return friend.genero == this.state.newGenero;
+      });
     } 
-    console.log("Valor= ", j) 
-     if ( this.state.newServicio != ""){
-      console.log("SI newServicio")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
 
-        if(item.servicio == this.state.newServicio){
-          console.log("SI ESTAAAAAAA newCategoria")
-          filterResult[j] = item;
-          j = j +1;
+    if ( this.state.newServicio != ""){
+ 
+      filterResult = filterResult.filter(friend=>{
+
+        if(friend.servicio == "Otro"){
+          return friend.otrosServicios == this.state.newServicio;
+        } else{
+          return friend.servicio == this.state.newServicio;
         }
-      } 
+         
+         });
+      
     } 
-    console.log("Valor= ", j) 
-     if( this.state.newCategoria != ""){
-      console.log("SI newCategoria")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
-        console.log("SI newCategoria", item.categoria)
-        console.log("SI newCategoria", this.state.newCategoria)
 
-        if(item.categoria == this.state.newCategoria){
-          console.log("SI ESTAAAAAAA newCategoria")
-          filterResult[j] = item;
-          j = j +1;
+    if( this.state.newCategoria != ""){
 
+      filterResult = filterResult.filter(friend=>{
+ 
+        if(friend.categoria == "OtroCategoria"){
+          return friend.otrasCategorias == this.state.newCategoria;
+        } else{
+          return friend.categoria == this.state.newCategoria;
         }
-      } 
+         
+         });
     }
-    console.log("Valor= ", j) 
+
+  
+
     if (this.state.newCategoria == ""  && 
     this.state.newServicio == ""  &&
     this.state.newGenero == ""  &&
     this.state.newFiltroEstado == ""  &&
     this.state.newTipoServicio == "") {
+
         this.fetchInfo()
       }
 
-      console.log("Finallllllll", filterResult) 
-      console.log("Valor= ", j) 
+
     this.setState({
       Servicios : filterResult
     });
 
     filterResult = []
-    console.log("Finallllllll", filterResult)  
+
  
+}
+
+filterClear(){
+
+  this.setState({
+    newCategoria: "",
+    newServicio: "",
+    newGenero: "" ,
+    newFiltroEstado : ""  ,
+    newTipoServicio : ""
+  });
+
+
+
+  this.fetchInfo()
+
 }
 
   
 
   
   render() {
+    var isEmpty = ""
+
+    if (this.state.newCategoria != "Otro" && 
+    this.state.newEstado != "" &&
+    this.state.newGanancia != "" &&
+    this.state.newGenero != "" &&
+    this.state.newPrecio != "" &&
+    this.state.newServicio != "Otro" &&
+    this.state.newTipoServicio != "" &&
+    this.state.otroCategoria != "" &&
+    this.state.otro != "" ){
+
+      isEmpty = ""
+    }else if (this.state.newCategoria != "" && 
+    this.state.newEstado != "" &&
+    this.state.newGanancia != "" &&
+    this.state.newGenero != "" &&
+    this.state.newPrecio != "" &&
+    this.state.newServicio != "" &&
+    this.state.newTipoServicio != ""){
+      isEmpty = ""
+    }else{
+      isEmpty = "Por favor llena todos los campos"
+    }
 
     return (
       <>
@@ -474,17 +638,18 @@ onFilter = async () =>{
                         <tbody className='text-left CategoriaTabla-Body'>
                             <tr>
                                 
-                                <td style={servicio.servicio == "Otro" ? { display: "" } : { display: "none" }}>{servicio.otro}</td>
+                                <td style={servicio.servicio == "Otro" ? { display: "" } : { display: "none" }}>{servicio.otrosServicios}</td>
                                 <td style={servicio.servicio != "Otro" ? { display: "" } : { display: "none" }}>{servicio.servicio}</td>
                                 <td>{servicio.precio}</td>
                                 <td>{servicio.ganancia}</td>
                                 <td>{servicio.genero}</td>
-                                <td>{servicio.categoria}</td>
+                                <td style={servicio.categoria == "OtroCategoria" ? { display: "" } : { display: "none" }}>{servicio.otrasCategorias}</td>
+                                <td style={servicio.categoria != "OtroCategoria" ? { display: "" } : { display: "none" }}>{servicio.categoria}</td>
                                 <td>{servicio.tipoServicio}</td>
                                 <td className={servicio.estado == "Pendiente" ? "servicioPendiente" : ""}>{servicio.estado}</td>
                                 <td >
                                   <button className="tableButton" onClick={this.delete(servicio.uid)}><img src={Delete} /></button>
-                                  <button className="tableButton" onClick={this.delete(servicio.uid)}><img src={Update} /></button>
+                                  {/*<button className="tableButton" onClick={this.delete(servicio.uid)}><img src={Update} /></button>*/}
                                 </td>
                             </tr>
                         </tbody>
@@ -517,11 +682,26 @@ onFilter = async () =>{
                           value={this.state.newCategoria}
                       >
                           <option value=''></option>
-                          <option value='Cabello'>Cabello</option>
-                          <option value='Manos'>Manos</option>
-                          <option value='Maquillaje'>Maquillaje</option>
+                          {this.state.opcCategorias.map((categoria) => (
+                              <option value={categoria}>{categoria}</option>
+                          ))}
+                          <option value='OtroCategoria'>Otro</option>
 
                       </select>
+                  </div>
+                  <div className='row mb-3'></div>
+                  <div className='mx-5' style={this.state.newCategoria == "OtroCategoria" ? { display: "initial" } : { display: "none" }}>
+                      <h2 className='Categoria-SubTitulo'>Otro</h2>
+                      <form action="">
+                          <input
+                              type='text'
+                              className='form-control text-muted '
+                              placeholder=''
+                              onChange={this.onChange}
+                              name='otroCategoria'
+                              value={this.state.otroCategoria}
+                          />
+                      </form>
                   </div>
                   <div className='row mb-3'></div>
                   <div className='mx-5'>
@@ -535,10 +715,9 @@ onFilter = async () =>{
                           value={this.state.newServicio}
                       >
                           <option value=''></option>
-                          <option value='Corte de Cabello'>Corte de Cabello</option>
-                          <option value='Uñas Acrílicas'>Uñas Acrílicas</option>
-                          <option value='Tinte de Cabello'>Tinte de Cabello</option>
-                          <option value='Maquillaje Social'>Maquillaje Social</option>
+                          {this.state.opcServicios.map((servicio) => (
+                              <option value={servicio}>{servicio}</option>
+                          ))}
                           <option value='Otro'>Otro</option>
 
                       </select>
@@ -612,11 +791,12 @@ onFilter = async () =>{
 
                       </select>
                   </div>
+                  <h2 className='Categoria-Alerta-Rojo'>{isEmpty}</h2>
 
                   <div className='row text-center'>
                       <div className='columnBtnEliminarPerfil'>
                           <button
-                              className='btn text-white Categoria-btnMorado'
+                              className='btn text-white Categoria-btnRosado'
                               data-dismiss="modal"
                           >
                               Cancelar
@@ -625,8 +805,8 @@ onFilter = async () =>{
 
                       <div className='columnBtnEliminarPerfil'>
                           <button
-                              className='btn text-white Categoria-btnRosado'
-                              data-dismiss="modal"
+                              className='btn text-white Categoria-btnMorado'
+                              data-dismiss={isEmpty == "" ? "modal" : ""} 
                               onClick={this.onSubmit}
 
                           >
@@ -645,7 +825,7 @@ onFilter = async () =>{
               <div className='modal-content Categoria-inputShadow Categoria-modal'>
                   <div className='text-center modal-header border-bottom-0'>
                       <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
-                          Agregar Servicio
+                          Agregar Filtros
                       </h4>
                   </div>
                   <div className='row mb-3' ></div>
@@ -660,9 +840,10 @@ onFilter = async () =>{
                           value={this.state.newCategoria}
                       >
                           <option value=''></option>
-                          <option value='Cabello'>Cabello</option>
-                          <option value='Manos'>Manos</option>
-                          <option value='Maquillaje'>Maquillaje</option>
+                          {this.state.opcCategorias.map((categoria) => (
+                              <option value={categoria}>{categoria}</option>
+                          ))}
+               
 
                       </select>
                   </div>
@@ -678,11 +859,10 @@ onFilter = async () =>{
                           value={this.state.newServicio}
                       >
                           <option value=''></option>
-                          <option value='Corte de Cabello'>Corte de Cabello</option>
-                          <option value='Uñas Acrílicas'>Uñas Acrílicas</option>
-                          <option value='Tinte de Cabello'>Tinte de Cabello</option>
-                          <option value='Maquillaje Social'>Maquillaje Social</option>
-                          <option value='Otro'>Otro</option>
+                          {this.state.opcServicios.map((servicio) => (
+                              <option value={servicio}>{servicio}</option>
+                          ))}
+                      
 
                       </select>
                   </div>
@@ -743,21 +923,22 @@ onFilter = async () =>{
                   <div className='row text-center'>
                       <div className='columnBtnEliminarPerfil'>
                           <button
-                              className='btn text-white Categoria-btnMorado'
+                              className='btn text-white  Categoria-btnRosado'
                               data-dismiss="modal"
+                              onClick={this.filterClear}
                           >
-                              Cancelar
+                              Limpiar
                           </button>
                       </div>
 
-                      <div className='columnBtnEliminarPerfil'>
+                      <div className='columnBtnEliminarPerfil '>
                           <button
-                              className='btn text-white Categoria-btnRosado'
+                              className='btn text-white Categoria-btnMorado'
                               data-dismiss="modal"
                               onClick={this.onFilter}
 
                           >
-                              Agregar
+                              Filtrar
                           </button>
                       </div>
                   </div>

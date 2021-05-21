@@ -56,6 +56,7 @@ export class Productos extends Component {
       idUpdate: '',
       buscar: "",
       newFiltroEstado: "",
+      opcProductos: []
 
     };
    
@@ -70,16 +71,14 @@ export class Productos extends Component {
     );
       
 
-    this.fetchInfo();
-
-
-
-
 
     setTimeout(() => {
       // this.setState({ loading: false });
       $('#HomeBtnSearchServicios').trigger('click');
     }, 1000);
+
+    this.fetchInfo();
+    this.getProductos();
 
   }
 
@@ -157,9 +156,11 @@ export class Productos extends Component {
     
 }
 
-  fetchInfo(){
-    const productos = [];
+  fetchInfo= async () =>{
+    const Productos = [];
     const db = firebaseConfig.firestore();
+
+    console.log("HOLAAAAAAAAAA PRODUCTOSSSSS")
 
     db.collection("TiendasTest").doc(this.state.tienda).get().then(doc => {
         if (doc.exists) {
@@ -181,22 +182,55 @@ export class Productos extends Component {
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
-                productos.push(doc.data());
+                Productos.push(doc.data());
 
             });
-            this.setState({ productos: productos, productosDefault: productos, dataTable: productos});
-        })
+            this.setState({ productos: Productos, productosDefault: Productos, dataTable: Productos});
+
+            this.getProductos();
+          })
         .catch(function (error) {
             console.log("Error getting documents: ", error);
         });
+
+        
+
+  }
+
+  getProductos (){
+
+    const productosTemp  = [];
+ 
+    var i = 0;
+
+    console.log("dataTable: ",this.state.dataTable)
+    for (i = 0; this.state.dataTable.length > i; i++){
+      var item = this.state.dataTable[i]
+        productosTemp[i] = item.producto;
+        console.log("producto: ",item.producto)
+    }
+    console.log("dataTable: ",productosTemp)
+
+    this.setState({
+      opcProductos: productosTemp,
+    });
+
 
   }
   onSubmit = async () => {
 
     const productos = [];
 
-
+ 
         const db = firebaseConfig.firestore();
+        
+
+        if (this.state.newProducto != "" && 
+    this.state.newEstado != "" &&
+    this.state.newGanancia != "" &&
+    this.state.newDescripcion != "" &&
+    this.state.newPrecio != "" &&
+    this.state.newFotoProducto !="" ){
 
         await db.collection("ProductosTest").add({
             descripcion: this.state.newDescripcion,
@@ -237,7 +271,22 @@ export class Productos extends Component {
                 console.log("Error getting documents: ", error);
             });
 
-        this.fetchInfo();
+            this.setState({
+
+              newProducto: "",
+              newEstado: "",
+              newGanancia: "",
+              newDescripcion: "",
+              newPrecio: "",
+              newFotoProducto: "",
+             
+    
+            });
+            this.fetchInfo();
+      }
+      else{}
+
+        
 }
   
   onChange =  e => {
@@ -318,68 +367,72 @@ export class Productos extends Component {
 
 
 onFilter = async () =>{
-    var filterResult = [];
-    console.log("SI ESTAAAAAAA")
-    console.log("INICIO", this.state.dataTable.length)
+    let filterResult = []
+      
+    filterResult = this.state.dataTable.slice();
+
 
     var i = 0;
     var j = 0;
 
     if ( this.state.newProducto != ""){
-      console.log("SI newTipoServicio")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        
-        var item = this.state.dataTable[i]
-        console.log("INICIO", this.state.dataTable[i])
 
-        console.log("SI newTipoServicio", item.producto)
-        console.log("SI newTipoServicio", this.state.newProducto)
-
-        if(item.producto == this.state.newProducto){
-          console.log("SI ESTAAAAAAA newTipoServicio")
-          filterResult[j] = item;
-          j = j +1;
-
-        }
-      }
-    }
-    console.log("Valor= ", j) 
-    if ( this.state.newFiltroEstado != ""){
-      console.log("SI newEstado")
-      for (i = 0; this.state.dataTable.length > i; i++){
-        var item = this.state.dataTable[i]
-        console.log("SI Estado", item.estado)
-        console.log("SI newEstado", this.state.newFiltroEstado)
-
-        if(item.estado == this.state.newFiltroEstado){
-          console.log("SI ESTAAAAAAA newEstado")
-          filterResult[j] = item;
-          j = j +1;
-        }
-      }
+      filterResult = filterResult.filter(friend=>{
+        return friend.producto == this.state.newProducto;
+      });
     } 
-    
-    console.log("Valor= ", j) 
+
+    if ( this.state.newFiltroEstado != ""){
+
+      filterResult = filterResult.filter(friend=>{
+        return friend.estado == this.state.newFiltroEstado;
+      });
+    }  
+
     if (this.state.newProducto == ""  && 
     this.state.newFiltroEstado == ""){
         this.fetchInfo()
       }
 
-      console.log("Finallllllll", filterResult) 
-      console.log("Valor= ", j) 
     this.setState({
       productos : filterResult
     });
 
     filterResult = []
-    console.log("Finallllllll", filterResult)  
  
+}
+
+filterClear(){
+
+  this.setState({
+    newProducto: "",
+    newFiltroEstado:""
+  });
+
+
+
+  this.fetchInfo()
+
 }
 
   
 
   
   render() {
+    this.fotoDefault = "https://firebasestorage.googleapis.com/v0/b/meegoapptest-98b27.appspot.com/o/foto%2Ftiendas%2FVector.png?alt=media&token=f25340c9-55c8-4e23-b100-ea7906115ce6"
+
+    var isEmpty = ""
+
+  if (this.state.newProducto != "" && 
+    this.state.newEstado != "" &&
+    this.state.newGanancia != "" &&
+    this.state.newDescripcion != "" &&
+    this.state.newPrecio != "" &&
+    this.state.newFotoProducto !=""){
+      isEmpty = ""
+    }else{
+      isEmpty = "Por favor llena todos los campos"
+    }
 
     return (
       <>
@@ -533,11 +586,12 @@ onFilter = async () =>{
                         <p className="textGanancias">Tu ganancia sería de<b className="ganancias">${this.state.newGanancia}</b></p>
 
                     </div>
+                    <h2 className='Categoria-Alerta-Rojo'>{isEmpty}</h2>
 
                     <div className='row text-center'>
                         <div className='columnBtnEliminarPerfil'>
                             <button
-                                className='btn text-white Categoria-btnMorado'
+                                className='btn text-white Categoria-btnRosado'
                                 data-dismiss="modal"
                             >
                                 Cancelar
@@ -546,8 +600,8 @@ onFilter = async () =>{
 
                         <div className='columnBtnEliminarPerfil'>
                             <button
-                                className='btn text-white Categoria-btnRosado'
-                                data-dismiss="modal"
+                                className='btn text-white  Categoria-btnMorado'
+                                data-dismiss={isEmpty == "" ? "modal" : ""} 
                                 onClick={this.onSubmit}
 
                             >
@@ -580,7 +634,7 @@ onFilter = async () =>{
                     <div className='modal-content Categoria-inputShadow Categoria-modal'>
                         <div className='text-center modal-header border-bottom-0'>
                             <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
-                            Agregar Servicio
+                            Filtrar producto
                             </h4>
                         </div>
                         <div className='row mb-3' ></div>
@@ -595,9 +649,9 @@ onFilter = async () =>{
                             value={this.state.newProducto}
                             >
                             <option value=''></option>
-                            <option value='Cabello'>Cabello</option>
-                            <option value='Manos'>Manos</option>
-                            <option value='Maquillaje'>Maquillaje</option>
+                            {this.state.opcProductos.map((producto) => (
+                              <option value={producto}>{producto}</option>
+                            ))}
 
                             </select>
                         </div>
@@ -621,21 +675,22 @@ onFilter = async () =>{
                         <div className='row text-center'>
                             <div className='columnBtnEliminarPerfil'>
                                 <button
-                                className='btn text-white Categoria-btnMorado'
+                                className='btn text-white  Categoria-btnRosado'
                                 data-dismiss="modal"
+                                onClick={this.filterClear}
                                 >
-                                Cancelar
+                                Limpiar
                                 </button>
                             </div>
 
                             <div className='columnBtnEliminarPerfil'>
                                 <button
-                                className='btn text-white Categoria-btnRosado'
+                                className='btn text-white Categoria-btnMorado'
                                 data-dismiss="modal"
                                 onClick={this.onFilter}
 
                                 >
-                                Agregar
+                                Filtrar
                                 </button>
                             </div>
                         </div>

@@ -22,9 +22,10 @@ export class Empleado extends Component {
             email: "",
             cellPhone: "",
             description: "",
-            uid: this.props.location.customObject,
+            uid:  this.props.uid,
+            Tienda: this.props.tienda,
             foto: "",
-            status: false,
+            status: "",
             lat: 3.43722,
             lon: -76.5225,
             markers: [
@@ -51,29 +52,28 @@ export class Empleado extends Component {
 
         console.log(this.state.uid)
         const db = firebaseConfig.firestore();
-        let docRef = db.collection("EmpleadosTest").doc(this.state.uid);
+        let docRef = db.collection("TiendasTest2").doc(this.state.uid)
         //let docRef = db.collection("Perfil").doc(user["id"]);
 
         docRef.get().then(doc => {
             if (doc.exists) {
                 this.setState({
                     name: doc.data()["nombre"],
-                    email: doc.data()["correo"],
+                    email: doc.data()["email"],
                     cellPhone: doc.data()["celular"],
-                    description: doc.data()["descripcion"],
+                    description: doc.data()["biografia"],
                     uid: doc.data()["uid"],
-                    foto: doc.data()["fotoPerfil"],
-                    status: doc.data()["estado"],
+                    foto: doc.data()["fotoProveedor"],
+                    fotosTienda: doc.data()["fotosTienda"],
+                    status: doc.data()["estadoTienda"]
                 });
-
+                
 
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
-        }).catch(function (error) {
-            console.log("Error getting document:", error);
-        });
+        })
     }
 
     onChange = e => {
@@ -107,11 +107,47 @@ export class Empleado extends Component {
         const db = firebaseConfig.firestore();
         var batch = db.batch();
 
-       
-            let newTienda = db.collection("EmpleadosTest").doc(this.state.uid);
+            let newTienda = db.collection("EmpleadosTest").doc(this.state.uid)
             await batch.update(newTienda, {
                 "estado": "No Activo",
             });
+           
+
+            
+            let deleteTienda =  db.collection("TiendasTest2").doc(this.state.uid)
+           await batch.update(deleteTienda, {
+                "estadoTienda": "No Activo",
+                "Tienda": ""
+               });
+               batch.commit()
+               
+               this.setState({
+                uid: undefined
+            })
+
+        
+            
+
+    }
+
+    Activar = async (e) => {
+
+        const db = firebaseConfig.firestore();
+        var batch = db.batch();
+        
+
+       
+            let newTienda = db.collection("EmpleadosTest").doc(this.state.uid);
+            await batch.update(newTienda, {
+                "estado": "Activo",
+            });
+
+            let deleteTienda =  db.collection("TiendasTest2").doc(this.state.uid)
+            await batch.update(deleteTienda, {
+                 "estadoTienda": "Activo",
+                 "Tienda": this.state.Tienda
+                });
+              
             batch.commit();
 
             this.setState({
@@ -173,59 +209,13 @@ export class Empleado extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
+                        <div className='mx-0 mx-md- mx-lg-5 containerDivInfoTienda'>
 
                             <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoTienda">
-                                <div className={this.state.foto == this.fotoDefault ? "divFotoTiendaNew" : "divFotoTienda"} style={this.state.foto == this.fotoDefault ? { backgroundColor: "#fff" } : { backgroundColor: "#1A1446" }}>
+                            
+                            <h2 className="Categoria-Titulo columnInfoTiendas">Información del empleado</h2>
 
-                                    <img src={this.state.foto} id="fotoTienda" className='text-center' />
-                                </div>
-                                <div className='row mb-2' ></div>
-                                <h2 className='text-center Categoria-Titulo mt-1 h2Nombre'>{this.state.name}</h2>
-                                <div className='row mb-5' ></div>
-
-                                <div className='row'>
-                                    <div className="btnPress ml-4 mb-3">
-                                        <img src={InfoTienda} id="iconoBtn" />
-                                        <h6 className='txtBtnPress'>Información de la tienda</h6>
-                                    </div>
-                                    <Link to={{
-                                        pathname: "/empleadoServicios",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                    <div className="btnNoPress ml-4 mb-3">
-                                        <img src={Servicios} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Servicios</h6>
-                                    </div>
-                                    </Link>
-                                </div>
-                                <div className='row mb-3' ></div>
-                                <div className='row'>
-                                <Link to={{
-                                        pathname: "/empleadoProductos",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                    <div className="btnNoPress ml-4">
-                                        <img src={Productos} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Productos</h6>
-                                    </div>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className='row mb-5' ></div>
-
-                            <h2 className="Categoria-Titulo">Información del empleado</h2>
-
-                            <div className='row'>
-
-
+                            <div className='row rowInfoTienda'>
 
 
                                 <div className="columnPerfilDatos">
@@ -240,6 +230,7 @@ export class Empleado extends Component {
                                         aria-label='Username'
                                         name='name'
                                         value={this.state.name}
+                                        disabled
                                     />
 
                                     <div className='row mb-4' ></div>
@@ -252,6 +243,7 @@ export class Empleado extends Component {
                                         aria-label='Cellphone'
                                         name='cellPhone'
                                         value={this.state.cellPhone}
+                                        disabled
                                     />
 
 
@@ -263,11 +255,12 @@ export class Empleado extends Component {
                                     <h2 className='Categoria-SubTitulo'>Correo</h2>
                                     <input
                                         type='text'
-                                        className='form-control text-muted '
+                                        className='form-control text-muted text-deactivated'
                                         placeholder=''
                                         aria-label='Email'
                                         name='email'
                                         value={this.state.email}
+                                        disabled
                                     />
 
                                 </div>
@@ -291,34 +284,54 @@ export class Empleado extends Component {
                                         className='form-control text-muted '
                                         placeholder=''
                                         aria-label='Description'
-                                        onChange={this.onChange}
                                         name='description'
                                         value={this.state.description}
+                                        disabled
                                     />
-                                    <h2 className='Categoria-Alerta-Rojo'>{descriptionEmpty}</h2>
 
 
                                     <div className='row mb-4' ></div>
 
                                     <h2 className='Categoria-SubTitulo'>Fotos mis trabajos</h2>
+                                    <div className='row mb-5'>
+                                    {this.state.fotosTienda && this.state.fotosTienda.length > 0 && this.state.fotosTienda.map((item, i) => (
+                                            <div className=" columnFotos mr-4">
+
+                                                <img src={item} id="fotosTienda"  className='text-center' style={this.state.status != "Activo" ? {filter: "grayscale(100%)"} : {filter: "none"}} />
+                                                
+                                            </div>
+                                    ))}
+                                    </div>
+                                   
 
 
-                                    <div className='row mb-5' ></div>
-                                    <div>
-                                        <button
+                        
+                                    
+                                    <div className="footerButtons">
+                                        {this.state.status == "Activo" ? (<button
                                             className='btn text-white px-4 py-2 mt-1 Categoria-btnRosado'
                                             data-toggle='modal'
                                             data-target='#ConfirmarModal'
 
                                         >
                                             Desactivar Empleado
-                                </button>
+                                        </button>):(
+                                            <button
+                                            className='btn text-white px-4 py-2 mt-1 Categoria-btnAzul'
+                                            data-toggle='modal'
+                                            data-target='#ReConfirmarModal'
+
+                                        >
+                                            Reactivar Empleado
+                                        </button>
+                                        )}
+                                        
                                         <button className='btn text-white px-4 py-2 mt-1 Categoria-btnMorado btnGuardarPerfil' onClick={this.onSubmit}
                                             data-toggle='modal'
                                             data-target='#GuardarModal'
                                         >
                                             Guardar
-                                </button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -358,6 +371,54 @@ export class Empleado extends Component {
                                                     onClick={this.exit}
                                                 >
                                                     Ok
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                className='modal fade'
+                                id='ReConfirmarModal'
+
+                            >
+                                <div className='modal-dialog modal-dialog-centered' role='document'>
+                                    <div className='modal-content Categoria-inputShadow Categoria-modal'>
+                                        <div className='text-center modal-header border-bottom-0'>
+                                            <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
+                                                Enviar mensaje de Reactivación de la tienda
+                                        </h4>
+                                        </div>
+
+                                        <div className='text-center modal-header border-bottom-0'>
+                                            <h4 className='w-100 Categoria-SubTitulo modal-title' id='exampleModalLabel'>
+                                                ¿Está seguro que desea enviar mensaje al
+                                                empleado para confirmar la reactivación?
+                                        </h4>
+                                        </div>
+
+
+
+                                        <div className='row text-center'>
+                                            <div className='columnBtnEliminarPerfil'>
+                                                <button
+                                                    className='btn text-white Categoria-btnMorado'
+                                                    data-dismiss="modal"
+                                                >
+                                                    Cancelar
+                                                </button>
+                                            </div>
+
+                                            <div className='columnBtnEliminarPerfil'>
+                                                <button
+                                                    className='btn text-white Categoria-btnRosado'
+                                                    data-dismiss="modal"
+                                                    onClick={this.Activar}
+
+                                                >
+                                                    Enviar
                                                 </button>
                                             </div>
                                         </div>

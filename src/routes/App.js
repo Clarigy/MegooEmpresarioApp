@@ -14,6 +14,7 @@ import NewTienda from '../containers/Tienda/NewTienda';
 import Servicios from '../containers/Servicios/Servicios';
 import Productos from '../containers/Productos/Productos';
 import Empleado from '../containers/Empleado/Empleado';
+import NewEmpleado from '../containers/Empleado/NewEmpleado';
 import EmpleadoProductos from '../containers/EmpleadoProductos/EmpleadoProductos';
 import EmpleadoServicios from '../containers/EmpleadoServicios/EmpleadoServicios';
 import CrearTienda from '../containers/CrearTienda/CrearTienda';
@@ -23,6 +24,7 @@ import { AuthContextProvider } from '../firebase';
 import ProtectRoute from '../components/ProtectRoute/ProtectRoute';
 import Root from '../components/Root/Root';
 import SignUp from '../containers/SignUp/SignUp';
+
 
 const App = () => (
   <BrowserRouter>
@@ -39,6 +41,7 @@ const App = () => (
             <ProtectRoute type='private' exact path='/NewTienda' component={NewTienda} />
             <ProtectRoute type='private' exact path='/servicios' component={Servicios} />
             <ProtectRoute type='private' exact path='/productos' component={Productos} />
+            <ProtectRoute type='private' exact path='/NewEmpleado' component={NewEmpleado} />
             <ProtectRoute type='private' exact path='/empleado' component={Empleado} />
             <ProtectRoute type='private' exact path='/agenda' component={Agenda} />
             <ProtectRoute type='private' exact path='/empleadoProductos' component={EmpleadoProductos} />

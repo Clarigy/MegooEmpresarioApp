@@ -21,11 +21,12 @@ export class EmpleadoServicios extends Component {
         this.state = {
             name: "",
 
-            uid: this.props.location.customObject,
+            uid: this.props.uid,
             foto: "",
             tienda: "",
             servicios: [],
             checkBoxServicios: [],
+            categorias: []
         };
 
     }
@@ -34,6 +35,10 @@ export class EmpleadoServicios extends Component {
 
     componentDidMount = async () => {
         const servicios = [];
+        const categoriasTemp = [];
+        const categorias = [];
+        const serviciosTemp = [];
+        let object = {};
 
         const db = firebaseConfig.firestore();
         let docRef = await db.collection("EmpleadosTest").doc(this.state.uid);
@@ -68,10 +73,61 @@ export class EmpleadoServicios extends Component {
                     .then((querySnapshot) => {
                         querySnapshot.forEach((doc) => {
                             // doc.data() is never undefined for query doc snapshots
-                            servicios.push(doc.data());
+                            //servicios.push(doc.data());
+                            if (doc.data().categoria != "OtroCategoria"){
+                                categoriasTemp.push(doc.data().categoria)
+                            }else{
+                                categoriasTemp.push(doc.data().otrasCategorias)
+                            }
+                            if (doc.data().servicio != "Otro"){
+                                object = {
+                                    servicio: doc.data().servicio, 
+                                    categoria: doc.data().categoria, 
+                                    otraCategoria: doc.data().otrasCategorias,
+                                    precio: doc.data().precio
+                                }
+                            }else{
+                                object = {
+                                    servicio: doc.data().otrosServicios, 
+                                    categoria: doc.data().categoria, 
+                                    otraCategoria: doc.data().otrasCategorias,
+                                    precio: doc.data().precio
+                                }
+                            }
+                            serviciosTemp.push(object)
+                            
                         });
+                        categoriasTemp.sort()
+                
+                        serviciosTemp.sort((a,b) => (a.servicio > b.servicio) ? 1 : ((b.servicio > a.servicio) ? -1 : 0))
+                  
+                        for (let i = 0; i < categoriasTemp.length; i++) {
+                            if (categoriasTemp[i + 1] != categoriasTemp[i]) {
+                              categorias.push(categoriasTemp[i]);      
+                          }
+                        }
+
+                        for (let i = 0; i < serviciosTemp.length; i++) {
+                            var item1=serviciosTemp[i + 1]
+                            var item = serviciosTemp[i]
+         
+                            
+                            if (item1 != null){
+                        
+                                if (item1.servicio != item.servicio) {
+                                    servicios.push(item);      
+                              }
+                            }else{
+                                servicios.push(item);  
+                            }
+                            
+                        }
+
+           
                         this.setState({
-                            servicios: servicios
+                            servicios: servicios,
+                            categorias:categorias
+
                         });
 
                     })
@@ -95,27 +151,43 @@ export class EmpleadoServicios extends Component {
 
     }
 
+    compare_servicio(a, b){
+        // a should come before b in the sorted order
+        if(a.servicio < b.servicio){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a.servicio > b.servicio){
+                return 1;
+        // and and b are the same
+        }else{
+                return 0;
+        }
+}
+
 
     onChange = e => {
         const checkBoxServicios = this.state.checkBoxServicios
 
+
         var old = false
 
         for (var i = 0; i < checkBoxServicios.length; i++) {
+            console.log("Check [i]", checkBoxServicios[i])
             if (e.target.value == checkBoxServicios[i]) {
                 this.old = true
                 checkBoxServicios.splice(i, 1);
                 console.log(checkBoxServicios)
+                break;
             } else {
                 this.old = false
                 
             }
         }
 
-        console.log(this.old)
-        //if (!this.old) {
+  
+        if (!this.old) {
             checkBoxServicios.push(e.target.value)
-       // }
+        }
 
 
         this.setState({
@@ -124,7 +196,6 @@ export class EmpleadoServicios extends Component {
 
         this.onSubmit();
 
-        console.log(this.state.checkBoxServicios.length)
 
     }
 
@@ -187,120 +258,44 @@ export class EmpleadoServicios extends Component {
                 <>
 
                     <div className='container-fluid'>
-                        <div className='mx-0 mx-md- mx-lg-5'>
+                        <div className='mx-0 mx-md- mx-lg-5 containerDivInfoTienda'>
 
-                            <div className='row mb-5' ></div>
-                            <div className='row mb-5' ></div>
-                            <div className="text-center columnFotoTienda">
-                                <div className={this.state.foto == this.fotoDefault ? "divFotoTiendaNew" : "divFotoTienda"} style={this.state.foto == this.fotoDefault ? { backgroundColor: "#fff" } : { backgroundColor: "#1A1446" }}>
-
-                                    <img src={this.state.foto} id="fotoTienda" className='text-center' />
-                                </div>
-                                <div className='row mb-2' ></div>
-                                <h2 className='text-center Categoria-Titulo mt-1 h2Nombre'>{this.state.name}</h2>
-                                <div className='row mb-5' ></div>
-
-                                <div className='row' style={this.state.checkBoxServicios.length != 0 ? { display: "" } : { display: "none" }}>
-                                    <Link to={{
-                                        pathname: "/empleado",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4 mb-3">
-                                            <img src={InfoTienda} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Información de la tienda</h6>
-                                        </div>
-                                    </Link>
-                                    <Link to={{
-                                        pathname: "/empleadoServicio",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnPress ml-4 mb-3">
-                                            <img src={Servicios} id="iconoBtn" />
-                                            <h6 className='txtBtnPress'>Servicios</h6>
-                                        </div>
-                                    </Link>
-                                </div>
-                                <div className='row mb-3' ></div>
-                                <div className='row' style={this.state.checkBoxServicios.length != 0 ? { display: "" } : { display: "none" }}>
-                                    <Link to={{
-                                        pathname: "/empleadoProductos",
-                                        customObject: this.state.uid,
-                                        hash: "#" + this.state.nombre,
-
-                                    }} >
-                                        <div className="btnNoPress ml-4">
-                                            <img src={Productos} id="iconoBtn" />
-                                            <h6 className='txtBtnNoPress'>Productos</h6>
-                                        </div>
-                                    </Link>
-                                </div>
-
-
-
-
-
-                                <div className='row' style={this.state.checkBoxServicios.length == 0 ? { display: "" } : { display: "none" }}>
-
-                                    <div className="btnNoPress ml-4 mb-3">
-                                        <img src={InfoTienda} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Información de la tienda</h6>
-                                    </div>
-
-                                    <div className="btnPress ml-4 mb-3">
-                                        <img src={Servicios} id="iconoBtn" />
-                                        <h6 className='txtBtnPress'>Servicios</h6>
-                                    </div>
-
-                                </div>
-                                <div className='row mb-3' ></div>
-                                <div className='row' style={this.state.checkBoxServicios.length == 0 ? { display: "" } : { display: "none" }}>
-
-                                    <div className="btnNoPress ml-4">
-                                        <img src={Productos} id="iconoBtn" />
-                                        <h6 className='txtBtnNoPress'>Productos</h6>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
 
                             <div className='row mb-5' ></div>
 
-                            <h2 className="Categoria-Titulo">Servicios</h2>
+                            <h2 className="Categoria-Titulo columnInfoTiendas">Servicios</h2>
                             <div className='row mb-5' ></div>
                             <div className='row mb-5' ></div>
 
                             <div className='row'>
 
-                                {this.state.servicios && this.state.servicios.length > 0 && this.state.servicios.map((servicioTitle) => (
+                                {this.state.categorias && this.state.categorias.length > 0 && this.state.categorias.map((categoria) => (
 
                                     <div className='col-12 table-responsive'>
-                                        <h1 className="SubTitulo-List">{servicioTitle.categoria}</h1>
+                                        <h1 className="SubTitulo-List">{categoria}</h1>
                                         <div className='row mb-2' ></div>
 
+                                        
+
+
+
                                         {this.state.servicios && this.state.servicios.length > 0 && this.state.servicios.map((servicio) => (
-
-
-                                            <div style={servicio.categoria == servicioTitle.categoria ? { display: "initial" } : { display: "none" }}>
+                                                
+                                            <div className = "tableServicio" style={servicio.categoria == categoria || servicio.otraCategoria == categoria ? { display: "initial" } : { display: "none" }}>
                                                 <div className="columnDatos">
-                                                    <h2 className="productosList">{servicio.servicio}</h2>
+                                                    <h2 className="productosList">{servicio.servicio != "Otro" ? servicio.servicio : servicio.otrosServicios}</h2>
                                                 </div>
-                                                <div className="columnDatos text-center">
-                                                    <h2 className="productosList">{servicio.precio}</h2>
-                                                </div>
-                                                <div className="columnDatos text-center">
-
+                                                <div className="columnDatos text-center ">
+                                                <label className="containerCheck">
                                                     <input
                                                         defaultChecked={this.state.checkBoxServicios.some(v => (v === servicio.servicio))}
                                                         name="checkBoxServicios"
                                                         type="checkbox"
                                                         value={servicio.servicio}
+                                                        className=""
                                                         onChange={this.onChange} />
+                                                    <span className="checkBoxProxima"></span>
+                                                    </label>
                                                 </div>
                                                 <br />
                                                 <div className='row mb-3' ></div>
@@ -310,7 +305,7 @@ export class EmpleadoServicios extends Component {
                                         <div className='row mb-5' ></div>
                                     </div>
 
-                                ))}
+                                        ))}
                                 <div className='row mb-5' ></div>
 
 
