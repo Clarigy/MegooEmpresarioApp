@@ -1,73 +1,117 @@
 .columnFotoTiendas {
-  float: left;
-  width: 100px;
-  height: fit-content;  
-  margin: 0rem 3rem;
-  border-radius: 50%;
-  margin-bottom: 4rem;
+    float: left;
+    width: 100px;
+    height: fit-content;
+    margin: 0rem 3rem 5rem 0rem;
+    border-radius: 50%;
+    margin-bottom: 4rem;
+}
+.columnTiendaBtn {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+.columnInfoTienda {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
 }
 
-.divFotoTiendas{
-  float: left;
-  width: 100px;
-  height: 100px;  
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 50%;
-  border-radius: 20px;
+.divFotoTiendas {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 50%;
+    border-radius: 20px;
 }
 
-.divFotoTiendasNew{
-  float: left;
-  width: 100px;
-  height: 100px;  
-  border-radius: 20px;
-  margin-bottom: 1rem;
-  overflow: hidden;
+.divFotoTiendasNew {
+    float: left;
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    overflow: hidden;
 }
 
-.columnNoTiendas{
-  display: flex;
-  justify-content: center;
-  align-content: center;
+.columnNoTiendas {
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
 
-
-.tiendasContainer{
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0rem 7rem !important;
-
+.tiendasContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0rem 7rem !important;
 }
-
-
 
 #fotoTiendas {
-  display: inline;
-  width: 100px;
-  cursor: pointer;
+    display: inline;
+    width: 100px;
+    cursor: pointer;
 }
 
-
 .btnGuardarTiendas {
-  float: right;
+    float: right;
 }
 
 .columnBtnGuardarTiendas {
-  width: 100%;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
 }
 
-.Titulo-Tienda{
-  float: left;
+.Titulo-Tienda {
+    float: left;
 }
 
-.DivHeader{
-  display: inline-block; 
-  width: 100%;
+.DivHeader {
+    display: inline-block;
+    width: 100%;
 }
 
-.columnTiendaDatos{
-  width: 100%;
+.DivHeaderTienda {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+.columnTiendaDatos {
+    width: 100%;
+}
+.centered {
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+@media screen and (max-width: 1024px) {
+    .searchFilterBoxInput {
+        height: 3vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 480px) {
+    .tiendasContainer {
+        margin: 0rem 3rem !important;
+        align-self: center;
+        justify-content: space-between;
+    }
+    .columnFotoTiendas {
+        margin: 0rem 1rem 5rem 0rem;
+    }
+    .DivHeader {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 320px) {
 }

@@ -5,6 +5,13 @@ import firebaseConfig from '../../firebase/setup.jsx';
 import { AuthContext } from '../../firebase/context';
 import Icono_Senal from '../../assets/images/components/Iconos/señal.svg';
 import ReactWhatsapp from 'react-whatsapp';
+import loadingImage from '../../assets/images/components/Loader/LoaderPrueba.gif';
+import GifLoader from '../../components/Loader/index';
+import $ from 'jquery';
+import IconActive from '../../hooks/iconActive';
+import NoHayEquipos from '../../assets/images/containers/Equipos/Equipos.png';
+import Delete from '../../assets/images/delete.png';
+import NoHayClientes from '../../assets/images/containers/Clientes/clientes.png';
 
 export class Clientes extends Component {
     constructor(props) {
@@ -21,7 +28,13 @@ export class Clientes extends Component {
             showBox: false,
             showId: null,
             clientesDefault: [],
-            search: ''
+            search: '',
+            loading: true,
+            isEmpty: true,
+            sort: {
+                column: null,
+                direction: 'desc'
+            }
         };
     }
 
@@ -33,6 +46,13 @@ export class Clientes extends Component {
 
         this.uidText = user['id'];
 
+        setTimeout(() => {
+            this.setState({
+                time: 0,
+                loading: false
+            });
+        }, 1000);
+
         this.setState({
             uid: this.uidText
         });
@@ -41,7 +61,7 @@ export class Clientes extends Component {
         //let docRef = db.collection("TiendasTest").doc(user["id"]);
         let docRef = db
             .collection('TiendasTest')
-            .where('uid', '==', user['id'])
+            .where('idDueño', '==', user['id'])
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -59,7 +79,15 @@ export class Clientes extends Component {
                             clientes.push(doc.data());
                         });
                         this.setState({ clientes: clientes, clientesDefault: clientes });
-                        console.log(this.state.clientes);
+                        if (clientes.length > 0) {
+                            this.setState({
+                                isEmpty: false
+                            });
+                        } else {
+                            this.setState({
+                                isEmpty: true
+                            });
+                        }
                     })
                     .catch(function (error) {
                         console.log('Error getting documents: ', error);
@@ -81,13 +109,11 @@ export class Clientes extends Component {
         const authToken = '322a66fcbe9172eeba749fc0661aa085';
         //const client = require('twilio')(accountSid, authToken);
 
-        client.messages
-            .create({
-                from: 'whatsapp:+14155238886', // shared WhatsApp number
-                body: 'Ahoy world!',
-                to: 'whatsapp:+573122594219' // change this to your personal WhatsApp number
-            })
-            .then((message) => console.log(`Message sent: ${message.sid}`));
+        client.messages.create({
+            from: 'whatsapp:+14155238886', // shared WhatsApp number
+            body: 'Ahoy world!',
+            to: 'whatsapp:+573122594219' // change this to your personal WhatsApp number
+        });
     };
 
     handleBoxToggle(i) {
@@ -98,8 +124,12 @@ export class Clientes extends Component {
     }
 
     selectTienda = (e) => {
-        this.setState({ tiendaSelected: e.target.value });
+        this.setState({ tiendaSelected: e.target.value }, () => {
+            this.fetchInfo();
+        });
+    };
 
+    fetchInfo() {
         const clientes = [];
         const { user } = this.context;
 
@@ -109,7 +139,7 @@ export class Clientes extends Component {
 
         let docRefEquipo = db
             .collection('ClientesTest')
-            .where('tienda', '==', user['id'] + '-' + e.target.value)
+            .where('tienda', '==', user['id'] + '-' + this.state.tiendaSelected)
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -117,46 +147,48 @@ export class Clientes extends Component {
                     clientes.push(doc.data());
                 });
                 this.setState({ clientes: clientes });
+
+                if (clientes.length > 0) {
+                    this.setState({
+                        isEmpty: false
+                    });
+                } else {
+                    this.setState({
+                        isEmpty: true
+                    });
+                }
             })
             .catch(function (error) {
                 console.log('Error getting documents: ', error);
             });
-    };
+    }
 
-    sort = (e) => {
-        if (e.target.value == 'Nombre') {
-            var items = this.state.clientes;
-            items.sort(function (a, b) {
-                if (a.nombre > b.nombre) {
-                    return 1;
-                    print();
-                }
-                if (a.nombre < b.nombre) {
-                    return -1;
-                }
-                // a must be equal to b
-                return 0;
-            });
-        }
+    sortTable = (column) => (e) => {
+        const direction = this.state.sort.column ? (this.state.sort.direction === 'asc' ? 'desc' : 'asc') : 'desc';
+        const sortedData = this.state.clientes.sort((a, b) => {
+            const nameA = a.nombre.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.nombre.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
 
-        if (e.target.value == 'NombreZA') {
-            var items = this.state.clientes;
-            items.sort(function (a, b) {
-                if (a.nombre < b.nombre) {
-                    return 1;
-                }
-                if (a.nombre > b.nombre) {
-                    return -1;
-                }
-                // a must be equal to b
-                return 0;
-            });
+            return 0;
+        });
+
+        if (direction === 'desc') {
+            sortedData.reverse();
         }
 
         this.setState({
-            clientes: items
+            clientes: sortedData,
+            sort: {
+                column,
+                direction
+            }
         });
-        console.log(this.state.clientes);
     };
 
     search = (e) => {
@@ -171,133 +203,195 @@ export class Clientes extends Component {
                 return el.nombre.toString().toLowerCase().indexOf(query.toLowerCase()) > -1;
             });
         }
-        console.log(e.target.value);
-        console.log(filterItems(this.state.search));
 
         this.setState({
             clientes: filterItems(this.state.search)
         });
 
         if (e.target.value == '') {
-            this.setState({
-                clientes: this.state.clientesDefault
-            });
+            this.fetchInfo();
         }
     };
 
     render() {
+        const { loading } = this.state;
         this.mensajeWhatsapp =
+            'Hola,' +
+            this.state.nombreInvitado +
+            '! ' +
             this.state.tiendaSelected +
             ' te ha invitado a ser parte del Universo Meego. Descarga la App Meego y disfruta de grandes beneficios';
 
         return (
             <>
+                <GifLoader loading={loading} imageSrc={loadingImage} overlayBackground='rgba(219,219,219, .8)' />
                 <div className='container-fluid'>
-                    <div className='mx-0 mx-md- mx-lg-8'>
-                        <div className='row mb-5'></div>
+                    <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
+                        <div className='col'>
+                            <div className='row mb-5'></div>
 
-                        <div className='row'>
-                            <div className='col-12 col-lg-3 mb-3'>
-                                <select
-                                    name=''
-                                    id=''
-                                    className=' text-white px-4 py-2 mt-1 mr-2 Categoria-btnMorado'
-                                    placeholder='Buscar'
-                                    aria-label='Buscar'
-                                    aria-describedby='basic-addon1'
-                                    onChange={this.selectTienda}
-                                >
-                                    {this.state.tiendas.map((tienda) => (
-                                        <option value={tienda.nombre}>{tienda.nombre}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className='row searchFilterBox'>
-                                <div className='input-group mb-3 Categoria-inputShadow searchFilterBoxInput'>
-                                    <div className='input-group-prepend'>
-                                        <span className='input-group-text Categoria-Inputprepend' id='basic-addon1'>
-                                            <i className='fa fa-search text-muted'></i>
-                                        </span>
-                                    </div>
-                                    <input
-                                        type='text'
-                                        className='form-control text-muted Categoria-Inputprepend-Input'
-                                        placeholder='Buscar'
-                                        aria-label='Username'
-                                        aria-describedby='basic-addon1'
-                                        onChange={this.search}
-                                        value={this.state.search}
-                                    />
-                                </div>
-
-                                <div className='input-group mb-3 Categoria-inputShadow searchFilterBoxInput'>
-                                    <div className='input-group-prepend'>
-                                        <span className='input-group-text Categoria-Inputprepend' id='basic-addon1'>
-                                            <img src={Icono_Senal} alt='' />
-                                        </span>
-                                    </div>
-
+                            <div className='row headerContainer'>
+                                <div className='col-lg-3 col-sm-16 mb-sm-2 align-self-center p-0 text-left'>
                                     <select
                                         name=''
                                         id=''
-                                        className='form-control text-muted Categoria-Inputprepend-Input'
+                                        className=' btn text-white mx-1 Categoria-btnMorado btnFull'
                                         placeholder='Buscar'
                                         aria-label='Buscar'
                                         aria-describedby='basic-addon1'
-                                        onChange={this.sort}
+                                        onChange={this.selectTienda}
                                     >
-                                        <option value=''>Ordenar por</option>
-                                        <option value='Nombre'>Nombre A-Z</option>
-                                        <option value='NombreZA'>Nombre Z-A</option>
+                                        {this.state.tiendas.map((tienda) => (
+                                            <option value={tienda.nombre}>{tienda.nombre}</option>
+                                        ))}
                                     </select>
                                 </div>
+                                <div className='col-lg-9 col-xs-16 colFiltrosContainer'>
+                                    <div className='row filtrosContainer'>
+                                        <div className='input-group mb-3 Categoria-inputShadow searchFilterBoxInput'>
+                                            <div className='input-group-prepend'>
+                                                <span
+                                                    className='input-group-text Search-Inputprepend'
+                                                    id='basic-addon1'
+                                                >
+                                                    <i className='fa fa-search text-muted'></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                type='text'
+                                                className='form-control text-muted Search-Inputprepend-Input'
+                                                placeholder='Buscar'
+                                                aria-label='Username'
+                                                aria-describedby='basic-addon1'
+                                                onChange={this.search}
+                                                value={this.state.search}
+                                            />
+                                        </div>
 
-                                <div>
-                                    <button
-                                        className='btn text-white Categoria-btnMorado mx-1'
-                                        data-toggle='modal'
-                                        data-target='#FiltrarModal'
-                                    >
-                                        <i className='fa fa-filter mr-2'></i> Filtrar
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <button
-                                        className='btn text-white Categoria-btnMorado'
-                                        data-toggle='modal'
-                                        data-target='#InvitarModal'
-                                    >
-                                        <i className='fa fa-plus mr-2'></i> Invitar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className='modal fade' id='FiltrarModal'>
-                            <div className='modal-dialog modal-dialog-centered' role='document'>
-                                <div className='modal-content Categoria-inputShadow Categoria-modal'>
-                                    <div className='text-center modal-header border-bottom-0'>
-                                        <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
-                                            Filtrar
-                                        </h4>
-                                    </div>
-
-                                    <div className='row text-center'>
-                                        <div className='columnBtnGuardarPerfil'>
+                                        <div>
                                             <button
-                                                className='btn text-white Categoria-btnMorado'
-                                                data-dismiss='modal'
-                                                onClick={this.filter}
+                                                className='btn text-white Categoria-btnMorado btnFull'
+                                                data-toggle='modal'
+                                                data-target='#FiltrarModal'
                                             >
-                                                Filtrar
+                                                <i className='fa fa-filter mr-2'></i> Filtrar
+                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <button
+                                                className='btn text-white Categoria-btnMorado btnFull'
+                                                data-toggle='modal'
+                                                data-target='#InvitarModal'
+                                            >
+                                                <i className='fa fa-plus mr-2'></i> Invitar
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <div className='modal fade' id='FiltrarModal'>
+                                <div className='modal-dialog modal-dialog-centered' role='document'>
+                                    <div className='modal-content Categoria-inputShadow Categoria-modal'>
+                                        <div className='text-center modal-header border-bottom-0'>
+                                            <h4 className='w-100 Categoria-Titulo modal-title' id='exampleModalLabel'>
+                                                Filtrar
+                                            </h4>
+                                        </div>
+
+                                        <div className='row text-center'>
+                                            <div className='columnBtnGuardarPerfil'>
+                                                <button
+                                                    className='btn text-white Categoria-btnMorado'
+                                                    data-dismiss='modal'
+                                                    onClick={this.filter}
+                                                >
+                                                    Filtrar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='row mb-5'></div>
+                            <div className='DivHeader'>
+                                <div className='Titulo-Equipo'>
+                                    <h2 className='Categoria-Titulo'>Clientes</h2>
+                                </div>
+
+                                <div className='row mb-5'></div>
+                            </div>
+
+                            {this.state.isEmpty ? (
+                                <div className='columnNoTiendas'>
+                                    <img className='notTiendas' src={NoHayClientes} />
+                                </div>
+                            ) : (
+                                <div>
+                                    <div className='row mb-3'></div>
+                                    <div className='col-12 table-responsive tableScrollVertical'>
+                                        <table className='table' id='myTable' ref={this.title}>
+                                            <thead className='text-left CategoriaTabla-Thead'>
+                                                <tr>
+                                                    <th className='tableClickeable' onClick={this.sortTable('nombre')}>
+                                                        Nombre <i className='fas fa-sort'></i>
+                                                    </th>
+                                                    <th>Celular </th>
+                                                    <th>Dirección </th>
+                                                    <th>Foto de Perfil</th>
+                                                </tr>
+                                            </thead>
+                                            {this.state.clientes &&
+                                                this.state.clientes.length > 0 &&
+                                                this.state.clientes.map((cliente) => (
+                                                    <tbody className='text-left CategoriaTabla-Body'>
+                                                        <tr>
+                                                            <td>{cliente.nombre}</td>
+                                                            <td>{cliente.celular}</td>
+                                                            <td>{cliente.direccion}</td>
+                                                            <td>
+                                                                <img
+                                                                    src={cliente.fotoPerfil}
+                                                                    className='imagenProducto'
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                ))}
+                                        </table>
+                                    </div>
+                                    {/*<div className='DivHeader'>
+                                {this.state.clientes &&
+                                    this.state.clientes.length > 0 &&
+                                    this.state.clientes.map((item, i) => (
+                                        <div className='columnFotoCliente'>
+                                            <div
+                                                className='divFotoCliente'
+                                                style={{ backgroundColor: '#1A1446' }}
+                                                onMouseOver={this.handleBoxToggle(i)}
+                                                onMouseOut={this.handleBoxToggle(i)}
+                                            >
+                                                <img src={item.fotoPerfil} id='fotoCliente' className='text-center' />
+                                                <div className={this.state.showBox && this.state.showId == i ? 'show' : ''}>
+                                                    <div className='innerBox'>
+                                                        <div className='row mb-3'></div>
+                                                        <h5 className='Categoria-SubTitulo'>Nombre: {item.nombre}</h5>
+                                                        <div className='row mb-3'></div>
+                                                        <h5 className='Categoria-SubTitulo'>Celular: {item.celular}</h5>
+                                                        <div className='row mb-3'></div>
+                                                        <h5 className='Categoria-SubTitulo'>Dirección: {item.direccion}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h2 className='text-center Categoria-SubTitulo mb-0 mt-1'>{item.nombre}</h2>
+                                        </div>
+                                    ))}
+                                    </div>*/}
+                                </div>
+                            )}
+                        </div>
                         <div className='modal fade' id='InvitarModal'>
                             <div className='modal-dialog modal-dialog-centered' role='document'>
                                 <div className='modal-content Categoria-inputShadow Categoria-modal'>
@@ -339,7 +433,9 @@ export class Clientes extends Component {
                                         <h2 className='Categoria-SubTitulo'>Mensaje por defecto</h2>
                                         <div className='row mb-3'></div>
                                         <h5>
-                                            {this.state.tiendaSelected} te ha invitado a ser parte del Universo Meego.
+                                            <br />
+                                            Hola, {this.state.nombreInvitado}! {this.state.tiendaSelected} te ha
+                                            invitado a ser parte del Universo Meego.
                                             <br />
                                             <br />
                                             Descarga la App Meego y disfruta de grandes beneficios.
@@ -350,7 +446,7 @@ export class Clientes extends Component {
                                         <div className='columnBtnGuardarPerfil'>
                                             <ReactWhatsapp
                                                 className='btn text-white Categoria-btnMorado'
-                                                number={this.state.numeroInvitado}
+                                                number={'+57' + this.state.numeroInvitado}
                                                 message={this.mensajeWhatsapp}
                                             >
                                                 Invitar
@@ -359,48 +455,6 @@ export class Clientes extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className='row mb-5'></div>
-                        <div className='row mb-5'></div>
-                        <div className='row mb-3'></div>
-                        <div className='DivHeader'>
-                            <div className='Titulo-Equipo'>
-                                <h2 className='Categoria-Titulo'>Clientes</h2>
-                            </div>
-
-                            <div className='row mb-5'></div>
-                            <div className='row mb-5'></div>
-                        </div>
-
-                        <div className='row mb-3'></div>
-
-                        <div className='DivHeader'>
-                            {this.state.clientes &&
-                                this.state.clientes.length > 0 &&
-                                this.state.clientes.map((item, i) => (
-                                    <div className='columnFotoCliente'>
-                                        <div
-                                            className='divFotoCliente'
-                                            style={{ backgroundColor: '#1A1446' }}
-                                            onMouseOver={this.handleBoxToggle(i)}
-                                            onMouseOut={this.handleBoxToggle(i)}
-                                        >
-                                            <img src={item.fotoPerfil} id='fotoCliente' className='text-center' />
-                                            <div className={this.state.showBox && this.state.showId == i ? 'show' : ''}>
-                                                <div className='innerBox'>
-                                                    <div className='row mb-3'></div>
-                                                    <h5 className='Categoria-SubTitulo'>Nombre: {item.nombre}</h5>
-                                                    <div className='row mb-3'></div>
-                                                    <h5 className='Categoria-SubTitulo'>Celular: {item.celular}</h5>
-                                                    <div className='row mb-3'></div>
-                                                    <h5 className='Categoria-SubTitulo'>Dirección: {item.direccion}</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h2 className='text-center Categoria-SubTitulo mb-0 mt-1'>{item.nombre}</h2>
-                                    </div>
-                                ))}
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,103 @@
+.opcionContainer {
+    background-color: #6c3eff;
+    width: fit-content;
+    height: 9vw;
+    max-height: 48px;
+    padding: 0.3rem;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards-descuento {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cards-descuento::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.cards-descuento::-webkit-scrollbar-thumb {
+    background: rgb(204, 204, 204);
+    border-radius: 1em;
+}
+
+.cards-descuento::-webkit-scrollbar-thumb:hover {
+    background: rgb(138, 138, 138);
+}
+.cards-descuento::-webkit-scrollbar {
+    height: 5px;
+}
+.Descuentos-btnMorado {
+    height: 7vw;
+    max-height: 40px;
+    background-color: #6c3eff;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 30px;
+}
+
+.DescuentosDiv_Text {
+    margin: 2px !important;
+    font-size: 1rem;
+}
+#InfoDescuentosDiv.active {
+    background-color: #ffffff;
+    color: #6c3eff;
+    .DescuentosDiv_Text {
+        color: #6c3eff;
+    }
+}
+#InfoPromocionesDiv.active {
+    background-color: #ffffff;
+    color: #6c3eff;
+    .DescuentosDiv_Text {
+        color: #6c3eff;
+    }
+}
+
+.colDias {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+td {
+    max-width: 200px;
+    flex-wrap: wrap;
+}
+
+.table-descuentos {
+    height: 40vh !important;
+}
+
+.rowHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+    .btnHalfFull {
+        width: 50%;
+    }
+}
+@media screen and (max-width: 480px) {
+}
+
+@media screen and (max-width: 320px) {
+    .opcionContainer {
+        padding: 0rem 0.3rem;
+    }
+    .Descuentos-btnMorado {
+        padding: 0rem;
+    }
+    .DescuentosDiv_Text {
+        font-size: 0.8rem;
+        margin: 0rem !important;
+    }
+}

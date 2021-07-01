@@ -37,7 +37,6 @@
 }*/
 
 
-
 .siderbar-color {
     background-color: #6c3eff;
     /* -webkit-border-top-left-radius: 50px;
@@ -89,6 +88,22 @@
     height: 3rem !important;
     width: 3rem !important;
   }
+
+  .siedebar-fixed{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    max-height: 100vh;
+    height: 100vh;
+  }
+
+  .sidebar-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2em 0em;
+  }
+
   
   @media (min-width: 360px) and (max-width: 767px) {
     .sidebar .nav-item .nav-link {

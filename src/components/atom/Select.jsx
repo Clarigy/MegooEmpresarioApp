@@ -18,10 +18,6 @@ export default function SelectAtom(props) {
 
   const handleChange = (event) => {
     setStateBalance(event.target.value);
-    console.log("CAMBIO");
-    console.log(props.storeId);
-    console.log(event.target.value);
-    console.log(props.balanceId);
 
     var actualizarEstado = firebase
       .functions()
@@ -32,8 +28,7 @@ export default function SelectAtom(props) {
       balanceId: props.balanceId,
     }).then(function (result) {
       // Read result of the Cloud Function.
-      //console.log(result.data.message);
-      console.log(result.data);
+      //console.log(result.data.message);;
     });
   };
 

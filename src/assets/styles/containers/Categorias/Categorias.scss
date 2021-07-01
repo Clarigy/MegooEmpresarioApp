@@ -1,25 +1,25 @@
 .Categoria-Titulo {
     font-family: 'SpartanSemiBold';
-    font-size: 28px;
-    color: #1A1446;
+    font-size: 2vw;
+    color: #1a1446;
+    width: fit-content;
+    text-align: center;
 }
 
 .Categoria-SubTitulo {
     font-family: 'SpartanSemiBold';
-    font-size: 18px;
-    color: #1A1446;
+    font-size: 1.5vw;
+    color: #1a1446;
     float: left;
+    width: fit-content;
 }
 .Categoria-SubTitulo-Alerta {
     font-family: 'SpartanSemiBold';
-    color: #FF3B7B;
-    font-Size: 12px;
-
+    color: #ff3b7b;
+    font-size: 12px;
 }
 
-
 .Categoria-Alerta-Rojo {
-
     margin-top: 0.3em;
     font-family: 'SpartanSemiBold';
     font-size: x-small;
@@ -34,12 +34,13 @@
 
 .Categoria-form {
     font-family: 'SpartanSemiBold';
-    color: #1A1446;
+    color: #1a1446;
 }
 
 .Categoria-btnMorado {
-    height: 48px;
-    background-color: #6C3EFF;
+    height: 7vw;
+    max-height: 48px;
+    background-color: #6c3eff;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 30px;
@@ -49,8 +50,9 @@
 }
 
 .Categoria-btnRosado {
-    height: 48px;
-    background-color: #FF3B7B;
+    height: 7vw;
+    max-height: 48px;
+    background-color: #ff3b7b;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 30px;
@@ -58,11 +60,11 @@
     -moz-box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
 }
-
 
 .Categoria-btnAzul {
-    height: 48px;
-    background-color: #00D4D8;
+    height: 7vw;
+    max-height: 48px;
+    background-color: #00d4d8;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 30px;
@@ -71,7 +73,7 @@
     box-shadow: 7px 7px 15px -10px rgba(0, 0, 0, 0.75);
 }
 
-.Categoria-btnTransparente{
+.Categoria-btnTransparente {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -84,7 +86,7 @@
 }
 
 .Categoria-Inputprepend {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-right: none;
 }
 
@@ -93,7 +95,7 @@
     height: 50px;
 }
 
-#Categoria thead>tr>th {
+#Categoria thead > tr > th {
     border-bottom: none;
     border-top: none;
 }
@@ -103,32 +105,34 @@ table td {
     vertical-align: middle !important;
 }
 
-#Categoria tbody>tr>td {
+#Categoria tbody > tr > td {
     border-bottom: none;
     border-top: none;
 }
 
 .CategoriaTabla-Thead {
-    color: #9C9B9B;
+    color: #9c9b9b;
 }
 
 .CategoriaTabla-Body {
-    color: #1A1446;
+    color: #1a1446;
     font-size: 18px;
     font-family: 'SpartanSemiBold';
 }
 
 .Categoria-modal {
     border-radius: 1.3rem !important;
+    display: flex;
+    justify-content: center !important;
 }
 
 .Categoria-inputBottomBorder {
     border-radius: 0px !important;
-    border-bottom: 2px solid #1A1446;
+    border-bottom: 2px solid #1a1446;
 }
 
 .Categoria-imgUpload {
-    border: 2px dotted #6C3EFF;
+    border: 2px dotted #6c3eff;
     border-radius: 30px;
 }
 
@@ -136,13 +140,53 @@ table td {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.05) !important;
     border-radius: 40px !important;
     border: 0px solid !important;
-    opacity: .8 !important;
+    opacity: 0.8 !important;
 }
 
 .Categoria-imgUpload-btn {
-    background-color: #6C3EFF !important;
+    background-color: #6c3eff !important;
 }
 
-.Categoria-imagen{
+.Categoria-imagen {
     width: 75px;
+}
+.Categoria-SubTituloPequeno {
+    font-family: 'SpartanSemiBold';
+    color: #1a1446;
+    font-size: 1rem; //16px
+}
+
+@media screen and (max-width: 768px) {
+    .Categoria-SubTitulo {
+        font-size: 2vw;
+    }
+    .Categoria-Titulo {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .Categoria-SubTitulo {
+        font-size: 4vw;
+    }
+    .Categoria-Titulo {
+        font-size: 5vw;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .Categoria-btnMorado {
+        height: 10vw;
+        font-size: 4vw;
+    }
+
+    .Categoria-btnRosado {
+        height: 10vw;
+        font-size: 4vw;
+    }
+
+    .Categoria-btnAzul {
+        height: 10vw;
+        font-size: 4vw;
+    }
 }

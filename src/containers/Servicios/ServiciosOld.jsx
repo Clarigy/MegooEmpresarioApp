@@ -51,7 +51,7 @@ export class Servicios extends Component {
                     name: doc.data()["nombre"],
                     foto: doc.data()["foto"],
                 });
-                console.log(doc.data()["foto"])
+            
             } else {
                 console.log("No such document!");
             }
@@ -212,7 +212,7 @@ export class Servicios extends Component {
         this.setState({
             servicios: items
         })
-        console.log(this.state.servicios)
+   
     }
 
     search = e => {
@@ -228,8 +228,7 @@ export class Servicios extends Component {
                 return el.servicio.toString().toLowerCase().indexOf(query.toLowerCase()) > -1;
             })
           }
-          console.log(e.target.value);
-          console.log(filterItems(this.state.search));
+
 
           this.setState({
             servicios: filterItems(this.state.search)
@@ -248,7 +247,7 @@ export class Servicios extends Component {
     render() {
         this.fotoDefault = "https://firebasestorage.googleapis.com/v0/b/meegoapptest-98b27.appspot.com/o/foto%2Ftiendas%2FVector.png?alt=media&token=f25340c9-55c8-4e23-b100-ea7906115ce6"
 
-        console.log(this.state.servicios)
+  
 
             return (
                 <>

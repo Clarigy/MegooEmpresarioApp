@@ -38,8 +38,7 @@ export class SignUp extends Component {
   
         
   const { user } = this.context;
-          console.log("USER",user);
-          console.log("ID",user.id);
+  
 
           this.state = {
             name: "",
@@ -79,15 +78,7 @@ export class SignUp extends Component {
             bornDateEmpty = "Debes ser mayor de edad"
         }
 
-        console.log("SUBMIT",this.state.name);
-        console.log("SUBMIT",user.email);
-        console.log("SUBMIT",this.state.bornDate);
-        console.log("SUBMIT",this.state.document);
-        console.log("SUBMIT",this.state.cellPhone);
-
-        console.log("SUBMIT",this.state.rol);
-        console.log("SUBMIT",age);
-        console.log("SUBMIT", status);
+;
 
     if (this.state.name != "" && user.email != "" && this.state.bornDate != "" && this.state.document != "" &&
         this.state.cellPhone != "" && age >= 18 && this.state.rol != "") {
@@ -110,7 +101,7 @@ export class SignUp extends Component {
        
 
     } else {
-        console.log("NOOOOOOO")
+
     }
     e.preventDefault();
 
@@ -176,7 +167,7 @@ onChangeFile = (e) => {
     var textoGuardar;
         var tituloGuardar;
 
-        console.log("dddd");
+  
 
         var nameEmpty = "";
         if (this.state.name == "") {
@@ -184,7 +175,7 @@ onChangeFile = (e) => {
         }
 
         var bornDateEmpty = "";
-        console.log("fechaaa",this.state.bornDate)
+     
         if (this.state.bornDate == "") {
             bornDateEmpty = "El campo Fecha de nacimiento esta vacio"
         } else {
@@ -227,14 +218,7 @@ onChangeFile = (e) => {
 
         status = true;
 
-        console.log("CHANGE",this.state.name);
-        console.log("CHANGE",user.email);
-        console.log("CHANGE",this.state.bornDate);
-        console.log("CHANGE",this.state.document);
-        console.log("CHANGE",this.state.cellPhone);
-        console.log("CHANGE",this.state.rol);
-        console.log("CHANGE",age);
-        console.log("CHANGE estado", status);
+
 
 
   /*

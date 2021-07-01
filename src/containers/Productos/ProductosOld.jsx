@@ -49,8 +49,7 @@ export class Productos extends Component {
                 this.setState({
                     name: doc.data()["nombre"],
                     foto: doc.data()["foto"],
-                });
-                console.log(doc.data()["foto"])
+         
             } else {
                 console.log("No such document!");
             }
@@ -236,7 +235,7 @@ export class Productos extends Component {
         this.setState({
             productos: items
         })
-        console.log(this.state.productos)
+  
     }
 
     search = e => {
@@ -252,8 +251,7 @@ export class Productos extends Component {
                 return el.nombre.toString().toLowerCase().indexOf(query.toLowerCase()) > -1;
             })
           }
-          console.log(e.target.value);
-          console.log(filterItems(this.state.search));
+ 
 
           this.setState({
             productos: filterItems(this.state.search)

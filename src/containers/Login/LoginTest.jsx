@@ -61,8 +61,7 @@ const LoginTest = (props) => {
     try {
 
       const res = await auth.signInWithEmailAndPassword(email, pass);
-      console.log(res.user.email);
-      console.log(res.user);
+  
       //TODO: comparar el correo
 
       await db
@@ -112,7 +111,7 @@ const LoginTest = (props) => {
       
 
         var provider = new firebase.auth.GoogleAuthProvider();
-        console.log("aaaaaaaaaaaaaaaaaaaaaaa", )
+   
 
         const res = await auth
         .signInWithPopup(provider)
@@ -133,17 +132,17 @@ const LoginTest = (props) => {
           email: user.email,
           uid: user.uid
         });
-        console.log("bbbbbbbbbbbbbbbbbbbbb", user)
+
         let docRef = db.collection("Perfil").doc(user.id);
 
         docRef.get().then((doc) => {
           if (doc.exists) {
             ruta = '/perfil';
-            console.log(ruta)
+           
           } else {
                  
             ruta = '/signup'; 
-            console.log(ruta)
+           
             }
         })
       //Limpiar los txt
@@ -194,11 +193,11 @@ const LoginTest = (props) => {
     docRef.get().then((doc) => {
       if (doc.exists) {
         ruta = '/perfil';
-        console.log(ruta)
+       
       } else {
              
         ruta = '/signup'; 
-        console.log(ruta)
+       
         }
     })
 
@@ -218,7 +217,7 @@ const LoginTest = (props) => {
         email,
         pass
       );
-      console.log(res.user);
+
       //Guardar el registro en la BD
       db.collection('users/').doc(res.user.uid).set({
         email: res.user.email,
@@ -390,12 +389,12 @@ const LoginTest = (props) => {
                             <div className="otherSignin">
                                 <span
                                 onClick={() => LoginGoogle()}>
-                                    <i class="fab fa-google"></i>
+                                    <i className="fab fa-google"></i>
                                 </span>
                                 <br/>
                                 <span
                                 onClick={() => LoginFacebook()}>
-                                    <i class="fab fa-facebook-f"></i>
+                                    <i className="fab fa-facebook-f"></i>
                                 </span>
                             </div>
                           </div>

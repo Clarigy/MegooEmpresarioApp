@@ -1,95 +1,198 @@
-.perfilContainer{
-  margin: 0rem 10rem !important;
-  height: fit-content;
-
-  
+.perfilContainer {
+    margin: 0rem 10rem !important;
+    height: fit-content;
+    display: flex;
 }
 .columnFotoPerfil {
-  float: left;
-  width: auto;
-  height: 40rem;  
-  margin-right: 15rem;
-  border-radius: 50%;
+    float: left;
+    width: 20%;
+    height: 40rem;
+    border-radius: 50%;
+    justify-self: flex-start;
+    justify-items: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
-.h2Nombre{
-  margin-left: 3rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 200px;
+.columnInfoPerfil {
+    float: right;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
 }
 
-.divFotoPerfil{
-  
-  float: left;
-  width: 142px;
-  height: 142px;  
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 50%;
+.rowInfoPerfil {
+    width: 100%;
+    height: fit-content;
+    justify-content: space-between;
+    margin-right: 0rem !important;
+    margin-left: 0rem !important;
+    display: flex;
+    flex-direction: row;
 }
-.formRow{
-  margin-right: 0rem !important;
-  margin-left: 0rem !important;
-  display: flex;
-  justify-content: space-between;
+
+.h2Nombre {
+    margin-left: 3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
 }
-.FotoPerfil{
-  
-  margin-left: 5rem;
-  width: 142px;
-  height: 142px;  
-  margin: 0rem; 
-  border-radius: 50%;
+
+.divFotoPerfil {
+    float: left;
+    width: 10vw;
+    height: 10vw;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.FotoPerfil {
+    margin-left: 5rem;
+    width: 10vw;
+    height: 10vw;
+    margin: 0rem;
+    border-radius: 50%;
 }
 
 #fotoPerfil {
-  display: inline;
-  width: 142px;
-  cursor: pointer;
+    display: inline;
+    width: 10vw;
+    height: 10vw;
+    cursor: pointer;
 }
 
 .columnPerfilDatos {
-  float: left;
-  width: 40%;
-  margin: 0rem;
+    float: left;
+    width: 48%;
+    margin: 0rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .btnGuardarPerfil {
-  float: right;
+    float: right;
 }
 
 .txtGuardarPerfil {
-  float: right;
-  font-family: "SpartanSemiBold";
-  font-size: medium;
-  color: #ff0000;
+    float: right;
+    font-family: 'SpartanSemiBold';
+    font-size: medium;
+    color: #ff0000;
 }
 
 .columnBtnEliminarPerfil {
-  width: 50%;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-  float: left;
+    width: 50%;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    float: left;
 }
 
 .columnBtnGuardarPerfil {
-  width: 100%;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
 }
 
 .btnEliminarCuenta {
-  margin-left: 20rem;
+    margin-left: 20rem;
 }
 
-.splashScreen{
-  height: auto;
-  width: 50%;
-  padding-top: 50%;
+.splashScreen {
+    height: auto;
+    width: 50%;
+    padding-top: 50%;
 }
 
-.divButtons{
+.divButtons {
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+@media screen and (max-width: 1024px) {
+    .perfilContainer {
+        margin: 0rem 7rem !important;
+    }
+}
 
-justify-content: space-between;
+@media screen and (max-width: 768px) {
+    .perfilContainer {
+        margin: 0rem 5rem !important;
+        flex-direction: column;
+    }
+    .columnFotoPerfil {
+        width: 100%;
+        height: fit-content;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+    .columnInfoPerfil {
+        float: right;
+        width: 100%;
+        justify-self: flex-start;
+    }
+    .divFotoPerfil {
+        width: 15vw;
+        height: 15vw;
+    }
+    #fotoPerfil {
+        width: 15vw;
+        height: 15vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .perfilContainer {
+        margin: 0rem 3rem !important;
+        flex-direction: column;
+    }
+    .columnFotoPerfil {
+        width: 100%;
+        height: fit-content;
+        flex-direction: column;
+    }
+
+    .columnInfoPerfil {
+        float: right;
+        width: 100%;
+        justify-self: flex-start;
+    }
+
+    .columnPerfilDatos {
+        width: 100%;
+    }
+    .divFotoPerfil {
+        width: 25vw;
+        height: 25vw;
+    }
+    #fotoPerfil {
+        width: 25vw;
+        height: 25vw;
+    }
+
+    .rowInfoPerfil {
+        flex-direction: column;
+        width: 100%;
+    }
+    .divButtons {
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .perfilContainer {
+        margin: 0rem 2rem !important;
+        flex-direction: column;
+    }
+    .divFotoPerfil {
+        width: 35vw;
+        height: 35vw;
+    }
+    #fotoPerfil {
+        width: 35vw;
+        height: 35vw;
+    }
 }

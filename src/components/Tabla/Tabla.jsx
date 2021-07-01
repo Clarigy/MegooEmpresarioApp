@@ -95,8 +95,7 @@ export class Tabla extends Component {
                         >
                             {/* <option value=''>Ordenar por</option> */}
                             {this.props.Columnas.map((item, index) =>{
-                              console.log(item.text);
-                              console.log(this.props.Columnas[this.props.Columnas.length-1].text);
+                      
                               return (
                                 <option key={index} value={item.text} >{item.text === this.props.Columnas[this.props.Columnas.length-1].text ? ' ' : item.text }</option>
                               );
@@ -108,7 +107,7 @@ export class Tabla extends Component {
                     {this.props.Modal === true ? (
                         <button
                             type='button'
-                            class='btn btn-primary'
+                            className='btn btn-primary'
                             data-toggle='modal'
                             data-target={this.props.ModalID}
                         >
@@ -143,10 +142,7 @@ export class Tabla extends Component {
     };
     render() {
         const { Columnas, Datos, Modal, ModalID } = this.props;
-        console.log('Columnas', Columnas);
-        console.log('Datos', Datos);
-        console.log('Modal', Modal);
-        console.log('Modal_ID', ModalID);
+
         return (
             <>
                 <ToolkitProvider keyField='ID' data={Datos} columns={Columnas} search={{ defaultSearch: ' ' }}>

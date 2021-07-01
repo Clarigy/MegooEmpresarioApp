@@ -1,357 +1,450 @@
 .columnFotoTienda {
-  float: left;
-  width: auto;
-  height: 40rem;
-  margin: 0rem 3rem !important;
-  border-radius: 50%;
-  display: flex;
-  align-content: center;
-  flex-direction: column;
+    float: left;
+    width: auto;
+    height: 40rem;
+    margin: 0rem 3rem !important;
+    border-radius: 50%;
+    display: flex;
+    align-content: center;
+    flex-direction: column;
 }
 
-.h2Nombre{
-  margin-left: 1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 200px;
+.h2Nombre {
+    margin-left: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
 }
 
-.divFotoTienda{
-  float: left;
-  width: 142px;
-  height: 142px;  
-  margin-left: 3rem;  
-  margin-right: 3rem; 
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 50%;
+.rowDatos {
+    display: flex;
+    justify-content: space-between;
 }
 
-
-.divFotoTiendaNew{
-  float: left;
-  width: 142px;
-  height: 142px;  
-  margin-right: 5rem;  
-  margin-left: 3rem;  
-  margin-bottom: 1rem;
-  overflow: hidden;
+.dropContainer {
+    width: 100%;
+    display: flex;
 }
 
-.rowInfoTienda{
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.divFotoTienda {
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+}
+
+.divFotoTiendaNew {
+    width: 142px;
+    height: 142px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.rowInfoTienda {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 #fotoTienda {
-  display: inline;
-  width: 142px;
- 
+    display: inline;
+    width: 142px;
+    height: 142px;
 }
 
-.tiendaInfoContainer{
-  margin: 0rem 10rem 0rem 0rem !important;
-  height: fit-content;
+.tiendaInfoContainer {
+    margin: 0rem 10rem 0rem 0rem !important;
+    height: fit-content;
 }
 
-.containerDivInfoTienda{
-  margin: 0rem !important;
+.containerDivInfoTienda {
+    margin: 0rem !important;
 }
-
 
 .columnTitle {
-  margin-right: 5rem;
+    margin-right: 5rem;
 }
 
-.columnPerfilDatos {
-  float: left;
-  width: 48%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
+.columnInfoTiendas {
+    float: left;
+    width: 50%;
+    text-align: left;
 }
-.columnInfoTiendas{
-  float: left;
-  width: fit-content;
-}
-.columnAprobadoTiendas{
-  float: right;
-
+.columnAprobadoTiendas {
+    float: right;
+    width: 50%;
+    text-align: right;
 }
 
 .columnDescripcion {
-  float: left;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    float: left;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.sectionDiv{
-  padding: 0rem !important;
+.sectionDiv {
+    padding: 0rem !important;
 }
 
 .btnGuardarPerfil {
-  float: right;
+    float: right;
 }
 
 .txtGuardarPerfil {
-  float: right;
-  font-family: "SpartanSemiBold";
-  font-size: medium;
-  color: #ff0000;
+    float: right;
+    font-family: 'SpartanSemiBold';
+    font-size: medium;
+    color: #ff0000;
 }
 
 .columnBtnGuardarPerfil {
-  width: 100%;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
 }
 
 .columnBtnGuardarTienda {
-  width: 100%;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
 }
 
 .btnPress {
-  width: 106px;
-  height: 106px;
-  background: #6c3eff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 106px;
+    height: 106px;
+    background: #6c3eff;
+    margin: 1em;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.footerButtons{
-  margin: 1rem 0rem;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  flex-direction: row;
+.footerButtons {
+    margin: 1rem 0rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row;
 }
-.btnDisable{
-  width: 106px;
-  height: 106px;
-  background: #e8e8e8;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.103);
-
+.btnDisable {
+    width: 106px;
+    height: 106px;
+    background: #e8e8e8;
+    border-radius: 15px;
+    margin: 1em;
+    cursor: default;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.103);
 }
 .btnNoPress {
-  width: 106px;
-  height: 106px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 106px;
+    height: 106px;
+    background: #fff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.btnGuardarTienda{
-  margin-bottom: 2rem;
-  align-self: flex-end;
+/***Inicio-DropZone***/
+
+.dropzone {
+    border: 2px dotted #6c3eff;
+    border-radius: 0px;
+    height: 60px;
 }
 
-.buttonContainer{
-  display: flex;
-  justify-content: flex-end;
+/***Fin-DropZone***/
+.btnGuardarTienda {
+    margin-bottom: 2rem;
+    align-self: flex-end;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
 }
 #iconoBtn {
-  margin-top: 25%;
-  margin-bottom: 10%;
+    margin-top: 25%;
+    margin-bottom: 10%;
 }
 
 .txtBtnPress {
-  font-family: 'SpartanSemiBold';
-  font-size: 14px;
-  color: #fff;
+    font-family: 'SpartanSemiBold';
+    font-size: 14px;
+    color: #fff;
 }
 
-
 .txtBtnNoPress {
-  font-family: 'SpartanSemiBold';
-  font-size: 14px;
-  color: #6c3eff;
+    font-family: 'SpartanSemiBold';
+    font-size: 14px;
+    color: #6c3eff;
+    text-decoration: none;
 }
 
 #mapBox {
-  position: relative !important;
-  height: 389px !important;
-  width: 100% !important;
+    position: relative !important;
+    height: 389px !important;
+    width: 100% !important;
 }
 
-#searchBox{
-  position: absolute !important;
-  margin-left: 13% !important;
-  margin-top: 1% !important;
-  z-index: 2 !important;
-  width: 80% !important;
-
+#searchBox {
+    position: absolute !important;
+    margin-left: 13% !important;
+    margin-top: 1% !important;
+    z-index: 2 !important;
+    width: 80% !important;
 }
 
-.pac-target-input{
-  border-color: #FFFFFF !important;
-  border-radius: 15px !important;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
-
+.pac-target-input {
+    border-color: #ffffff !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
-#searchBoxIcon{
-  height: 40px;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  background-color: #fff;
-  position: absolute;
-  margin-left: 12%;
-  margin-top: 1%;
-  padding-top: 7px;
-  padding-left: 1%;
-  z-index: 3;
-  width: 3%;
+#searchBoxIcon {
+    height: 40px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background-color: #fff;
+    position: absolute;
+    margin-left: 12%;
+    margin-top: 1%;
+    padding-top: 7px;
+    padding-left: 1%;
+    z-index: 3;
+    width: 3%;
 }
 
-
-#fotosTienda{
-  width: auto;
-  height: 174px;
-  background-color: #6c3eff;
-  border-radius: 15px;
+#fotosTienda {
+    width: auto;
+    height: 174px;
+    background-color: #6c3eff;
+    border-radius: 15px;
 }
 
-#fotosTiendaPendientes{
-  border-radius: 15px;
-  width: auto;
-  height: 174px;
-  background-color: #6c3eff;
-  filter: grayscale(100%);
+#fotosTiendaPendientes {
+    border-radius: 15px;
+    width: auto;
+    height: 174px;
+    background-color: #6c3eff;
+    filter: grayscale(100%);
 }
 
-.textoPendiente{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
+.textoPendiente {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
 }
 
-.columnFotos{
-  width: 200px;
-  padding-top: 25px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+.columnFotos {
+    width: 200px;
+    padding-top: 25px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
-.divInfo{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+.colFoto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.divInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .top-right {
-  position: absolute;
-  top: 10px;
-  right: 0px;
-  color: #fff;
-  background-color: #FF3B7B;
-  border-radius: 50%;
-  font-size: 20px;
-  height: 36px;
-  width: 36px;
-  border: #FF3B7B;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    color: #fff;
+    background-color: #ff3b7b;
+    border-radius: 50%;
+    font-size: 20px;
+    height: 36px;
+    width: 36px;
+    border: #ff3b7b;
 }
 
 /*Aprobacion de tiendas*/
 
 .TiendaAprobacion_Card {
-  // height: 100px;
-  // background-color: #6C3EFF;
-  // background-color: #FFFFFF;
-  // color: #6C3EFF;
-  border-radius: 10%;
-  -webkit-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
-  box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+    // height: 100px;
+    // background-color: #6C3EFF;
+    // background-color: #FFFFFF;
+    // color: #6C3EFF;
+    border-radius: 10%;
+    -webkit-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 2px 15px -6px rgba(0, 0, 0, 0.75);
 }
 
 .TiendaAprobacion_icon {
-  color: #6c3eff;
+    color: #6c3eff;
 }
 
 .TiendaAprobacion_iconText {
-  color: #6c3eff;
-  font-size: 0.85rem;
+    color: #6c3eff;
+    font-size: 0.85rem;
 }
 
 .TiendaAprobacion_Card:hover {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 #informacionDIV.active {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 #pagoDIV.active {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 #serviciosDIV.active {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 #productosDIV.active {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 #planDIV.active {
-  background-color: #6c3eff;
-  color: #ffffff;
-  .TiendaAprobacion_icon {
+    background-color: #6c3eff;
     color: #ffffff;
-  }
-  .TiendaAprobacion_iconText {
-    color: #ffffff;
-  }
+    .TiendaAprobacion_icon {
+        color: #ffffff;
+    }
+    .TiendaAprobacion_iconText {
+        color: #ffffff;
+    }
 }
 
 .btn-sq-lg {
-  width: 100px;
-  height: 100px;
+    width: 100px;
+    height: 100px;
+}
+.rowButtonsTienda {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+@media screen and (max-width: 1024px) {
+    .divFotoTiendaNew {
+        width: 9vw;
+        height: 9vw;
+    }
+    #fotoTienda {
+        width: 9vw;
+        height: 9vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .rowButtonsTienda {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .columnInfoTienda {
+        width: 100%;
+    }
+    .columnPerfilDatos {
+        width: 100%;
+    }
+    .columnTiendaBtn {
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .divFotoTiendaNew {
+        width: 15vw;
+        height: 15vw;
+        margin: 0rem;
+        align-self: center;
+    }
+    #fotoTienda {
+        width: 15vw;
+        height: 15vw;
+    }
+    .h2Nombre {
+        margin: 0rem !important;
+        width: fit-content !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .divFotoTiendaNew {
+        width: 30vw;
+        height: 30vw;
+        margin: 0rem;
+        align-self: center;
+    }
+    #fotoTienda {
+        width: 30vw;
+        height: 30vw;
+    }
+    .footerButtons {
+        flex-direction: column;
+    }
+    .btnNoPress {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        border-radius: 15px;
+        margin: 0.5em;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .TiendaAprobacion_iconText {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (max-width: 320px) {
+}
