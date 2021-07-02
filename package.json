@@ -75,7 +75,9 @@
     "scripts": {
         "build": "webpack --mode production",
         "start": "webpack-dev-server --open --mode development",
-        "compile": "webpack --config webpack.config.js"
+        "compile": "webpack --config webpack.config.js",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
     },
     "eslintConfig": {
         "extends": "react-app"
