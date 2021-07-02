@@ -2,6 +2,7 @@
     "name": "meego",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://clarigy.github.io/MegooEmpresarioApp/",
     "dependencies": {
         "@babel/core": "^7.11.1",
         "@babel/preset-env": "^7.11.0",
