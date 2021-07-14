@@ -1,0 +1,214 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Ordenes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidCliente",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaCompra",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Ordenes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidProveedor",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "estadoOrden",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Ordenes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidProveedor",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaCompra",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Ordenes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidProveedor",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaCompra",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Ordenes",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidProveedor",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaReserva",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estadoOrden",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "uidBarbero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidBarbero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidBarbero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidBarbero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidBarbero",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidCliente",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "peluqueria",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "uidCliente",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Tiendas",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "aprobado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "calificacion",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "Paquetes",
+      "fieldPath": "categoria",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    }
+  ]
+}

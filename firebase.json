@@ -1,7 +1,7 @@
 {
   "hosting": 
 {
-    "site": "meegowebttest-64ae0",    
+    "site": "meegoempresario-94a79",
     "public": "dist",
     "ignore": [
       "firebase.json",

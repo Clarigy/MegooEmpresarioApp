@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "meegoapptest-98b27",
-    "meegowebtest": "meegowebtest"
+    "meegowebtest": "meegowebtest",
+    "meegoEmpresario": "meegoapptest-98b27"
   }
 }
