@@ -69,7 +69,11 @@ export class Agenda extends Component {
             equipo: [],
             suscripciones: [],
             suscripcionesEvent: [],
-            tiendaUid: ''
+            tiendaUid: '',
+            tabModal: 'Equipo',
+            suscripcionesOpciones: [],
+            newSuscripcion: '',
+            suscripcionSelected: '',
         };
     }
 
@@ -79,7 +83,8 @@ export class Agenda extends Component {
         IconActive.checkPath('Siderbar-Perfil', '/perfil', this.props.match.path);
         $('.react-bootstrap-table-pagination-list').removeClass('col-md-6 col-xs-6 col-sm-6 col-lg-6');
         $('.react-bootstrap-table-pagination-list').addClass('col-2 offset-5 mt-4');
-
+        $('#AgregarSuscripciones').addClass('fade active show'); //por default se activa
+        $('#AgregarSuscripcionesDiv').addClass('active');
         /**
          * !Informacion
          */
@@ -87,7 +92,7 @@ export class Agenda extends Component {
             this.setState({ section: 'descuentos' });
 
             $('#AgregarEquipo').addClass('fade active show'); //por default se activa
-            $('#AgregarEquipoDiv').addClass('active');
+            $('#AgregarEquiposDiv').addClass('active');
 
             //Inicio Tercer tab
             $('#AgregarSuscripciones').removeClass('fade active show'); //div que se muestra
@@ -105,9 +110,10 @@ export class Agenda extends Component {
 
             //primera tab
             $('#AgregarEquipo').removeClass('fade active show');
-            $('#AgregarEquipoDiv').removeClass('active');
+            $('#AgregarEquiposDiv').removeClass('active');
             //primera tab
         });
+
 
         setTimeout(() => {
             this.setState({
@@ -297,7 +303,7 @@ export class Agenda extends Component {
                 } else {
                     let newTienda = db.collection('Tiendas').doc(this.state.tiendaUid);
                     newTienda
-                        .collection('suscripciones')
+                        .collection('suscripcionesEmpresario')
                         .get()
                         .then((querySnapshot) => {
                             querySnapshot.forEach((doc) => {
@@ -331,7 +337,7 @@ export class Agenda extends Component {
                                 // doc.data() is never undefined for query doc snapshots
                                 const collection = `Tiendas/${this.state.tiendaUid}/empleados/${
                                     doc.data().uid
-                                }/horariosLaborales/`;
+                                }/horariosLaboralesEmpresario/`;
 
                                 equipo.push(doc.data());
 
@@ -370,6 +376,28 @@ export class Agenda extends Component {
                         .catch(function (error) {
                             console.log('Error getting documents: ', error);
                         });
+
+                    const suscripciones = []
+
+                    const suscripcionesRef = db.collection(`/Tiendas/${this.state.tiendaUid}/opcionesPlan/Paquetes/suscripciones`)
+                    
+                    suscripcionesRef.get()
+                        .then((querySnapshot) => {
+                            querySnapshot.forEach((doc) => {
+                                // doc.data() is never undefined for query doc snapshots
+
+                                suscripciones.push(doc.data());
+                            });
+                            this.setState({
+                                suscripcionesOpciones: suscripciones
+                            });
+                            console.log(suscripciones);
+                        })
+                        .catch(function (error) {
+                            console.log('Error getting documents: ', error);
+                        });
+     
+                            
                 }
             })
             .catch(function (error) {
@@ -402,6 +430,19 @@ export class Agenda extends Component {
                 tab: 'Ordenes'
             });
             this.ordenes();
+        }
+    };
+
+    tabModalChange = () => {
+        if (this.state.tabModal == 'Equipo') {
+            this.setState({
+                tabModal: 'Suscripcion'
+            });
+            this.fetchEventsOrdenes();
+        } else {
+            this.setState({
+                tabModal: 'Equipo'
+            });
         }
     };
 
@@ -787,6 +828,15 @@ export class Agenda extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
+
+        if(e.target.name === 'newSuscripcion'){
+            const susSelected = this.state.suscripcionesOpciones.find(item => item.nombre === e.target.value);
+            this.setState({
+                suscripcionSelected: susSelected
+            })
+            console.log(susSelected)
+        }
+        
     };
 
     handleOpen = (selectInfo) => {
@@ -944,6 +994,50 @@ export class Agenda extends Component {
         this.props.history.push('/clientes');
     };
 
+    createSuscripcion = () => {
+        
+        let suscripcionesEvents = this.state.suscripcionesEvent;
+        let filter = this.state.suscripcionSelected;
+
+        
+        let event = {
+            title: filter.nombre,
+            color: `#${filter.color}`,
+            startTime: new Date(),
+            uid: filter.uid,
+        };
+        suscripcionesEvents.push(event);
+
+        console.log('suss',suscripcionesEvents);
+  
+    this.setState({
+        suscripcionesEvent: suscripcionesEvents
+    });
+
+
+    }
+
+    servicioGet= (uid) =>{
+        let serviciosString = '';
+        const db = firebaseConfig.firestore();
+        const serviciosRef = db.collection(`/Tiendas/${this.state.tiendaUid}/opcionesPlan/Paquetes/suscripciones/${uid}/servicios`)
+                    
+            serviciosRef.get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        // doc.data() is never undefined for query doc snapshots
+
+                        serviciosString = `${serviciosString} ${doc.data()['servicio']}, `;
+                    });
+                    
+                    console.log(serviciosString);
+                })
+                .catch(function (error) {
+                    console.log('Error getting documents: ', error);
+                });
+        return serviciosString;
+    }
+
     render() {
         const { loading } = this.state;
 
@@ -956,7 +1050,7 @@ export class Agenda extends Component {
                         <div className='mx-0 mx-md- mx-lg-8 perfilContainer'>
                             <div className='columnAgenda'>
                                 <div className='row'>
-                                    <div className='tabButtons text-center row'>
+                                    <div className='tabButtons text-center row mb-3'>
                                         <div
                                             className={
                                                 this.state.tab == 'Ordenes' ? 'tabButtonSelect' : 'tabButtonUnSelect'
@@ -1275,9 +1369,9 @@ export class Agenda extends Component {
                                             {this.state.suscripciones &&
                                                 this.state.suscripciones.length > 0 &&
                                                 this.state.suscripciones.map((suscripciones, i) => (
-                                                    <div className='row'>
+                                                    <div className='row mb-2'>
                                                         <label className='containerCheck'>
-                                                            {suscripciones.titulo}
+                                                            {suscripciones.nombre}
                                                             <input
                                                                 defaultChecked={true}
                                                                 name='checkBoxServicios'
@@ -1347,86 +1441,159 @@ export class Agenda extends Component {
                                 </div>
                                 <div className='row mb-3'></div>
 
-                                <div className='row mb-3 tabsRow'>
-                                    <div className='row opcionContainer'>
-                                        <a
-                                            className='btn text-white Descuentos-btnMorado'
-                                            data-toggle='pill'
-                                            href='#AgregarEquipo'
-                                            id='AgregarEquipoDiv'
+                                <div className='row'>
+                                    <div className='mx-5 opcionContainer widthFull'>
+                                    <div
+                                            className={
+                                                this.state.tabModal == 'Equipo' ? 'tabButtonSelect' : 'tabButtonUnSelect'
+                                            }
+                                            onClick={this.tabModalChange}
                                         >
-                                            <p className='DescuentosDiv_Text'>Empleado</p>
-                                        </a>
-
-                                        <a
-                                            className='btn text-white Descuentos-btnMorado'
-                                            data-toggle='pill'
-                                            href='#AgregarSuscripciones'
-                                            id='AgregarSuscripcionesDiv'
+                                            <h5 className='tabText'>Equipo</h5>
+                                        </div>
+                                        <div
+                                            className={
+                                                this.state.tabModal == 'Suscripcion' ? 'tabButtonSelect' : 'tabButtonUnSelect'
+                                            }
+                                            onClick={this.tabModalChange}
                                         >
-                                            <p className='DescuentosDiv_Text'>Suscripción</p>
-                                        </a>
+                                            <h5 className='tabText'>Suscripciones</h5>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div className='row mb-3'></div>
-                                <div className='mx-5'>
-                                    <h2 className='Categoria-SubTitulo'>Empleado</h2>
-                                    <select
-                                        name='newCategoria'
-                                        id=''
-                                        className='form-control text-muted'
-                                        aria-label='Buscar'
-                                        onChange={this.onChange}
-                                        value={this.state.newCategoria}
-                                    >
-                                        <option value=''></option>
-                                        {this.state.equipo.map((equipo) => (
-                                            <option value={equipo.nombre}>{equipo.nombre}</option>
-                                        ))}
-                                    </select>
                                 </div>
                                 <div className='row mb-3'></div>
-                                <div className='mx-5'>
-                                    <h2 className='Categoria-SubTitulo'>Tipo de servicio</h2>
-                                    <select
-                                        name='newTipoServicio'
-                                        id=''
-                                        className='form-control text-muted'
-                                        aria-label='Buscar'
-                                        onChange={this.onChange}
-                                        value={this.state.newTipoServicio}
-                                    >
-                                        <option value=''></option>
-                                        <option value='A domicilio'>A domicilio</option>
-                                        <option value='En local'>En local</option>
-                                        <option value='Ambos'>Ambos</option>
-                                    </select>
-                                </div>
 
-                                <div className='row text-center'>
-                                    <div className='columnBtnEliminarPerfil'>
-                                        <button
-                                            className='btn text-white  Categoria-btnRosado'
-                                            data-dismiss='modal'
-                                            onClick={this.handleClose}
-                                        >
-                                            Cancelar
-                                        </button>
-                                    </div>
+                                {this.state.tabModal === 'Equipo' ? 
+                                (
+                                <>
+                                    <div className='tab-content'>
+                                        <div className='mx-5'>
+                                            <h2 className='Categoria-SubTitulo'>Empleado</h2>
+                                            <select
+                                                name='newCategoria'
+                                                id=''
+                                                className='form-control text-muted'
+                                                aria-label='Buscar'
+                                                onChange={this.onChange}
+                                                value={this.state.newCategoria}
+                                            >
+                                                <option value=''></option>
+                                                {this.state.equipo.map((equipo) => (
+                                                    <option value={equipo.nombre}>{equipo.nombre}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className='row mb-3'></div>
+                                        <div className='mx-5'>
+                                            <h2 className='Categoria-SubTitulo'>Tipo de servicio</h2>
+                                            <select
+                                                name='newTipoServicio'
+                                                id=''
+                                                className='form-control text-muted'
+                                                aria-label='Buscar'
+                                                onChange={this.onChange}
+                                                value={this.state.newTipoServicio}
+                                            >
+                                                <option value=''></option>
+                                                <option value='A domicilio'>A domicilio</option>
+                                                <option value='En local'>En local</option>
+                                                <option value='Ambos'>Ambos</option>
+                                            </select>
+                                        </div>
 
-                                    <div className='columnBtnEliminarPerfil '>
-                                        <button
-                                            className='btn text-white Categoria-btnMorado'
-                                            data-dismiss='modal'
-                                            onClick={this.onFilter}
-                                        >
-                                            Filtrar
-                                        </button>
+                                        <div className='row text-center'>
+                                            <div className='columnBtnEliminarPerfil'>
+                                                <button
+                                                    className='btn text-white  Categoria-btnRosado'
+                                                    data-dismiss='modal'
+                                                    onClick={this.handleClose}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                            </div>
+
+                                            <div className='columnBtnEliminarPerfil '>
+                                                <button
+                                                    className='btn text-white Categoria-btnMorado'
+                                                    data-dismiss='modal'
+                                                    onClick={this.onFilter}
+                                                >
+                                                    Crear
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </>
+                                ) : (
+                                    <>
+                                    <div className='tab-content'>
+                                        <div className='mx-5'>
+                                            <h2 className='Categoria-SubTitulo'>Suscripción</h2>
+                                            <select
+                                                name='newSuscripcion'
+                                                id=''
+                                                className='form-control text-muted'
+                                                aria-label='Buscar'
+                                                onChange={this.onChange}
+                                                value={this.state.newSuscripcion}
+                                            >
+                                                <option value=''></option>
+                                                {this.state.suscripcionesOpciones.map((suscripcion) => (
+                                                    <option value={suscripcion.nombre}>{suscripcion.nombre}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className='row mb-3'></div>
+                                        <div className=' mx-5 col-12 table-responsive tableScrollVertical table-descuentos'>
+                                                        <table className='table' id='myTable' ref={this.title}>
+                                                            <thead className='text-left CategoriaTabla-Thead'>
+                                                                <tr>
+                                                                    <th>Servicio </th>
+                                                                    <th>Genero </th>
+                                                                    <th>Valor de negociación</th>
+                                                                    <th>Valido</th>
+                                                                </tr>
+                                                            </thead>
+                                                            {this.state.suscripcionSelected &&
+                                                                    <tbody className='text-left CategoriaTabla-Body'>
+                                                                        <tr>
+                                                                            <td>{this.servicioGet(this.state.suscripcionSelected.uid)}</td>
+                                                                            <td>{this.state.suscripcionSelected.genero}</td>
+                                                                            <td>{this.state.suscripcionSelected.gananciaMensual}</td>
+                                                                            <td>{'this.state.suscripcionSelected.fechaValido'}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                            }
+                                                                    
+                                                        </table>
+                                                    </div>
+                                        <div className='row mb-3'></div>
+                                        <div className='row text-center'>
+                                            <div className='columnBtnEliminarPerfil'>
+                                                <button
+                                                    className='btn text-white  Categoria-btnRosado'
+                                                    data-dismiss='modal'
+                                                    onClick={this.handleClose}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                            </div>
+
+                                            <div className='columnBtnEliminarPerfil '>
+                                                <button
+                                                    className='btn text-white Categoria-btnMorado'
+                                                    data-dismiss='modal'
+                                                    onClick={this.createSuscripcion}
+                                                >
+                                                    Crear
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                                )}
                             </div>
-
+                            
                             {/* <div className='modal-popup'>
                                     <h2 className='titulo'>Crear evento</h2>
                                     <h2 className='Categoria-SubTitulo'>Nombre del evento:</h2>

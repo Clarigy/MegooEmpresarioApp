@@ -45,6 +45,12 @@ export class EmpleadoProductos extends Component {
                             tienda: doc.data()['tienda'],
                             checkbox: doc.data()['checkBox']
                         });
+
+                        if(doc.data()['checkBox'] == undefined){
+                            this.setState({
+                                checkbox: []
+                            });
+                        }
                     }
             
                     db.collection('Productos')
@@ -277,7 +283,11 @@ export class EmpleadoProductos extends Component {
     }
 
     showGanancia(producto) {
-        const gananciaFinal = this.state.checkbox.find((v) => v.producto === producto);
+        let gananciaFinal = ""
+        if(this.state.checkbox){
+            gananciaFinal = this.state.checkbox.find((v) => v.producto === producto);
+        }
+        
 
         if (gananciaFinal) {
             return gananciaFinal.ganancia;
@@ -350,7 +360,7 @@ export class EmpleadoProductos extends Component {
                                                         <td>
                                                             <label className='containerCheck'>
                                                                 <input
-                                                                    defaultChecked={this.state.checkbox.some(
+                                                                    defaultChecked={this.state.checkbox && this.state.checkbox.some(
                                                                         (v) => v.producto === producto.producto
                                                                     )}
                                                                     name='checkbox'

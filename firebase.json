@@ -1,18 +1,17 @@
 {
-  "hosting": 
-{
-    "site": "meegoempresario-94a79",
+  "hosting": {
+    "site": "meegowebttest-64ae0",
     "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
+  },
+  "functions": {
+    "source": "functions"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

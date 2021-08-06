@@ -112,17 +112,17 @@ export class Empleado extends Component {
         });
         console.log(this.state.uidEmpleado);
         db.collection('Tiendas').doc(this.state.uidEmpleado).update({
-            estadoTienda: 'Activo',
+            estadoTienda: 'No Activo',
             tienda: ''
         });
 
-        // let collectionRef = db.collection('Tiendas').doc(this.state.uidEmpleado);
-        // collectionRef.collection('notificaciones').add({
-        //     mensaje: 'Ya no eres parte del equipo de esta Tienda',
-        //     tienda: this.state.Tienda,
-        //     estado: 'No Activa'
-        // });
-        // batch.commit();
+        let collectionRef = db.collection(`Tiendas/${his.state.uidEmpleado}/notificaciones`)
+       .add({
+            mensaje: 'Ya no eres parte del equipo de esta Tienda',
+            tienda: this.state.Tienda,
+            estado: 'No Activa'
+        });
+        batch.commit();
 
         this.setState({
             uid: undefined
@@ -291,6 +291,7 @@ export class Empleado extends Component {
                                                 className='btn text-white px-4 py-2 mt-1 Categoria-btnRosado'
                                                 data-toggle='modal'
                                                 data-target='#ConfirmarModal'
+                                                onclick={this.delete}
                                             >
                                                 Desactivar Empleado
                                             </button>
@@ -299,6 +300,7 @@ export class Empleado extends Component {
                                                 className='btn text-white px-4 py-2 mt-1 Categoria-btnAzul'
                                                 data-toggle='modal'
                                                 data-target='#ReConfirmarModal'
+                                                onclick={this.Activar}
                                             >
                                                 Reactivar Empleado
                                             </button>

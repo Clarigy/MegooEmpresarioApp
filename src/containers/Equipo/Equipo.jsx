@@ -240,7 +240,10 @@ export class Equipo extends Component {
                     .catch(function (error) {
                         console.error('Error adding document: ', error);
                     });
+
             })
+
+            
             .catch(function (error) {
                 console.log('Error getting documents: ', error);
             });

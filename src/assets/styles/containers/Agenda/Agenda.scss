@@ -16,14 +16,21 @@
     align-items: center;
 }
 
+.widthFull{
+    width: 100%;
+    margin: 1em;
+    height: 50px;
+}
 .tabButtonSelect {
     width: 49%;
-    height: 48px;
+    height: 80%;
     background: #ffffff;
     border-radius: 30px;
     color: #6c3eff;
     margin: auto;
     padding-top: 15px;
+    justify-content: center;
+    text-align: center;
     font-family: 'SpartanSemiBold';
     font-size: 18px;
     cursor: pointer;
@@ -31,13 +38,15 @@
 
 .tabButtonUnSelect {
     width: 49%;
-    height: 48px;
+    height: 80%;
     color: #ffffff;
     margin: auto;
     padding-top: 15px;
     font-family: 'SpartanSemiBold';
     font-size: 18px;
     cursor: pointer;
+    justify-content: center;
+    text-align: center;
 }
 .bodyContainerAgenga {
     width: 100%;
